@@ -71,7 +71,7 @@
         $('[action="{{ route('yrnRcvKdProgrm.store') }}"]').ajaxForm({
             success:function () {
                 swal({
-                    title:"Good job !",
+                    title:" Good job !",
                     text:"Updated !",
                     type:"success"
                 });

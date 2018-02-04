@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1b39146c-3855-41f3-aa4d-0937df7c285b" name="Default" comment="hello">
+    <list default="true" id="1b39146c-3855-41f3-aa4d-0937df7c285b" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/resources/views/ajaxFile/KDprgrm/ajxYrnRcvForm.blade.php" afterPath="$PROJECT_DIR$/resources/views/ajaxFile/KDprgrm/ajxYrnRcvForm.blade.php" />
     </list>
     <ignored path="newsTechnology_App.iws" />
@@ -215,15 +216,15 @@
       <file leaf-file-name="ajxYrnRcvForm.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/ajaxFile/KDprgrm/ajxYrnRcvForm.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
-              <caret line="74" column="34" lean-forward="false" selection-start-line="74" selection-start-column="34" selection-end-line="74" selection-end-column="34" />
+            <state relative-caret-position="211">
+              <caret line="73" column="28" lean-forward="false" selection-start-line="73" selection-start-column="28" selection-end-line="73" selection-end-column="28" />
               <folding>
-                <marker date="1517737442547" expanded="true" signature="30:61" ph="..." />
-                <marker date="1517737442547" expanded="true" signature="146:160" ph="..." />
-                <marker date="1517737442547" expanded="true" signature="1010:1020" ph="..." />
-                <marker date="1517737442547" expanded="true" signature="1118:1130" ph="..." />
-                <marker date="1517737442547" expanded="true" signature="3438:3455" ph="..." />
-                <marker date="1517737442547" expanded="true" signature="3576:3607" ph="..." />
+                <marker date="1517737822665" expanded="true" signature="30:61" ph="..." />
+                <marker date="1517737822665" expanded="true" signature="146:160" ph="..." />
+                <marker date="1517737822665" expanded="true" signature="1010:1020" ph="..." />
+                <marker date="1517737822665" expanded="true" signature="1118:1130" ph="..." />
+                <marker date="1517737822665" expanded="true" signature="3438:3455" ph="..." />
+                <marker date="1517737822665" expanded="true" signature="3576:3607" ph="..." />
               </folding>
             </state>
           </provider>
@@ -1247,12 +1248,20 @@
       <workItem from="1517458324105" duration="6275000" />
       <workItem from="1517628201700" duration="3282000" />
       <workItem from="1517724444752" duration="6279000" />
-      <workItem from="1517737357225" duration="86000" />
+      <workItem from="1517737357225" duration="464000" />
     </task>
+    <task id="LOCAL-00001" summary="hello">
+      <created>1517737749833</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1517737749833</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3861500000" />
+    <option name="totallyTimeSpent" value="3861878000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1269,7 +1278,7 @@
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32890365" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843137" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32843137" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2630719" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4385382" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -1555,15 +1564,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/ajaxFile/KDprgrm/ajxYrnRcvForm.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="74" column="34" lean-forward="false" selection-start-line="74" selection-start-column="34" selection-end-line="74" selection-end-column="34" />
+        <state relative-caret-position="211">
+          <caret line="73" column="28" lean-forward="false" selection-start-line="73" selection-start-column="28" selection-end-line="73" selection-end-column="28" />
           <folding>
-            <marker date="1517737442547" expanded="true" signature="30:61" ph="..." />
-            <marker date="1517737442547" expanded="true" signature="146:160" ph="..." />
-            <marker date="1517737442547" expanded="true" signature="1010:1020" ph="..." />
-            <marker date="1517737442547" expanded="true" signature="1118:1130" ph="..." />
-            <marker date="1517737442547" expanded="true" signature="3438:3455" ph="..." />
-            <marker date="1517737442547" expanded="true" signature="3576:3607" ph="..." />
+            <marker date="1517737822665" expanded="true" signature="30:61" ph="..." />
+            <marker date="1517737822665" expanded="true" signature="146:160" ph="..." />
+            <marker date="1517737822665" expanded="true" signature="1010:1020" ph="..." />
+            <marker date="1517737822665" expanded="true" signature="1118:1130" ph="..." />
+            <marker date="1517737822665" expanded="true" signature="3438:3455" ph="..." />
+            <marker date="1517737822665" expanded="true" signature="3576:3607" ph="..." />
           </folding>
         </state>
       </provider>
