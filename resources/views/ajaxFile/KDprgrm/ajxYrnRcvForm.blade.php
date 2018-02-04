@@ -72,7 +72,7 @@
             success:function () {
                 swal({
                     title:"Good job!",
-                    text:"Updated!",
+                    text:"Updated !",
                     type:"success"
                 });
                 $(".myAjaxModal").modal('hide');
