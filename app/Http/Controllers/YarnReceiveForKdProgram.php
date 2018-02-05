@@ -23,11 +23,12 @@ class YarnReceiveForKdProgram extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($ordID, $kdId)
+    public function create($ordID, $kdId, $colorId)
     {
         $data = [
             'orderId' => $ordID,
             'kdPrgrmId' => $kdId,
+            'colorId' => $colorId,
         ];
         return view('ajaxFile.KDprgrm.ajxYrnRcvForm', $data);
     }

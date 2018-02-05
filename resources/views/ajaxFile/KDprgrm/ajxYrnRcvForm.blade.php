@@ -18,6 +18,7 @@
                                     <div class="col-md-9">
                                         <input type="hidden" name="yarn[orderId]" value="{{ $orderId }}">
                                         <input type="hidden" name="yarn[kdPrgrmId]" value="{{ $kdPrgrmId }}">
+                                        <input type="hidden" name="yarn[color]" value="{{ $colorId }}">
                                         <input type="text" class="dPick form-control"
                                                name="yarn[date]" placeholder="" autocomplete="off"
                                                id="">

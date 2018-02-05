@@ -189,16 +189,24 @@ Route::resource('pending','PendingOrderController');
 Route::resource('settings','SettingsController');
 Route::resource('size','SizeController');
 Route::resource('line','linePrController');
+
+
+Route::get('yrnRcvKdProgrm/create/{ordID}/{kdId}/{colorId}', [
+    'as' => 'yrnRcvKdProgrm.create',
+    'uses' => 'YarnReceiveForKdProgram@create'
+]);
+Route::get('yrnRcvKdProgrm/show/{kdId}/{colorId}', [
+    'as' => 'yrnRcvKdProgrm.show',
+    'uses' => 'YarnReceiveForKdProgram@show'
+]);
+Route::resource('yrnRcvKdProgrm','YarnReceiveForKdProgram', ['except' => ['create', 'show']]);
+
 Route::get('kdForKnitting/create/{ordID}/{kdId}', [
     'as' => 'kdForKnitting.create',
     'uses' => 'KnittingQtyForKdProgram@create'
 ]);
 Route::resource('kdForKnitting','KnittingQtyForKdProgram', ['except' => 'create']);
-Route::get('yrnRcvKdProgrm/create/{ordID}/{kdId}', [
-    'as' => 'yrnRcvKdProgrm.create',
-    'uses' => 'YarnReceiveForKdProgram@create'
-]);
-Route::resource('yrnRcvKdProgrm','YarnReceiveForKdProgram', ['except' => 'create']);
+
 Route::get('dyingQtyFrKd/create/{ordID}/{kdId}/{colorId}', [
     'as' => 'dyingQtyFrKd.create',
     'uses' => 'DyingQtyForKdProgram@create'

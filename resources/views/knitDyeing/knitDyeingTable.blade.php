@@ -208,10 +208,10 @@ if ($factNamePrefix != true) {
                         </td>
                         <td>
                             @if($employee->id != '')
-                                <a href="{{ route('yrnRcvKdProgrm.create', [$employee->Id, $employee->id]) }}" modalTitle=""
+                                {{--<a href="{{ route('yrnRcvKdProgrm.create', [$employee->Id, $employee->id]) }}" modalTitle=""
                                    data-toggle="modal" data-target=".myAjaxModal" data-remote="false" class="">
                                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                </a>
+                                </a>--}}
                             @endif
                             YarnRcv
                         </td>
@@ -245,13 +245,14 @@ if ($factNamePrefix != true) {
                     $dyingQtySum = 0;
                     $finishFabRqrdSum = 0;
                     $finiFabIssueSum = 0;
+
+                    /*$yarn_receives = DB::table('yarn_receive_for_kd')->where('orderId', '=', $employee->Id)->get();
+                    foreach ($yarn_receives as $yarn_rcv) {
+                        $yrnRcvSum += $yarn_rcv->yarnRcvQTY;
+                    }*/
                     $yarn_issues = DB::table('yarn_issue')->where('orderId', '=', $employee->Id)->get();
                     foreach ($yarn_issues as $yarn_issue) {
                         $yrnQtySum += $yarn_issue->yrnQty;
-                    }
-                    $yarn_receives = DB::table('yarn_receive_for_kd')->where('orderId', '=', $employee->Id)->get();
-                    foreach ($yarn_receives as $yarn_rcv) {
-                        $yrnRcvSum += $yarn_rcv->yarnRcvQTY;
                     }
                     $kdKnitQtys = DB::table('kd_knitting_qty')->where('orderId', '=', $employee->Id)->get();
                     foreach ($kdKnitQtys as $kdKnitQty) {
@@ -272,6 +273,12 @@ if ($factNamePrefix != true) {
                     @foreach (arraySumFromKey($kk, 'colorID') as $kw => $qty2)
 
                         <?php
+                        $yarn_receives = DB::table('yarn_receive_for_kd')->where([['orderId', '=', $employee->Id], ['color', '=', $qty2['colorID']]])->get();
+                        foreach ($yarn_receives as $yarn_rcv) {
+                            $yrnRcvSum += $yarn_rcv->yarnRcvQTY;
+                        }
+
+
                         $kdDyingQtys = DB::table('dying_qty_for_kd')->where([['orderId', '=', $employee->Id], ['colorID', '=', $qty2['colorID']]])->get();
                         foreach ($kdDyingQtys as $kdDyingQty) {
                             $dyingQtySum += $kdDyingQty->dyingQty;
@@ -296,14 +303,17 @@ if ($factNamePrefix != true) {
                                     @endif
                                 @endforeach
                             </td>
-                            @if($kw == 0)
-                                <td rowspan="{{ $arrCount }}">
-                                    <a href="{{ route('yrnRcvKdProgrm.show', $employee->id) }}" modalTitle="" data-toggle="modal"
-                                       data-target=".myAjaxModal" data-remote="false">{{ $yrnRcvSum }}</a>
-                                    {{--*/$totYrnRcvSum += $yrnRcvSum/*--}}
+                                <td rowspan="">
+                                    <a href="{{ route('yrnRcvKdProgrm.create', [$employee->Id, $employee->id, $qty2['colorID']]) }}" modalTitle=""
+                                       data-toggle="modal" data-target=".myAjaxModal" data-remote="false" class="">
+                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="{{ route('yrnRcvKdProgrm.show', [$employee->id, $qty2['colorID']]) }}" modalTitle="" data-toggle="modal"
+                                       data-target=".myAjaxModal" data-remote="false">
+                                        {{ $yrnRcvSum, $totYrnRcvSum += $yrnRcvSum, $yrnRcvSum = 0 }}
+                                    </a>
                                 </td>
 
-                            @endif
                             @if($kw == 0)
                                 <td rowspan="{{ $arrCount }}">
                                     <a href="{{ route('yarnIssue.show', $employee->id) }}" modalTitle="" data-toggle="modal"
