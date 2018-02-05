@@ -79,70 +79,16 @@ class ProductionController extends Controller
         $val['prDate'] = date('Y-m-d');
         Order::where('Id', $id)->update($val);
         $data = $request->all();
-        //dd(Production::where([['order_id', '=', $id], ['prDate', '=', $val['prDate']]])->first());
         Production::create($data);
         return redirect('production');
-        /*$prData = Production::where([['order_id', '=', $id], ['prDate', '=', $data['prDate']]])->first();
-
-        if ($prData) {
-            if ($data['prCut'] == '') {
-                $data['prCut'] = $prData->prCut;
-            }
-            if ($data['prSwIn'] == '') {
-                $data['prSwIn'] = $prData->prSwIn;
-            }
-            if ($data['prSwOut'] == '') {
-                $data['prSwOut'] = $prData->prSwOut;
-            }
-            if ($data['prIron'] == '') {
-                $data['prIron'] = $prData->prIron;
-            }
-            if ($data['prCarton'] == '') {
-                $data['prCarton'] = $prData->prCarton;
-            }
-        }
-        if ($data) {
-            //($data['prCut'] >= $data['prSwIn']) && ($data['prSwIn'] >= $data['prSwOut']) && ($data['prSwOut'] >= $data['prIron']) && ($data['prIron'] >= $data['prCarton'])
-            if ($prData == null) {
-                Production::create($data);
-            }else{
-                if ($prData->prCut) {
-                    unset($data['prCut']);
-                }
-                if ($prData->prSwIn) {
-                    unset($data['prSwIn']);
-                }
-                if ($prData->prSwOut) {
-                    unset($data['prSwOut']);
-                }
-                if ($prData->prIron) {
-                    unset($data['prIron']);
-                }
-                if ($prData->prCarton) {
-                    unset($data['prCarton']);
-                }
-                unset($data['_token']);
-                Production::where([['order_id', '=', $id], ['prDate', '=', $data['prDate']]])->update($data);
-            }
-            return redirect('production');
-        }else{
-            $request->session()->flash('flash_msg', 'Something Error !');
-            return redirect()->back();
-        }*/
     }
 
-    /*public function updateSnglPrData(Request $request, $id)
-    {
-        $id = $request->input('prId');
-        $prData = Production::where('id', $id)->first();
-    }*/
 
     public function dateWisePrData()
     {
         $today = date('Y-m-d');
         $hasDays = date('Y-m-d', strtotime('10 days', strtotime($today)));
         $this->data['employees'] = Production::whereBetween('prDate', [$today, $hasDays])->get()->sortBy("prDate");
-        //$this->data['orders'] = Order::all();
         $this->data['employeesActive'] = 'active';
         return view('production.DateProductionList', $this->data);
     }

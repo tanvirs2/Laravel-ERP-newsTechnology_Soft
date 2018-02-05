@@ -258,7 +258,7 @@
                                                     <th class="text-center sorting" tabindex="0"
                                                         aria-controls="sample_employees" rowspan="1" colspan="1"
                                                         style="">
-                                                        Carton
+                                                        Poly
                                                     </th>
                                                     <th class="text-center sorting_disabled" rowspan="1" colspan="1" style="" aria-label="Action">
                                                         OrderStatus
@@ -303,7 +303,7 @@
                                                     <th>Cutting%</th>
                                                     <th>SwingIn</th>
                                                     <th>SwingOut</th>
-                                                    <th>Carton</th>
+                                                    <th>Poly</th>
                                                     <th>ShpSts</th>
                                                     <th>Action</th>
                                                 </tr>

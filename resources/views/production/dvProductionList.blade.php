@@ -197,7 +197,7 @@
                                                     <th class="text-center sorting" tabindex="0"
                                                         aria-controls="sample_employees" rowspan="1" colspan="1"
                                                         style="width: 19px;">
-                                                        Carton
+                                                        Poly
                                                     </th>
                                                     <th class="text-center sorting_disabled" rowspan="1" colspan="1"
                                                         style="width: 50px;" aria-label="Action">
@@ -214,7 +214,7 @@
                                                     <th>line</th>
                                                     <th>SwingIn</th>
                                                     <th>SwingOut</th>
-                                                    <th>Carton</th>
+                                                    <th>Poly</th>
                                                     <th>Action</th>
                                                 </tr>
                                                 </thead>

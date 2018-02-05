@@ -8,12 +8,7 @@
         </td>
 
         <td class="text-center blackCol">
-            <?php
-            /*$order = App\Order::find($employee->order_id);
-            echo $order->customer_name;*/
-            ?>
                 {{ $employee->order->customer_name}}
-
         </td>
         <td style="overflow: auto;" class="text-center">
             {{ $employee->order->orderID }}
@@ -149,7 +144,7 @@
     <td><b>CM</b></td>
     <td><b>SMV</b></td>
     <td><b>TotIron</b></td>
-    <td><b>TotCarton</b></td>
+    <td><b>TotPoly</b></td>
     <td></td>
 </tr>
 <tr style="background-color: #34495e; color: whitesmoke; font-weight: bolder; font-size: 1.3em">

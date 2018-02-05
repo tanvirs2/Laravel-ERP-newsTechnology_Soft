@@ -163,7 +163,7 @@
     <td><b>TotSwIn</b></td>
     <td><b>TotSwOut</b></td>
     <td><b>TotIron</b></td>
-    <td><b>TotCarton</b></td>
+    <td><b>TotPoly</b></td>
     <td></td>
     <td></td>
 </tr>

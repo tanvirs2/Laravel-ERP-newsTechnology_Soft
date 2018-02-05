@@ -308,12 +308,14 @@ if ($factNamePrefix != true) {
                                 <td rowspan="{{ $arrCount }}">
                                     <a href="{{ route('yarnIssue.show', $employee->id) }}" modalTitle="" data-toggle="modal"
                                        data-target=".myAjaxModal" data-remote="false">{{ $yrnQtySum }}</a>
+                                    {{--*/$KDyarnIss += $yrnQtySum/*--}}
                                 </td>
                             @endif
                             @if($kw == 0)
                                 <td rowspan="{{ $arrCount }}">
                                     <a href="{{ route('kdForKnitting.show', $employee->id) }}" modalTitle="" data-toggle="modal"
                                        data-target=".myAjaxModal" data-remote="false">{{ $knittingQtySum }}</a>
+                                    {{--*/$KDkntQty += $knittingQtySum/*--}}
                                 </td>
                             @endif
                             <td>

@@ -206,39 +206,8 @@
                                                             At Work
                                                             : activate to sort column ascending">
                                                         OrderQty
-                                                        {{--<br>--}}
-                                                        {{--<input style="width: 60px; color: black; font-size: 0.9em" id="ordrQtySrch" type="text">--}}
+
                                                     </th>
-                                                    {{--<th class="text-center sorting" tabindex="0"
-                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                        style="width: 19px;">
-                                                        Date
-                                                    </th>
-                                                    <th class="text-center sorting" tabindex="0"
-                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                        style="width: 19px;">
-                                                        Cutting
-                                                    </th>
-                                                    <th class="text-center sorting" tabindex="0"
-                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                        style="width: 19px;">
-                                                        SwingIn
-                                                    </th>
-                                                    <th class="text-center sorting" tabindex="0"
-                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                        style="width: 19px;">
-                                                        SwingOut
-                                                    </th>
-                                                    <th class="text-center sorting" tabindex="0"
-                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                        style="width: 19px;">
-                                                        Iron
-                                                    </th>
-                                                    <th class="text-center sorting" tabindex="0"
-                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                        style="width: 19px;">
-                                                        Carton
-                                                    </th>--}}
                                                     <th class="text-center sorting_disabled" rowspan="1" colspan="1"
                                                         style="width: 50px;" aria-label="Action">
                                                         Entry
@@ -256,11 +225,7 @@
                                                     <th>ShipDate</th>
                                                     <th>RemDay</th>
                                                     <th>OrderQty</th>
-                                                    {{--<th>Date</th>
-                                                    <th>Cutting</th>
-                                                    <th>SwingIn</th>
-                                                    <th>SwingOut</th>
-                                                    <th>Carton</th>--}}
+
                                                     <th>Action</th>
                                                 </tr>
                                                 </thead>

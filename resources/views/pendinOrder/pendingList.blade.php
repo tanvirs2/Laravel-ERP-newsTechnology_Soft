@@ -1120,7 +1120,7 @@
                                                             style="" aria-label="
                                                             Action
                                                             ">
-                                                            Carton
+                                                            Poly
                                                         </th>
                                                         <th class="text-center sorting_disabled" rowspan="1" colspan="1"
                                                             style="width: 50px;" aria-label="Action">
@@ -1160,7 +1160,7 @@
                                                         <th>SwingIn</th>
                                                         <th>SwingOut</th>
                                                         <th>Iron</th>
-                                                        <th>Carton</th>
+                                                        <th>Poly</th>
                                                         <th>Action</th>
                                                     </tr>
                                                     </thead>
