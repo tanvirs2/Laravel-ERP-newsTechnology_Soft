@@ -216,10 +216,10 @@ if ($factNamePrefix != true) {
                             YarnRcv
                         </td>
                         <td> @if($employee->id != '')
-                                <a href="{{ url('kd/ajxYrnIssForm', [$employee->Id, $employee->id]) }}" modalTitle=""
+                                {{--<a href="{{ url('kd/ajxYrnIssForm', [$employee->Id, $employee->id]) }}" modalTitle=""
                                    data-toggle="modal" rowSpanTd="yes" data-target=".myAjaxModal" data-remote="false" class="">
                                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                </a>
+                                </a>--}}
                             @endif YarnIssue
                         </td>
                         <td>@if($employee->id != '')
@@ -250,10 +250,10 @@ if ($factNamePrefix != true) {
                     foreach ($yarn_receives as $yarn_rcv) {
                         $yrnRcvSum += $yarn_rcv->yarnRcvQTY;
                     }*/
-                    $yarn_issues = DB::table('yarn_issue')->where('orderId', '=', $employee->Id)->get();
+                    /*$yarn_issues = DB::table('yarn_issue')->where('orderId', '=', $employee->Id)->get();
                     foreach ($yarn_issues as $yarn_issue) {
                         $yrnQtySum += $yarn_issue->yrnQty;
-                    }
+                    }*/
                     $kdKnitQtys = DB::table('kd_knitting_qty')->where('orderId', '=', $employee->Id)->get();
                     foreach ($kdKnitQtys as $kdKnitQty) {
                         $knittingQtySum += $kdKnitQty->knttngQTY;
@@ -277,7 +277,10 @@ if ($factNamePrefix != true) {
                         foreach ($yarn_receives as $yarn_rcv) {
                             $yrnRcvSum += $yarn_rcv->yarnRcvQTY;
                         }
-
+                        $yarn_issues = DB::table('yarn_issue')->where([['orderId', '=', $employee->Id], ['colorId', '=', $qty2['colorID']]])->get();
+                        foreach ($yarn_issues as $yarn_issue) {
+                            $yrnQtySum += $yarn_issue->yrnQty;
+                        }
 
                         $kdDyingQtys = DB::table('dying_qty_for_kd')->where([['orderId', '=', $employee->Id], ['colorID', '=', $qty2['colorID']]])->get();
                         foreach ($kdDyingQtys as $kdDyingQty) {
@@ -314,13 +317,17 @@ if ($factNamePrefix != true) {
                                     </a>
                                 </td>
 
-                            @if($kw == 0)
-                                <td rowspan="{{ $arrCount }}">
-                                    <a href="{{ route('yarnIssue.show', $employee->id) }}" modalTitle="" data-toggle="modal"
-                                       data-target=".myAjaxModal" data-remote="false">{{ $yrnQtySum }}</a>
-                                    {{--*/$KDyarnIss += $yrnQtySum/*--}}
+                                <td rowspan="">
+                                    <a href="{{ route('yarnIssue.create', [$employee->Id, $employee->id, $qty2['colorID']]) }}" modalTitle=""
+                                       data-toggle="modal" rowSpanTd="yes" data-target=".myAjaxModal" data-remote="false" class="">
+                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="{{ route('yarnIssue.show', [$employee->id, $qty2['colorID']]) }}" modalTitle="" data-toggle="modal"
+                                       data-target=".myAjaxModal" data-remote="false">
+                                        {{ $yrnQtySum, $KDyarnIss += $yrnQtySum, $yrnQtySum = 0 }}
+                                    </a>
                                 </td>
-                            @endif
+
                             @if($kw == 0)
                                 <td rowspan="{{ $arrCount }}">
                                     <a href="{{ route('kdForKnitting.show', $employee->id) }}" modalTitle="" data-toggle="modal"

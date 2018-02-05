@@ -52,9 +52,9 @@ class YarnReceiveForKdProgram extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($kdPrgrmId)
+    public function show($kdPrgrmId, $colorId)
     {
-        $data['yarnRcvList'] = DB::table('yarn_receive_for_kd')->where([['kdPrgrmId', $kdPrgrmId]])->get();
+        $data['yarnRcvList'] = DB::table('yarn_receive_for_kd')->where([['kdPrgrmId', $kdPrgrmId], ['color', $colorId]])->get();
         return view('ajaxFile/yarn/ajxYrnRcvList', $data);
     }
 

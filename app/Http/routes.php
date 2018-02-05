@@ -17,7 +17,7 @@ Route::get('/clear-cache', function() {
 });
 
 /*Ajax Modal Start*/
-Route::get('kd/ajxYrnIssForm/{orderId}/{kdPrgrmId}', 'KnitDyeingPrgController@ajxYrnIssForm');
+//Route::get('kd/ajxYrnIssForm/{orderId}/{kdPrgrmId}', 'KnitDyeingPrgController@ajxYrnIssForm');
 Route::get('ajxColor', 'AjaxController@ajxColor');
 Route::get('kdEnAjxColor', 'AjaxController@kdEnAjxColor');
 Route::get('kdEnAjxSize', 'AjaxController@kdEnAjxSize');
@@ -180,7 +180,6 @@ Route::resource('labdip','LabdipController');
 Route::resource('access','AccessoriesController');
 Route::resource('yarn','YarnController');
 Route::resource('yarnStore','YarnStoreController');
-Route::resource('yarnIssue','YarnIssueController');
 Route::resource('tna','TnaController');
 Route::resource('knitDying','KnitAndDyeingController');
 Route::resource('knitDyingProg','KnitDyeingPrgController');
@@ -200,6 +199,16 @@ Route::get('yrnRcvKdProgrm/show/{kdId}/{colorId}', [
     'uses' => 'YarnReceiveForKdProgram@show'
 ]);
 Route::resource('yrnRcvKdProgrm','YarnReceiveForKdProgram', ['except' => ['create', 'show']]);
+
+Route::get('yarnIssue/create/{ordID}/{kdId}/{colorId}', [
+    'as' => 'yarnIssue.create',
+    'uses' => 'YarnIssueController@create'
+]);
+Route::get('yarnIssue/show/{kdId}/{colorId}', [
+    'as' => 'yarnIssue.show',
+    'uses' => 'YarnIssueController@show'
+]);
+Route::resource('yarnIssue','YarnIssueController', ['except' => ['create', 'show']]);
 
 Route::get('kdForKnitting/create/{ordID}/{kdId}', [
     'as' => 'kdForKnitting.create',

@@ -18,6 +18,8 @@
                                     <div class="col-md-9">
                                         <input type="hidden" name="yarn[orderId]" value="{{ $orderId }}">
                                         <input type="hidden" name="yarn[kdPrgrmId]" value="{{ $kdPrgrmId }}">
+                                        <input type="hidden" name="yarn[colorId]" value="{{ $colorId }}">
+
                                         <input type="text" class="dPick form-control"
                                                name="yarn[date]" placeholder="" autocomplete="off"
                                                id="">
@@ -27,23 +29,11 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Color <span
-                                                class="required">* </span></label>
-                                    <div class="col-md-9">
-                                        <input href="{{ url('ajxColor') }}" modalTitle="" data-toggle="modal" data-target=".myAjaxModalChild" data-remote="false" type="text" class="form-control"
-                                               placeholder="" readonly>
-                                        <input type="hidden" name="yarn[colorId]">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
                                     <label class="col-md-3 control-label">item Name <span
                                                 class="required">* </span></label>
                                     <div class="col-md-9">
                                         <input type="text" class="form-control" name="yarn[itemName]"
                                                placeholder="">
-
-
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -89,11 +79,6 @@
 
 <script>
     $(document).ready(function () {
-        $(".myAjaxModalChild ").on('hidden.bs.modal', function () {
-            $('[href="{{ url('ajxColor') }}"]').val(clrLib.clrName);
-            $('[name="yarn[colorId]"]').val(clrLib.clrId);
-        });
-
         var kdQty;
         $('[name="yarn[yrnQty]"]').change(function () {
             kdQty = $(this).val();

@@ -22,9 +22,14 @@ class YarnIssueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($ordID, $kdId, $colorId)
     {
-        return view('yarnStore.yarnIssue');
+        $data = [
+            'orderId' => $ordID,
+            'kdPrgrmId' => $kdId,
+            'colorId' => $colorId,
+        ];
+        return view('ajaxFile/KDprgrm/ajxYrnIssForm', $data);
     }
 
     /**
@@ -37,7 +42,6 @@ class YarnIssueController extends Controller
     {
         $data = $request->input('yarn');
         DB::table('yarn_issue')->insert($data);
-        //dd($data);
     }
 
     /**
@@ -46,9 +50,9 @@ class YarnIssueController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($kdPrgrmId)
+    public function show($kdPrgrmId, $colorId)
     {
-        $data['yarnIssueList'] = DB::table('yarn_issue')->where([['kdPrgrmId', $kdPrgrmId]])->get();
+        $data['yarnIssueList'] = DB::table('yarn_issue')->where([['kdPrgrmId', $kdPrgrmId], ['colorId', $colorId]])->get();
         return view('ajaxFile/yarn/ajxYrnIssList', $data);
     }
 
