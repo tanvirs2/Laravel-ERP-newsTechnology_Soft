@@ -23,11 +23,12 @@ class KnittingQtyForKdProgram extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($ordID, $kdId)
+    public function create($ordID, $kdId, $colorId)
     {
         $data = [
             'orderId' => $ordID,
             'kdPrgrmId' => $kdId,
+            'colorId' => $colorId,
         ];
         return view('ajaxFile.KDprgrm.ajxKnittingQtyForm', $data);
     }
@@ -50,9 +51,9 @@ class KnittingQtyForKdProgram extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($kdPrgrmId)
+    public function show($kdPrgrmId, $colorId)
     {
-        $data['kdKnittingQtyList'] = DB::table('kd_knitting_qty')->where([['kdPrgrmId', $kdPrgrmId]])->get();
+        $data['kdKnittingQtyList'] = DB::table('kd_knitting_qty')->where([['kdPrgrmId', $kdPrgrmId], ['color', $colorId]])->get();
         return view('ajaxFile/knitting/ajxKdKnittingQtyList', $data);
     }
 

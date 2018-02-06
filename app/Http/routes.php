@@ -210,11 +210,15 @@ Route::get('yarnIssue/show/{kdId}/{colorId}', [
 ]);
 Route::resource('yarnIssue','YarnIssueController', ['except' => ['create', 'show']]);
 
-Route::get('kdForKnitting/create/{ordID}/{kdId}', [
+Route::get('kdForKnitting/create/{ordID}/{kdId}/{colorId}', [
     'as' => 'kdForKnitting.create',
     'uses' => 'KnittingQtyForKdProgram@create'
 ]);
-Route::resource('kdForKnitting','KnittingQtyForKdProgram', ['except' => 'create']);
+Route::get('kdForKnitting/show/{kdId}/{colorId}', [
+    'as' => 'kdForKnitting.show',
+    'uses' => 'KnittingQtyForKdProgram@show'
+]);
+Route::resource('kdForKnitting','KnittingQtyForKdProgram', ['except' => ['create', 'show']]);
 
 Route::get('dyingQtyFrKd/create/{ordID}/{kdId}/{colorId}', [
     'as' => 'dyingQtyFrKd.create',

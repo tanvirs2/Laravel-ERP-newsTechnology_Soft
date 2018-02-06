@@ -1,5 +1,5 @@
 <tbody id="childTable">
-<?php $var = 1; $totYrnRcvSum=0; $orderQtySum = 0; $orderTotalValue = 0; $totShipQty = 0; $totShipVal = 0; $totShrtShipVal = 0; $totCMperDz = 0; $totCmV = 0; $totSMV = 0;
+<?php $var = 1; $totYrnRcvSum=0; $sumYrnRcvSum=0; $orderQtySum = 0; $orderTotalValue = 0; $totShipQty = 0; $totShipVal = 0; $totShrtShipVal = 0; $totCMperDz = 0; $totCmV = 0; $totSMV = 0;
 $KDgrmntQTY = 0; $KDcolorYarnRqrd = 0; $KDyarnIss = 0; $KDkntQty = 0; $KDdyeingQty = 0; $KDfnshFabRqrd = 0; $KDfnshFabRcv = 0; $kdFnshFabBlnc = 0; $KDfnshFabIss=0;
 $totalKDgrmntQTY = 0; $totalKDcolorYarnRqrd = 0; $totalKDyarnIss = 0; $totalKDkntQty = 0; $totalKDdyeingQty = 0; $totalKDfnshFabRqrd = 0; $totalKDfnshFabRcv = 0; $totalkdFnshFabBlnc = 0; $totalKDfnshFabIss = 0;
 $totMrktingQty = 0;
@@ -60,6 +60,10 @@ if ($factNamePrefix != true) {
 <style>
     .kd {
         background: rebeccapurple;
+        color: white;
+    }
+    .kdr {
+        background: #993f46;
         color: white;
     }
 </style>
@@ -206,7 +210,7 @@ if ($factNamePrefix != true) {
                         <td class="kd">
                             YarnRqrd
                         </td>
-                        <td>
+                        <td class="kdr">
                             @if($employee->id != '')
                                 {{--<a href="{{ route('yrnRcvKdProgrm.create', [$employee->Id, $employee->id]) }}" modalTitle=""
                                    data-toggle="modal" data-target=".myAjaxModal" data-remote="false" class="">
@@ -215,18 +219,18 @@ if ($factNamePrefix != true) {
                             @endif
                             YarnRcv
                         </td>
-                        <td> @if($employee->id != '')
+                        <td class="kdr"> @if($employee->id != '')
                                 {{--<a href="{{ url('kd/ajxYrnIssForm', [$employee->Id, $employee->id]) }}" modalTitle=""
                                    data-toggle="modal" rowSpanTd="yes" data-target=".myAjaxModal" data-remote="false" class="">
                                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                 </a>--}}
                             @endif YarnIssue
                         </td>
-                        <td>@if($employee->id != '')
-                                <a href="{{ route('kdForKnitting.create', [$employee->Id, $employee->id]) }}" modalTitle=""
+                        <td class="kdr">@if($employee->id != '')
+                                {{--<a href="{{ route('kdForKnitting.create', [$employee->Id, $employee->id]) }}" modalTitle=""
                                    data-toggle="modal" rowSpanTd="yes" data-target=".myAjaxModal" data-remote="false" class="">
                                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                </a>
+                                </a>--}}
                             @endif
                             KnitQTY
                         </td>
@@ -254,10 +258,10 @@ if ($factNamePrefix != true) {
                     foreach ($yarn_issues as $yarn_issue) {
                         $yrnQtySum += $yarn_issue->yrnQty;
                     }*/
-                    $kdKnitQtys = DB::table('kd_knitting_qty')->where('orderId', '=', $employee->Id)->get();
+                    /*$kdKnitQtys = DB::table('kd_knitting_qty')->where('orderId', '=', $employee->Id)->get();
                     foreach ($kdKnitQtys as $kdKnitQty) {
                         $knittingQtySum += $kdKnitQty->knttngQTY;
-                    }
+                    }*/
                     $kk = [];
                     foreach ($kdColorSizeFabricQty as $qty) {
                         if ($qty->KDprgrmId == $employee->id) {
@@ -281,6 +285,11 @@ if ($factNamePrefix != true) {
                         foreach ($yarn_issues as $yarn_issue) {
                             $yrnQtySum += $yarn_issue->yrnQty;
                         }
+                        $kdKnitQtys = DB::table('kd_knitting_qty')->where([['orderId', '=', $employee->Id], ['color', '=', $qty2['colorID']]])->get();
+                        foreach ($kdKnitQtys as $kdKnitQty) {
+                            $knittingQtySum += $kdKnitQty->knttngQTY;
+                        }
+
 
                         $kdDyingQtys = DB::table('dying_qty_for_kd')->where([['orderId', '=', $employee->Id], ['colorID', '=', $qty2['colorID']]])->get();
                         foreach ($kdDyingQtys as $kdDyingQty) {
@@ -328,13 +337,18 @@ if ($factNamePrefix != true) {
                                     </a>
                                 </td>
 
-                            @if($kw == 0)
-                                <td rowspan="{{ $arrCount }}">
-                                    <a href="{{ route('kdForKnitting.show', $employee->id) }}" modalTitle="" data-toggle="modal"
-                                       data-target=".myAjaxModal" data-remote="false">{{ $knittingQtySum }}</a>
-                                    {{--*/$KDkntQty += $knittingQtySum/*--}}
+
+                                <td rowspan="">
+                                    <a href="{{ route('kdForKnitting.create', [$employee->Id, $employee->id, $qty2['colorID']]) }}" modalTitle=""
+                                       data-toggle="modal" rowSpanTd="yes" data-target=".myAjaxModal" data-remote="false" class="">
+                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="{{ route('kdForKnitting.show', [$employee->id, $qty2['colorID']]) }}" modalTitle="" data-toggle="modal"
+                                       data-target=".myAjaxModal" data-remote="false">
+                                     {{ $knittingQtySum, $KDkntQty += $knittingQtySum, $knittingQtySum=0}}
+                                    </a>
                                 </td>
-                            @endif
+
                             <td>
                                 <a href="{{ route('dyingQtyFrKd.create', [$employee->Id, $employee->id, $qty2['colorID']]) }}" modalTitle=""
                                    data-toggle="modal" rowSpanTd="dyingQtyFrKd" data-target=".myAjaxModal" data-remote="false" class="">
@@ -402,14 +416,18 @@ if ($factNamePrefix != true) {
                             {{--*/$totalKDcolorYarnRqrd += $KDcolorYarnRqrd/*--}}
                             {{--*/$KDcolorYarnRqrd = 0/*--}}
                         </td>
-                        <td></td>
                         <td>
-                            {{--*/$KDyarnIss/*--}}
+                            {{ $totYrnRcvSum }}
+                            {{--*/$sumYrnRcvSum += $totYrnRcvSum/*--}}
+                            {{--*/$totYrnRcvSum = 0/*--}}
+                        </td>
+                        <td>
+                            {{ $KDyarnIss }}
                             {{--*/$totalKDyarnIss += $KDyarnIss/*--}}
                             {{--*/$KDyarnIss = 0/*--}}
                         </td>
                         <td>
-                            {{--*/$KDkntQty/*--}}
+                            {{ $KDkntQty }}
                             {{--*/$totalKDkntQty += $KDkntQty/*--}}
                             {{--*/$KDkntQty=0/*--}}
                         </td>
@@ -484,7 +502,7 @@ if ($factNamePrefix != true) {
                 <td></td>
                 <td>{{ $totalKDgrmntQTY }}</td>
                 <td id="bookedYrn">{{ $totalKDcolorYarnRqrd }}</td>
-                <td id="totYrnRcv">{{ $totYrnRcvSum }}</td>
+                <td id="totYrnRcv">{{ $sumYrnRcvSum }}</td>
                 <td id="totYrnIss">{{ $totalKDyarnIss }}</td>
                 <td id="totalKDkntQty">{{ $totalKDkntQty }}</td>
                 <td id="totalKDdyeingQty">{{ $totalKDdyeingQty }}</td>
