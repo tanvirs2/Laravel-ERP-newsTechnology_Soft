@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1b39146c-3855-41f3-aa4d-0937df7c285b" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/resources/views/knitDyeing/knitDyeingList.blade.php" afterPath="$PROJECT_DIR$/resources/views/knitDyeing/knitDyeingList.blade.php" />
-      <change beforePath="$PROJECT_DIR$/resources/views/knitDyeing/knitDyeingTable.blade.php" afterPath="$PROJECT_DIR$/resources/views/knitDyeing/knitDyeingTable.blade.php" />
     </list>
     <ignored path="newsTechnology_App.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -38,7 +36,7 @@
       <file leaf-file-name="knitDyeingTable.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/knitDyeing/knitDyeingTable.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
+            <state relative-caret-position="465">
               <caret line="640" column="42" lean-forward="false" selection-start-line="640" selection-start-column="42" selection-end-line="640" selection-end-column="42" />
               <folding>
                 <marker date="1517994194645" expanded="true" signature="2149:2172" ph="..." />
@@ -1287,7 +1285,7 @@
       <workItem from="1517909716011" duration="103000" />
       <workItem from="1517970372702" duration="23000" />
       <workItem from="1517980199668" duration="1950000" />
-      <workItem from="1517982837095" duration="6801000" />
+      <workItem from="1517982837095" duration="6871000" />
     </task>
     <task id="LOCAL-00001" summary="hello">
       <created>1517737749833</created>
@@ -1331,11 +1329,18 @@
       <option name="project" value="LOCAL" />
       <updated>1517909802436</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="KD report entry validation">
+      <created>1517994568289</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1517994568289</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3895410000" />
+    <option name="totallyTimeSpent" value="3895480000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1420,7 +1425,8 @@
     <MESSAGE value="KD report yrn rcv color wise complete" />
     <MESSAGE value="KD report yrn issue color wise complete" />
     <MESSAGE value="KD report pantex color wise complete" />
-    <option name="LAST_COMMIT_MESSAGE" value="KD report pantex color wise complete" />
+    <MESSAGE value="KD report entry validation" />
+    <option name="LAST_COMMIT_MESSAGE" value="KD report entry validation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1559,7 +1565,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/knitDyeing/knitDyeingTable.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
+        <state relative-caret-position="465">
           <caret line="640" column="42" lean-forward="false" selection-start-line="640" selection-start-column="42" selection-end-line="640" selection-end-column="42" />
           <folding>
             <marker date="1517994194645" expanded="true" signature="2149:2172" ph="..." />
