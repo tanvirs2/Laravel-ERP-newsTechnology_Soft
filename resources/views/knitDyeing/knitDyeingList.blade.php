@@ -298,7 +298,7 @@
                                                             Mrktng Yarn Rqrd
                                                         </th>
                                                         <th class="text-center sorting_disabled" rowspan="1" colspan="1"
-                                                            style="width: 1030px;" aria-label="Action">
+                                                            style="width: 1230px;" aria-label="Action">
                                                             Knitting And Dyeing
                                                         </th>
                                                     </tr>
