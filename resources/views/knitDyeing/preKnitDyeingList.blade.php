@@ -663,9 +663,9 @@
         });
 
         //ordQtyFromFun = true;
-        //if (ordQtyFromFun) {
+        //if (ordQtyFromFun) { //for pantex
         //if (ordQtyFromFun == inptfrclsz) {
-        if (parseInt(ordQtyFromFun) == parseInt(inputVal) && inptfrclsz) {
+        if (parseInt(ordQtyFromFun) == parseInt(inputVal) && inptfrclsz) { // for all
             $(this).closest('.modal-content').find('form').ajaxSubmit({
                 success: function () {
                     $("#SaveKnitDyeingInf").show();

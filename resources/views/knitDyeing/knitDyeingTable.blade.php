@@ -7,6 +7,29 @@ $totMrktingQty = 0;
 $allGraySum = []; $allFiniSum = []; $size = []; $color = []; $fabQtys = []; $bodySlvGray = [];
 
 /*func start*/
+function labDipFormula($formulaDigit, $obj)
+{
+    $entryDate = strtotime($obj->date_of_entry);
+    $shpDate = strtotime($obj->date_of_ship);
+    $diff = $shpDate - $entryDate;
+    $days = $diff / (60 * 60 * 24);
+    //echo $days;
+    /*
+      $days = $days+1;
+      $formula = round($formulaDigit * $days / 60);
+    */
+    $formula = floor(($formulaDigit / 100) * $days);
+    $date = date_create($obj->date_of_entry);
+    date_add($date, date_interval_create_from_date_string($formula.' days'));
+
+    $stdObject = new stdClass();
+    $stdObject->tnaDate = date_format($date, 'Y-m-d');
+    $stdObject->tnaHtmlView = date_format($date, 'd M').'<span class="actDateClass" style="display:none">'.date_format($date, 'Y-m-d').'</span>';
+
+    return $stdObject;
+}
+
+
 function arraySumFromKey($arr, $key)
 {
     $tmp = array();
@@ -156,6 +179,22 @@ if ($factNamePrefix != true) {
             {{ round($mrktingQty, 2) }}
             {{--*/ $totMrktingQty += $mrktingQty /*--}}
         </td>
+        <td>
+            <table class="table">
+                <tr>
+                    <th>Sub</th>
+                    <th>Lab</th>
+                    <th>Fabric</th>
+                    <th>FabApprvl</th>
+                </tr>
+                <tr>
+                    <td>{{ $employee->date_of_entry }}</td>
+                    <td> {!! labDipFormula(2, $employee)->tnaHtmlView !!} </td>
+                    <td> {!! labDipFormula(4, $employee)->tnaHtmlView !!} </td>
+                    <td> {!! labDipFormula(50, $employee)->tnaHtmlView !!} </td>
+                </tr>
+            </table>
+            </td>
         <td class="">
             <?php
             $kdPrgrmData = App\KnitDyeingProgram::where('order_id', $employee->Id)->first();
@@ -216,7 +255,7 @@ if ($factNamePrefix != true) {
                         <td class="kd kdr">
                             YarnIssue
                         </td>
-                        <td class="kd kdr">
+                        <td class="">
                             YarnBlnc
                         </td>
                         <td class="kd kdr">
@@ -256,6 +295,7 @@ if ($factNamePrefix != true) {
 
                         <?php
                         $yarn_receives = DB::table('yarn_receive_for_kd')->where([['orderId', '=', $employee->Id], ['color', '=', $qty2['colorID']]])->get();
+
                         foreach ($yarn_receives as $yarn_rcv) {
                             $yrnRcvSum += $yarn_rcv->yarnRcvQTY;
                         }
@@ -289,7 +329,7 @@ if ($factNamePrefix != true) {
                             <td rowspan="">
                                 @foreach ($totalGrayArr as  $gray)
                                     @if($gray['colorID'] == $qty2['colorID'] && $gray['KDprgrmId'] == $employee->id)
-                                        {{ $gray['totalGray'], $KDcolorYarnRqrd += $gray['totalGray'] }}
+                                        {{ $grayQty = $gray['totalGray'], $KDcolorYarnRqrd += $gray['totalGray'] }}
                                     @endif
                                 @endforeach
                             </td>
@@ -311,11 +351,11 @@ if ($factNamePrefix != true) {
                                     </a>
                                     <a href="{{ route('yarnIssue.show', [$employee->id, $qty2['colorID']]) }}" modalTitle="" data-toggle="modal"
                                        data-target=".myAjaxModal" data-remote="false">
-                                        {{ $yrnQtySum, $KDyarnIss += $yrnQtySum, $yrnQtySum = 0 }}
+                                        {{ $yrnQtySum, $KDyarnIss += $yrnQtySum }}
                                     </a>
                                 </td>
 
-                                <td></td>
+                                <td>{{ $grayQty - $yrnQtySum, $yrnQtySum = 0}}</td>
 
                                 <td rowspan="">
                                     <a href="{{ route('kdForKnitting.create', [$employee->Id, $employee->id, $qty2['colorID']]) }}" modalTitle=""
@@ -324,11 +364,11 @@ if ($factNamePrefix != true) {
                                     </a>
                                     <a href="{{ route('kdForKnitting.show', [$employee->id, $qty2['colorID']]) }}" modalTitle="" data-toggle="modal"
                                        data-target=".myAjaxModal" data-remote="false">
-                                     {{ $knittingQtySum, $KDkntQty += $knittingQtySum, $knittingQtySum=0}}
+                                     {{ $knittingQtySum, $KDkntQty += $knittingQtySum}}
                                     </a>
                                 </td>
 
-                                <td></td>
+                                <td>{{ $grayQty - $knittingQtySum, $knittingQtySum=0}}</td>
 
                             <td>
                                 <a href="{{ route('dyingQtyFrKd.create', [$employee->Id, $employee->id, $qty2['colorID']]) }}" modalTitle=""
@@ -336,10 +376,11 @@ if ($factNamePrefix != true) {
                                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                 </a>
                                 <a href="{{ route('dyingQtyFrKd.show', [$employee->id, $qty2['colorID']]) }}" modalTitle=""
-                                   data-toggle="modal" data-target=".myAjaxModal" data-remote="false">{{ $dyingQtySum, $KDdyeingQty +=$dyingQtySum, $dyingQtySum = 0 }}
+                                   data-toggle="modal" data-target=".myAjaxModal" data-remote="false">
+                                    {{ $dyingQtySum, $KDdyeingQty +=$dyingQtySum }}
                                 </a>
                             </td>
-                            <td></td>
+                            <td>{{ $grayQty - $dyingQtySum, $dyingQtySum = 0 }}</td>
                             <td rowspan="">
                                 @foreach ($totalFiniArr as  $fini)
                                     @if($fini['colorID'] == $qty2['colorID'] && $fini['KDprgrmId'] == $employee->id)
@@ -473,6 +514,7 @@ if ($factNamePrefix != true) {
     <td></td>
     <td></td>
     <td><b>Tot Mrktng Yarn Rqrd</b></td>
+    <td></td>
     <td>
         <table class="table table-bordered">
             <tr>
@@ -526,6 +568,7 @@ if ($factNamePrefix != true) {
     <td></td>
     <td></td>
     <td id="mrktngYrnRqrd">{{ round($totMrktingQty, 2) }}</td>
+    <td></td>
     <td></td>
 </tr>
 </tfoot>

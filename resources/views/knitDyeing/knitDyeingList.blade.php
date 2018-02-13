@@ -297,6 +297,9 @@
                                                             style="width: 70px;" aria-label="Action">
                                                             Mrktng Yarn Rqrd
                                                         </th>
+                                                        <th style="width: 300px" class="text-center">
+                                                            TNA
+                                                        </th>
                                                         <th class="text-center sorting_disabled" rowspan="1" colspan="1"
                                                             style="width: 1230px;" aria-label="Action">
                                                             Knitting And Dyeing

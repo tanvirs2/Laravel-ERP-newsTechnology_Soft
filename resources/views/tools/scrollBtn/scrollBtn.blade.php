@@ -30,6 +30,4 @@
     <button class="rstLeft" style="float: left; margin: 1px"><b><</b></button>
     <button class="rstRight" style="float: left; margin: 1px"><b>></b></button>
     <div class="scroll-btn scrollright text-center">RIGHT</div>
-    {{--<button class="btn btn-danger scrollleft">LEFT</button>
-    <button class="btn btn-danger scrollright">RIGHT</button>--}}
 </div>

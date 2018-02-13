@@ -303,6 +303,7 @@
                                                     <th>Cutting%</th>
                                                     <th>SwingIn</th>
                                                     <th>SwingOut</th>
+                                                    <th>Iron</th>
                                                     <th>Poly</th>
                                                     <th>ShpSts</th>
                                                     <th>Action</th>
