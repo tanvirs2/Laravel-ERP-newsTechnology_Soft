@@ -490,7 +490,7 @@
                                                     <tr>
                                                         <td></td>
                                                         <td>Required Quantity(kg)</td>
-                                                        <td>Diyed qty</td>
+                                                        <td>Dyeing qty</td>
                                                         <td>Balance(kg)</td>
                                                         <td>Balance %</td>
                                                         <td></td>

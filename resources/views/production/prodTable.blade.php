@@ -130,8 +130,8 @@
             {{ $employee->order_status }}
         </td>
         <td class="">
-            <a style="" class="" id="" data-toggle="tooltip" title="" href="{{ route('production.edit', $employee->Id ) }}"><i class="fa fa-pencil-square-o fa-2x"></i> </a>
-            <a style="" class="" id="" data-toggle="tooltip" title="Details Production Information." href="{{ route('production.show', $employee->Id ) }}"><i class="fa fa-window-restore"></i> </a>
+            <a target="_blank" data-toggle="tooltip" title="" href="{{ route('production.edit', $employee->Id ) }}"><i class="fa fa-pencil-square-o fa-2x"></i> </a>
+            <a target="_blank" data-toggle="tooltip" title="Details Production Information." href="{{ route('production.show', $employee->Id ) }}"><i class="fa fa-window-restore"></i> </a>
             {{--<a style="" class="" id="editOrderInfo" onclick="editProdInfo('{{ $employee->order_number }}');" data-toggle="tooltip" title="Edit Order Information. " href=""><i class="fa fa-pencil-square-o"></i> </a>--}}
             {{--<a style="" class="" id="showOrderInfo" onclick="saveProduction('row'+'{{ $employee->order_number }}');" data-toggle="tooltip" title="View Order Information. " href="#"><i class="fa fa-floppy-o"></i> </a>--}}
             {{--<p class="clkAbl"> --}}{{--<a href="{{ url('appointmentLetter') }}" id="printMe" data-toggle="tooltip" data-placement="left" title="Print Appointment Letter!" class="btn purple fa fa-pencil"><i class="fa fa-print"></i></a>--}}{{--

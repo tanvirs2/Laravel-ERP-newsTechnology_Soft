@@ -195,11 +195,7 @@
                                                             : activate to sort column ascending">
                                                         ShipDate
                                                     </th>
-                                                    <th class="text-center sorting" tabindex="0"
-                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                        style="width: 44px;" aria-label="Status: activate to sort column ascending">
-                                                        RemDay
-                                                    </th>
+
                                                     <th class="text-center sorting" tabindex="0"
                                                         aria-controls="sample_employees" rowspan="1" colspan="1"
                                                         style="width: 19px;" aria-label="

@@ -29,22 +29,7 @@
             echo $date_of_ship;
             ?>
         </td>
-        <td class="text-center" id="">
-            <span class="shpDays">
-            <?php
-                //Remaining Days for Shipment Date
-                $dateStr=$employee->date_of_ship;
-                $date=strtotime($dateStr);//Converted to a PHP date (a second count)
-                //Calculate difference
-                $diff=$date-time();//time returns current time in seconds
-                $days=floor($diff/(60*60*24));//seconds/minute*minutes/hour*hours/day)
-                $hours=round(($diff-$days*60*60*24)/(60*60));
-                //Report
-                echo $days+1;
-                ?>
-            </span>
-            <span>Days</span>
-        </td>
+
         <td class="text-center">
             {{ $employee->order_quantity }}
             <?php $orderQtySum += $employee->order_quantity ?>
@@ -68,7 +53,7 @@
 
         </td>--}}
         <td class="">
-            <a style="" class="" id="" data-toggle="tooltip" title="Edit Order Information." href="{{ route('production.edit', $employee->Id ) }}"><i class="fa fa-pencil-square-o fa-2x"></i> Entry </a>
+            <a target="_blank" data-toggle="tooltip" title="Production Entry" href="{{ route('production.edit', $employee->Id ) }}"><i class="fa fa-pencil-square-o fa-2x"></i> Entry </a>
             {{--<a style="" class="" id="editOrderInfo" onclick="editProdInfo('{{ $employee->order_number }}');" data-toggle="tooltip" title="Edit Order Information. " href=""><i class="fa fa-pencil-square-o"></i> </a>--}}
             {{--<a style="" class="" id="showOrderInfo" onclick="saveProduction('row'+'{{ $employee->order_number }}');" data-toggle="tooltip" title="View Order Information. " href="#"><i class="fa fa-floppy-o"></i> </a>--}}
             {{--<p class="clkAbl"> --}}{{--<a href="{{ url('appointmentLetter') }}" id="printMe" data-toggle="tooltip" data-placement="left" title="Print Appointment Letter!" class="btn purple fa fa-pencil"><i class="fa fa-print"></i></a>--}}{{--
@@ -91,7 +76,6 @@
     <td></td>
     <td></td>
     <td></td>
-    <td></td>
     <td><b>TotOrdQty</b></td>
     {{--<td></td>
     <td></td>
@@ -101,7 +85,6 @@
     <td></td>
 </tr>
 <tr style="background-color: #34495e; color: whitesmoke; font-weight: bolder; font-size: 1.3em">
-    <td></td>
     <td></td>
     <td></td>
     <td></td>

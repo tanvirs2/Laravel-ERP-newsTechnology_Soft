@@ -30,7 +30,7 @@ function labDipFormula($formulaDigit, $obj)
 }
 
 
-function arraySumFromKey($arr, $key)
+function arraySumFromKey($arr, $key) //
 {
     $tmp = array();
     $result = array();
@@ -95,6 +95,7 @@ if ($factNamePrefix != true) {
         orderId="{{ $employee->order_number }}">
         <td class="text-center">
             {{ $var++ }}
+            <small class="text-aqua">{{ $employee->Id }}</small>
         </td>
         <td class="text-center buyerName">
             {{ $employee->customer_name }}
@@ -289,7 +290,7 @@ if ($factNamePrefix != true) {
                             ];
                         }
                     }
-                    $arrCount = count(arraySumFromKey($kk, 'colorID'));
+                    //$arrCount = count(arraySumFromKey($kk, 'colorID'));
                     ?>
                     @foreach (arraySumFromKey($kk, 'colorID') as $kw => $qty2)
 
