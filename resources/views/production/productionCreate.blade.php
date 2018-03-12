@@ -71,14 +71,6 @@ if ($kdPrgrmData) {
             ];
         }
     }
-
-    //dd(arraySumFromKey($kkk, 'colorID'));
-
-    //"colorID" => "22"
-    //"ordId" => 144
-    //"KDprgrmIds" => "8"
-    //"color_name" => null
-    //"fabQty" => 5213
 }
 
 ?>
@@ -125,9 +117,13 @@ if ($kdPrgrmData) {
                             </ul>
                         </div>
                     @endif
-                    <div class="clearfix">
-                    </div>
 
+                    @if(session()->has('active'))
+                        @php( $active = session('active')[0] )
+                    @endif
+                    <div class="clearfix"></div>
+
+                    {{--new section--}}
                     <div class="row ">
                         <div class="col-md-12 col-sm-12">
                             <div class="portlet box purple-wisteria">
@@ -139,26 +135,83 @@ if ($kdPrgrmData) {
                                 <div class="portlet-body">
                                     <div class="form-body">
                                         <ul class="nav nav-tabs">
-                                            <li class="active"><a data-toggle="tab" href="#Cutting">Cutting</a></li>
-                                            <li><a data-toggle="tab" href="#SwingIn">SwingIn</a></li>
-                                            <li><a data-toggle="tab" href="#SwingOut">SwingOut</a></li>
-                                            <li><a data-toggle="tab" href="#Iron">Iron</a></li>
-                                            <li><a data-toggle="tab" href="#Poly">Poly</a></li>
-                                            <li><a data-toggle="tab" href="#Carton">Carton</a></li>
+                                            <li class="{{ (isset($active) == null)?'active':'' }} {{ ((isset($active)? $active:'') == 'Cutting')?'active':'' }}"><a data-toggle="tab" href="#Cutting">Cutting</a></li>
+                                            <li class="{{ ((isset($active)? $active:'') == 'SwingIn')?'active':'' }}"><a data-toggle="tab" href="#SwingIn">SwingIn</a></li>
+                                            <li class="{{ ((isset($active)? $active:'') == 'SwingOut')?'active':'' }}"><a data-toggle="tab" href="#SwingOut">SwingOut</a></li>
+                                            <li class="{{ ((isset($active)? $active:'') == 'Iron')?'active':'' }}"><a data-toggle="tab" href="#Iron">Iron</a></li>
+                                            <li class="{{ ((isset($active)? $active:'') == 'Poly')?'active':'' }}"><a data-toggle="tab" href="#Poly">Poly</a></li>
+                                            <li class="{{ ((isset($active)? $active:'') == 'Carton')?'active':'' }}"><a data-toggle="tab" href="#Carton">Carton</a></li>
                                         </ul>
 
                                         <div class="tab-content form-horizontal">
                                             <div id="Cutting" class="tab-pane fade in active">
                                                 <h3>Cutting</h3>
+                                                <form action="{{ route('prCutting.store') }}" method="post">
+                                                    {{ csrf_field() }}
+                                                    <div class="form-body">
+                                                    <span id="orderDetails">
+                                                    <input type="hidden" class="form-control" name="cutting[order_id]" @if(isset($order->Id)) value="{{ $order->Id }}" @endif >
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label">Date <span class="required">* </span></label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="dPick form-control" name="cutting[date]" placeholder="Date" autocomplete="off" >
+                                                            </div>
+                                                        </div>
+
+                                                        @if($kdPrgrmData)
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label">Color Select <span class="required">* </span></label>
+                                                            <div class="col-md-6">
+                                                                    @foreach(arraySumFromKey($kkk, 'colorID') as $kdQty)
+                                                                        <span class="btn btn-default">
+                                                                            {{ App\Color::where('id', $kdQty['colorID'])->first()->color_name }} |
+                                                                            {{ $kdQty['fabQty'] }}
+                                                                        </span>
+                                                                        <span class="btn btn-default">
+                                                                            <input type="radio" name="cutting[colorId]" value="{{ $kdQty['colorID'] }}">
+                                                                        </span>
+                                                                        <br>
+                                                                        <br>
+                                                                    @endforeach
+                                                            </div>
+                                                        </div>
+                                                        @endif
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label">Cutting <span class="required">* </span></label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" name="cutting[cut]" placeholder="Cutting" >
+
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label"></label>
+                                                            <div class="col-md-6">
+
+                                                                <button id="" type="submit" data-loading-text="Submitting..." class="demo-loading-btn btn green">
+                                                                    <i class="fa fa-plus"></i>	Save
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        </span>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div id="SwingIn" class="tab-pane fade">
+                                                <h3>SwingIn</h3>
+                                                <form action="{{ route('prSwingIn.store') }}" method="post">
+                                                    {{ csrf_field() }}
                                                 <div class="form-body">
                                                 <span id="orderDetails">
-                                                <input type="hidden" class="form-control" name="order_id" @if(isset($order->Id)){ value="{{ $order->Id }}" } @endif >
-                                                    @if(isset($id))<input type="hidden" class="form-control" name="prId" value="{{ $id }}">@endif
+                                                <input type="hidden" class="form-control" name="SwingIn[order_id]" @if(isset($order->Id)) value="{{ $order->Id }}" @endif >
 
                                                     <div class="form-group">
                                                         <label id="" class="col-md-3 control-label">Date <span class="required">* </span></label>
                                                         <div class="col-md-6">
-                                                            <input type="text" class="dPick form-control" name="prDate" placeholder="Date" @if(isset($prDate)){ value="{{ $prDate }}" } @endif autocomplete="off" >
+                                                            <input type="text" class="dPick form-control" name="SwingIn[date]" placeholder="Date" autocomplete="off" >
                                                             <p id="alreadyReg" class="text-center text-danger"><b></b></p>
                                                         </div>
                                                     </div>
@@ -166,146 +219,95 @@ if ($kdPrgrmData) {
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label">Line <span class="required">* </span></label>
                                                         <div class="col-md-6">
-                                                            <input type="text" class="form-control" name="line" @if(isset($line)){ value="{{ $line }}" } @endif placeholder="Line" readonly="readonly">
+                                                            <input type="text" class="form-control" name="SwingIn[line]" placeholder="Line" readonly="readonly">
                                                         </div>
                                                     </div>
-
                                                     @if($kdPrgrmData)
-                                                    <div class="form-group">
+                                                        <div class="form-group">
                                                         <label class="col-md-3 control-label">Color Select <span class="required">* </span></label>
                                                         <div class="col-md-6">
                                                                 @foreach(arraySumFromKey($kkk, 'colorID') as $kdQty)
-                                                                    <span class="btn btn-default">
+                                                                <span class="btn btn-default">
                                                                         {{ App\Color::where('id', $kdQty['colorID'])->first()->color_name }} |
-                                                                        {{ $kdQty['fabQty'] }}
+                                                                    {{ $kdQty['fabQty'] }}
                                                                     </span>
-                                                                    <span class="btn btn-default">
-                                                                        <input type="radio" name="optradio">
+                                                                <span class="btn btn-default">
+                                                                        <input type="radio" name="SwingIn[colorId]" value="{{ $kdQty['colorID'] }}">
                                                                     </span>
-                                                                    <br>
-                                                                    <br>
-                                                                @endforeach
+                                                                <br>
+                                                                <br>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label"> Swing In</label>
+                                                        <div class="col-md-6">
+                                                            <input type="text" class="form-control" name="SwingIn[swingIn]" placeholder="Swing In">
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label"></label>
+                                                        <div class="col-md-6">
+
+                                                            <button id="" type="submit" data-loading-text="Submitting..." class="demo-loading-btn btn green">
+                                                                <i class="fa fa-plus"></i>	Save
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                </span>
+                                                </div>
+                                                </form>
+                                            </div>
+                                            <div id="SwingOut" class="tab-pane fade">
+                                                <h3>SwingOut</h3>
+                                                <form action="{{ route('prSwingOut.store') }}" method="post">
+                                                    {{ csrf_field() }}
+                                                <div class="form-body">
+                                                <span id="orderDetails">
+                                                <input type="hidden" class="form-control" name="SwingOut[order_id]" @if(isset($order->Id)){ value="{{ $order->Id }}" } @endif >
+
+                                                    <div class="form-group">
+                                                        <label id="" class="col-md-3 control-label">Date <span class="required">* </span></label>
+                                                        <div class="col-md-6">
+
+                                                            <input type="text" class="dPick form-control" name="SwingOut[date]" placeholder="Date" autocomplete="off" >
+                                                            <p id="alreadyReg" class="text-center text-danger"><b></b></p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label">Line <span class="required">* </span></label>
+                                                        <div class="col-md-6">
+                                                            <input type="text" class="form-control" name="SwingOut[line]" placeholder="Line" readonly="readonly">
+                                                        </div>
+                                                    </div>
+                                                    @if($kdPrgrmData)
+                                                        <div class="form-group">
+                                                        <label class="col-md-3 control-label">Color Select <span class="required">* </span></label>
+                                                        <div class="col-md-6">
+                                                                @foreach(arraySumFromKey($kkk, 'colorID') as $kdQty)
+                                                                <span class="btn btn-default">
+                                                                        {{ App\Color::where('id', $kdQty['colorID'])->first()->color_name }} |
+                                                                    {{ $kdQty['fabQty'] }}
+                                                                    </span>
+                                                                <span class="btn btn-default">
+                                                                        <input type="radio" name="SwingOut[colorId]" value="{{ $kdQty['colorID'] }}">
+                                                                    </span>
+                                                                <br>
+                                                                <br>
+                                                            @endforeach
                                                         </div>
                                                     </div>
                                                     @endif
 
                                                     <div class="form-group">
-                                                        <label class="col-md-3 control-label">Cutting <span class="required">* </span></label>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" name="prCut" @if(isset($prCut)){ value="{{ $prCut }}" } @endif placeholder="Cutting" >
-
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label"></label>
-                                                        <div class="col-md-6">
-
-                                                            <button id="" type="button" data-loading-text="Submitting..." class="demo-loading-btn btn green">
-                                                                <i class="fa fa-plus"></i>	Save
-                                                            </button>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Modal -->
-
-                                                </span>
-                                                </div>
-                                            </div>
-                                            <div id="SwingIn" class="tab-pane fade">
-                                                <h3>SwingIn</h3>
-                                                <div class="form-body">
-                                                <span id="orderDetails">
-                                                <input type="hidden" class="form-control" name="order_id" @if(isset($order->Id)){ value="{{ $order->Id }}" } @endif >
-                                                    @if(isset($id))<input type="hidden" class="form-control" name="prId" value="{{ $id }}">@endif
-
-                                                    <div class="form-group">
-                                                        <label id="" class="col-md-3 control-label">Date <span class="required">* </span></label>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="dPick form-control" name="prDate" placeholder="Date" @if(isset($prDate)){ value="{{ $prDate }}" } @endif autocomplete="off" >
-                                                            <p id="alreadyReg" class="text-center text-danger"><b></b></p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">Line <span class="required">* </span></label>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" name="line" @if(isset($line)){ value="{{ $line }}" } @endif placeholder="Line" readonly="readonly">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label"> Swing In</label>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" name="prSwIn" @if(isset($prSwIn)){ value="{{ $prSwIn }}" } @endif placeholder="Swing In">
-
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label"></label>
-                                                        <div class="col-md-6">
-
-                                                            <button id="" type="button" data-loading-text="Submitting..." class="demo-loading-btn btn green">
-                                                                <i class="fa fa-plus"></i>	Save
-                                                            </button>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Modal -->
-                                                  <div class="modal fade" id="subCon" role="dialog">
-                                                    <div class="modal-dialog modal-sm">
-
-                                                      <!-- Modal content-->
-                                                      <div class="modal-content">
-                                                        <div class="modal-header">
-                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                          <h4 class="modal-title">Sub Contractor Name</h4>
-                                                        </div>
-                                                        <div class="modal-body col-md-12">
-                                                            <input type="text" id="subConNm">
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                          <button type="button" class="btn btn-primary" data-dismiss="modal" id="subConNmSv">Save</button>
-                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                      </div>
-
-                                                    </div>
-                                                  </div>
-
-                                                </span>
-                                                </div>
-                                            </div>
-                                            <div id="SwingOut" class="tab-pane fade">
-                                                <h3>SwingOut</h3>
-                                                <div class="form-body">
-                                                <span id="orderDetails">
-                                                <input type="hidden" class="form-control" name="order_id" @if(isset($order->Id)){ value="{{ $order->Id }}" } @endif >
-                                                    @if(isset($id))<input type="hidden" class="form-control" name="prId" value="{{ $id }}">@endif
-
-                                                    <div class="form-group">
-                                                        <label id="" class="col-md-3 control-label">Date <span class="required">* </span></label>
-                                                        <div class="col-md-6">
-
-                                                            <input type="text" class="dPick form-control" name="prDate" placeholder="Date" @if(isset($prDate)){ value="{{ $prDate }}" } @endif autocomplete="off" >
-                                                            <p id="alreadyReg" class="text-center text-danger"><b></b></p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">Line <span class="required">* </span></label>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" name="line" @if(isset($line)){ value="{{ $line }}" } @endif placeholder="Line" readonly="readonly">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="form-group">
                                                         <label class="col-md-3 control-label">Swing Out</label>
                                                         <div class="col-md-6">
-                                                            <input type="text" class="form-control" name="prSwOut" @if(isset($prSwOut)){ value="{{ $prSwOut }}" } @endif placeholder="Swing Out" >
+                                                            <input type="text" class="form-control" name="SwingOut[swingOut]" placeholder="Swing Out" >
 
                                                         </div>
                                                     </div>
@@ -314,58 +316,54 @@ if ($kdPrgrmData) {
                                                         <label class="col-md-3 control-label"></label>
                                                         <div class="col-md-6">
 
-                                                            <button id="" type="button" data-loading-text="Submitting..." class="demo-loading-btn btn green">
+                                                            <button id="" type="submit" data-loading-text="Submitting..." class="demo-loading-btn btn green">
                                                                 <i class="fa fa-plus"></i>	Save
                                                             </button>
                                                         </div>
                                                     </div>
 
-                                                    <!-- Modal -->
-                                                  <div class="modal fade" id="subCon" role="dialog">
-                                                    <div class="modal-dialog modal-sm">
-
-                                                      <!-- Modal content-->
-                                                      <div class="modal-content">
-                                                        <div class="modal-header">
-                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                          <h4 class="modal-title">Sub Contractor Name</h4>
-                                                        </div>
-                                                        <div class="modal-body col-md-12">
-                                                            <input type="text" id="subConNm">
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                          <button type="button" class="btn btn-primary" data-dismiss="modal" id="subConNmSv">Save</button>
-                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                      </div>
-
-                                                    </div>
-                                                  </div>
-
                                                 </span>
                                                 </div>
-
+                                                </form>
                                             </div>
                                             <div id="Iron" class="tab-pane fade">
                                                 <h3>Iron</h3>
+                                                <form action="{{ route('prIron.store') }}" method="post">
+                                                    {{ csrf_field() }}
                                                 <div class="form-body">
                                                 <span id="orderDetails">
-                                                <input type="hidden" class="form-control" name="order_id" @if(isset($order->Id)){ value="{{ $order->Id }}" } @endif >
-                                                    @if(isset($id))<input type="hidden" class="form-control" name="prId" value="{{ $id }}">@endif
+                                                <input type="hidden" class="form-control" name="Iron[order_id]" @if(isset($order->Id)) value="{{ $order->Id }}" @endif >
 
                                                     <div class="form-group">
                                                         <label id="" class="col-md-3 control-label">Date <span class="required">* </span></label>
                                                         <div class="col-md-6">
 
-                                                            <input type="text" class="dPick form-control" name="prDate" placeholder="Date" @if(isset($prDate)){ value="{{ $prDate }}" } @endif autocomplete="off" >
+                                                            <input type="text" class="dPick form-control" name="Iron[date]" placeholder="Date" autocomplete="off" >
                                                             <p id="alreadyReg" class="text-center text-danger"><b></b></p>
                                                         </div>
                                                     </div>
-
+                                                    @if($kdPrgrmData)
+                                                        <div class="form-group">
+                                                        <label class="col-md-3 control-label">Color Select <span class="required">* </span></label>
+                                                        <div class="col-md-6">
+                                                                @foreach(arraySumFromKey($kkk, 'colorID') as $kdQty)
+                                                                <span class="btn btn-default">
+                                                                        {{ App\Color::where('id', $kdQty['colorID'])->first()->color_name }} |
+                                                                    {{ $kdQty['fabQty'] }}
+                                                                    </span>
+                                                                <span class="btn btn-default">
+                                                                        <input type="radio" name="Iron[colorId]" value="{{ $kdQty['colorID'] }}">
+                                                                    </span>
+                                                                <br>
+                                                                <br>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    @endif
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label"> Iron</label>
                                                         <div class="col-md-6">
-                                                            <input type="text" class="form-control" name="prIron" @if(isset($prIron)){ value="{{ $prIron }}" } @endif placeholder="Iron" >
+                                                            <input type="text" class="form-control" name="Iron[iron]" placeholder="Iron" >
 
                                                         </div>
                                                     </div>
@@ -373,57 +371,55 @@ if ($kdPrgrmData) {
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label"></label>
                                                         <div class="col-md-6">
-                                                            <button id="" type="button" data-loading-text="Submitting..." class="demo-loading-btn btn green">
+                                                            <button id="" type="submit" data-loading-text="Submitting..." class="demo-loading-btn btn green">
                                                                 <i class="fa fa-plus"></i>	Save
                                                             </button>
                                                         </div>
                                                     </div>
 
-                                                    <!-- Modal -->
-                                                  <div class="modal fade" id="subCon" role="dialog">
-                                                    <div class="modal-dialog modal-sm">
-
-                                                      <!-- Modal content-->
-                                                      <div class="modal-content">
-                                                        <div class="modal-header">
-                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                          <h4 class="modal-title">Sub Contractor Name</h4>
-                                                        </div>
-                                                        <div class="modal-body col-md-12">
-                                                            <input type="text" id="subConNm">
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                          <button type="button" class="btn btn-primary" data-dismiss="modal" id="subConNmSv">Save</button>
-                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                      </div>
-
-                                                    </div>
-                                                  </div>
 
                                                 </span>
                                                 </div>
+                                                </form>
                                             </div>
                                             <div id="Poly" class="tab-pane fade">
                                                 <h3>Poly</h3>
+                                                <form action="{{ route('prPoly.store') }}" method="post">
+                                                    {{ csrf_field() }}
                                                 <div class="form-body">
                                                 <span id="orderDetails">
-                                                <input type="hidden" class="form-control" name="order_id" @if(isset($order->Id)){ value="{{ $order->Id }}" } @endif >
-                                                    @if(isset($id))<input type="hidden" class="form-control" name="prId" value="{{ $id }}">@endif
+                                                <input type="hidden" class="form-control" name="Poly[order_id]" @if(isset($order->Id)) value="{{ $order->Id }}" @endif >
 
                                                     <div class="form-group">
                                                         <label id="" class="col-md-3 control-label">Date <span class="required">* </span></label>
                                                         <div class="col-md-6">
 
-                                                            <input type="text" class="dPick form-control" name="prDate" placeholder="Date" @if(isset($prDate)){ value="{{ $prDate }}" } @endif autocomplete="off" >
+                                                            <input type="text" class="dPick form-control" name="Poly[date]" placeholder="Date" autocomplete="off" >
                                                             <p id="alreadyReg" class="text-center text-danger"><b></b></p>
                                                         </div>
                                                     </div>
-
+                                                    @if($kdPrgrmData)
+                                                        <div class="form-group">
+                                                        <label class="col-md-3 control-label">Color Select <span class="required">* </span></label>
+                                                        <div class="col-md-6">
+                                                                @foreach(arraySumFromKey($kkk, 'colorID') as $kdQty)
+                                                                <span class="btn btn-default">
+                                                                        {{ App\Color::where('id', $kdQty['colorID'])->first()->color_name }} |
+                                                                    {{ $kdQty['fabQty'] }}
+                                                                    </span>
+                                                                <span class="btn btn-default">
+                                                                        <input type="radio" name="Poly[colorId]" value="{{ $kdQty['colorID'] }}">
+                                                                    </span>
+                                                                <br>
+                                                                <br>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    @endif
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label"> Poly</label>
                                                         <div class="col-md-6">
-                                                            <input type="text" class="form-control" name="prCarton" @if(isset($prCarton)){ value="{{ $prCarton }}" } @endif placeholder="Poly" >
+                                                            <input type="text" class="form-control" name="Poly[poly]" placeholder="Poly" >
                                                         </div>
                                                     </div>
 
@@ -432,58 +428,54 @@ if ($kdPrgrmData) {
                                                         <label class="col-md-3 control-label"></label>
                                                         <div class="col-md-6">
 
-                                                            <button id="" type="button" data-loading-text="Submitting..." class="demo-loading-btn btn green">
+                                                            <button id="" type="submit" data-loading-text="Submitting..." class="demo-loading-btn btn green">
                                                                 <i class="fa fa-plus"></i>	Save
                                                             </button>
                                                         </div>
                                                     </div>
 
-                                                    <!-- Modal -->
-                                                  <div class="modal fade" id="subCon" role="dialog">
-                                                    <div class="modal-dialog modal-sm">
-
-                                                      <!-- Modal content-->
-                                                      <div class="modal-content">
-                                                        <div class="modal-header">
-                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                          <h4 class="modal-title">Sub Contractor Name</h4>
-                                                        </div>
-                                                        <div class="modal-body col-md-12">
-                                                            <input type="text" id="subConNm">
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                          <button type="button" class="btn btn-primary" data-dismiss="modal" id="subConNmSv">Save</button>
-                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                      </div>
-
-                                                    </div>
-                                                  </div>
-
                                                 </span>
                                                 </div>
-
+                                                </form>
                                             </div>
                                             <div id="Carton" class="tab-pane fade">
                                                 <h3>Carton</h3>
+                                                <form action="{{ route('prCarton.store') }}" method="post">
+                                                    {{ csrf_field() }}
                                                 <div class="form-body">
                                                 <span id="orderDetails">
-                                                <input type="hidden" class="form-control" name="order_id" @if(isset($order->Id)){ value="{{ $order->Id }}" } @endif >
-                                                    @if(isset($id))<input type="hidden" class="form-control" name="prId" value="{{ $id }}">@endif
+                                                <input type="hidden" class="form-control" name="Carton[order_id]" @if(isset($order->Id)) value="{{ $order->Id }}" }@endif >
 
                                                     <div class="form-group">
                                                         <label id="" class="col-md-3 control-label">Date <span class="required">* </span></label>
                                                         <div class="col-md-6">
 
-                                                            <input type="text" class="dPick form-control" name="prDate" placeholder="Date" @if(isset($prDate)){ value="{{ $prDate }}" } @endif autocomplete="off" >
+                                                            <input type="text" class="dPick form-control" name="Carton[date]" placeholder="Date" autocomplete="off" >
                                                             <p id="alreadyReg" class="text-center text-danger"><b></b></p>
                                                         </div>
                                                     </div>
-
+                                                    @if($kdPrgrmData)
+                                                        <div class="form-group">
+                                                        <label class="col-md-3 control-label">Color Select <span class="required">* </span></label>
+                                                        <div class="col-md-6">
+                                                                @foreach(arraySumFromKey($kkk, 'colorID') as $kdQty)
+                                                                <span class="btn btn-default">
+                                                                        {{ App\Color::where('id', $kdQty['colorID'])->first()->color_name }} |
+                                                                    {{ $kdQty['fabQty'] }}
+                                                                    </span>
+                                                                <span class="btn btn-default">
+                                                                        <input type="radio" name="Carton[colorId]" value="{{ $kdQty['colorID'] }}">
+                                                                    </span>
+                                                                <br>
+                                                                <br>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    @endif
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label"> Carton</label>
                                                         <div class="col-md-6">
-                                                            <input type="text" class="form-control" name="prCarton" @if(isset($prCarton)){ value="{{ $prCarton }}" } @endif placeholder="Poly" >
+                                                            <input type="text" class="form-control" name="Carton[carton]" placeholder="Carton" >
                                                         </div>
                                                     </div>
 
@@ -492,36 +484,15 @@ if ($kdPrgrmData) {
                                                         <label class="col-md-3 control-label"></label>
                                                         <div class="col-md-6">
 
-                                                            <button id="" type="button" data-loading-text="Submitting..." class="demo-loading-btn btn green">
+                                                            <button id="" type="submit" data-loading-text="Submitting..." class="demo-loading-btn btn green">
                                                                 <i class="fa fa-plus"></i>	Save
                                                             </button>
                                                         </div>
                                                     </div>
 
-                                                    <!-- Modal -->
-                                                  <div class="modal fade" id="subCon" role="dialog">
-                                                    <div class="modal-dialog modal-sm">
-
-                                                      <!-- Modal content-->
-                                                      <div class="modal-content">
-                                                        <div class="modal-header">
-                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                          <h4 class="modal-title">Sub Contractor Name</h4>
-                                                        </div>
-                                                        <div class="modal-body col-md-12">
-                                                            <input type="text" id="subConNm">
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                          <button type="button" class="btn btn-primary" data-dismiss="modal" id="subConNmSv">Save</button>
-                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                      </div>
-
-                                                    </div>
-                                                  </div>
-
                                                 </span>
                                                 </div>
+                                                </form>
                                             </div>
 
                                         </div>
@@ -530,6 +501,7 @@ if ($kdPrgrmData) {
                             </div>
                         </div>
                     </div>
+                    {{--end new section--}}
 
 
                     <form id="prCreate" action="@if(isset($order->Id)) {{ url('production/storePrData') }} @else {{ route('production.update', $id) }}@endif" method="POST" class="form-horizontal" enctype="multipart/form-data">
@@ -562,7 +534,7 @@ if ($kdPrgrmData) {
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label">Line <span class="required">* </span></label>
                                                         <div class="col-md-9">
-                                                            <input type="text" class="form-control" name="line" @if(isset($line)){ value="{{ $line }}" } @endif placeholder="Line" readonly="readonly">
+                                                            <input type="text" class="form-control" name="line" @if(isset($line)) value="{{ $line }}" @endif placeholder="Line" readonly="readonly">
                                                         </div>
                                                     </div>
 

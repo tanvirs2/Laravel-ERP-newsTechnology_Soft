@@ -255,3 +255,12 @@ Route::resource('finisFabIss','FinishFabIssForKdProgram', ['except' => ['create'
 Route::post('storeUserDetail','InfoController@storeUserDetail');
 //delete order
 Route::get('/delete_order/{id}', 'OrderController@destroy');
+
+// production
+Route::resource('prCutting', 'PrCutting');
+Route::resource('prSwingIn', 'PrSwingIn');
+Route::resource('prSwingOut','PrSwingOut');
+Route::resource('prIron',    'PrIron');
+Route::resource('prPoly',    'PrPoly');
+Route::resource('prCarton',  'PrCarton');
+// end production

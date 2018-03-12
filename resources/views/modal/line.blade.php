@@ -88,7 +88,7 @@
         $("#closeLineModal").click();
     });
 
-    $('[name="line"]').click(function () {
+    $('[name="line"], [placeholder="Line"]').click(function () {
         //alert();
         $(".lineSelectModal").modal();
     });
@@ -96,6 +96,6 @@
     function js_set_line(id, line) {
         lineName = line;
         lineId = id;
-        $('[name="line"]').val(line);
+        $('[name="line"], [placeholder="Line"]').val(line);
     }
 </script>

@@ -8,7 +8,7 @@
         </td>
 
         <td class="text-center blackCol">
-                {{ $employee->order->customer_name}}
+            {{ $employee->order->customer_name}}
         </td>
         <td style="overflow: auto;" class="text-center">
             {{ $employee->order->orderID }}

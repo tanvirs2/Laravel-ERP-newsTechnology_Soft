@@ -79,8 +79,8 @@
             </span>
         </td>
         <td class="text-center blackCol">
-        @foreach($employee->production as $pr)
-                {{--*/$prCut += $pr->prCut/*--}}
+        @foreach($employee->prCutting as $pr)
+                {{--*/$prCut += $pr->cut/*--}}
         @endforeach
                 {{ $prCut }}
         </td>
