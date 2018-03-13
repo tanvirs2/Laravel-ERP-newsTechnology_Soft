@@ -57,9 +57,34 @@ class Order extends Model
         return $this->hasMany('App\KnitDyeing', 'order_id', 'Id');
     }
 
-    public function prCutting()
+    public function prCutFunc()
     {
-        return $this->hasMany('App\PrCutModel', 'order_id', 'Id');
+        return $this->hasMany(PrCutModel::class, 'order_id', 'Id');
+    }
+
+    public function prSwingFunc()
+    {
+        return $this->hasMany(PrSwingModel::class, 'order_id', 'Id');
+    }
+
+    public function prSwingOutFunc()
+    {
+        return $this->hasMany(PrSwingOutModel::class, 'order_id', 'Id');
+    }
+
+    public function prIronFunc()
+    {
+        return $this->hasMany(PrIronModel::class, 'order_id', 'Id');
+    }
+
+    public function prPolyFunc()
+    {
+        return $this->hasMany(PrPolyModel::class, 'order_id', 'Id');
+    }
+
+    public function prCartonFunc()
+    {
+        return $this->hasMany(PrCartonModel::class, 'order_id', 'Id');
     }
 
 }

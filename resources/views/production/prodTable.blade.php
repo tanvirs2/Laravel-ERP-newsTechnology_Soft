@@ -79,10 +79,10 @@
             </span>
         </td>
         <td class="text-center blackCol">
-        @foreach($employee->prCutting as $pr)
+        @foreach($employee->prCutFunc as $pr)
                 {{--*/$prCut += $pr->cut/*--}}
         @endforeach
-                {{ $prCut }}
+            <a href="#">{{ $prCut }}</a>
         </td>
         @if($employee->order_quantity != 0)
         {{--*/ $cutPerc = round(($prCut - $employee->order_quantity)/$employee->order_quantity*100, 2).'%' /*--}}
@@ -95,32 +95,32 @@
             {{--*/ $prCut = 0 /*--}}
         </td>
         <td class="text-center blackCol">
-            @foreach($employee->production as $pr)
-                {{--*/$prSwIn += $pr->prSwIn/*--}}
+            @foreach($employee->prSwingFunc as $pr)
+                {{--*/$prSwIn += $pr->swingIn/*--}}
             @endforeach
                 {{ $prSwIn }}
                 {{--*/ $prSwInSum += $prSwIn /*--}}
                 {{--*/ $prSwIn = 0 /*--}}
         </td>
         <td class="text-center blackCol">
-            @foreach($employee->production as $pr)
-                {{--*/$prSwOut += $pr->prSwOut/*--}}
+            @foreach($employee->prSwingOutFunc as $pr)
+                {{--*/$prSwOut += $pr->swingOut/*--}}
             @endforeach
                 {{ $prSwOut }}
                 {{--*/ $prSwOutSum += $prSwOut /*--}}
                 {{--*/ $prSwOut = 0 /*--}}
         </td>
         <td class="text-center blackCol">
-            @foreach($employee->production as $pr)
-                {{--*/$prIron += $pr->prIron/*--}}
+            @foreach($employee->prIronFunc as $pr)
+                {{--*/$prIron += $pr->iron/*--}}
             @endforeach
                 {{ $prIron }}
                 {{--*/ $prIronSum += $prIron /*--}}
                 {{--*/ $prIron = 0 /*--}}
         </td>
         <td class="text-center blackCol">
-            @foreach($employee->production as $pr)
-                {{--*/$prCarton += $pr->prCarton/*--}}
+            @foreach($employee->prCartonFunc as $pr)
+                {{--*/$prCarton += $pr->carton/*--}}
             @endforeach
                 {{ $prCarton }}
                 {{--*/ $prCartonSum += $prCarton /*--}}
