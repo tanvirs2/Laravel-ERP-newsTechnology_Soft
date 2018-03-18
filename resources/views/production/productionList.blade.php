@@ -230,6 +230,55 @@
                                                         style="">
                                                         LstUpdt
                                                     </th>
+
+
+
+
+
+
+
+                                                    <th class="text-center sorting" tabindex="0"
+                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
+                                                        style="background: #863d45">
+                                                        Old Cutting
+                                                    </th>
+                                                    <th class="text-center sorting" tabindex="0"
+                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
+                                                        style="background: #863d45">
+                                                        Old Cutting%
+                                                    </th>
+                                                    <th class="text-center sorting" tabindex="0"
+                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
+                                                        style="background: #863d45">
+                                                        Old SwingIn
+                                                    </th>
+                                                    <th class="text-center sorting" tabindex="0"
+                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
+                                                        style="background: #863d45">
+                                                        Old SwingOut
+                                                    </th>
+                                                    <th class="text-center sorting" tabindex="0"
+                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
+                                                        style="background: #863d45">
+                                                        Old Iron
+                                                    </th>
+                                                    <th class="text-center sorting" tabindex="0"
+                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
+                                                        style="background: #863d45">
+                                                        Old Poly
+                                                    </th>
+
+
+
+
+
+
+
+
+
+
+
+
                                                     <th class="text-center sorting" tabindex="0"
                                                         aria-controls="sample_employees" rowspan="1" colspan="1"
                                                         style="">
@@ -299,6 +348,19 @@
                                                     <th>OrderQty</th>
                                                     <th>ShipQty</th>
                                                     <th>LastUpdate</th>
+
+
+
+                                                    <th>Cutting</th>
+                                                    <th>Cutting%</th>
+                                                    <th>SwingIn</th>
+                                                    <th>SwingOut</th>
+                                                    <th>Iron</th>
+                                                    <th>Poly</th>
+
+
+
+
                                                     <th>Cutting</th>
                                                     <th>Cutting%</th>
                                                     <th>SwingIn</th>

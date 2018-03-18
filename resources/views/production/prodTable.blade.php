@@ -78,6 +78,68 @@
             {{ $employee->prDate }}
             </span>
         </td>
+
+
+
+
+
+
+        <td style="background: #cec9cb" class="text-center blackCol">
+            @foreach($employee->production as $pr)
+                {{--*/$prCut += $pr->prCut/*--}}
+            @endforeach
+            {{ $prCut }}
+        </td>
+        @if($employee->order_quantity != 0)
+            {{--*/ $cutPerc = round(($prCut - $employee->order_quantity)/$employee->order_quantity*100, 2).'%' /*--}}
+        @else
+            {{--*/$cutPerc = 'Order Qty is 0'/*--}}
+        @endif
+        <td style="background: #cec9cb" @if($cutPerc > 5) style="background: red; color: white" @endif class="text-center blackCol">
+            {{ $cutPerc }}
+            {{--*/ $prCutSum += $prCut /*--}}
+            {{--*/ $prCut = 0 /*--}}
+        </td>
+        <td style="background: #cec9cb" class="text-center blackCol">
+            @foreach($employee->production as $pr)
+                {{--*/$prSwIn += $pr->prSwIn/*--}}
+            @endforeach
+            {{ $prSwIn }}
+            {{--*/ $prSwInSum += $prSwIn /*--}}
+            {{--*/ $prSwIn = 0 /*--}}
+        </td>
+        <td style="background: #cec9cb" class="text-center blackCol">
+            @foreach($employee->production as $pr)
+                {{--*/$prSwOut += $pr->prSwOut/*--}}
+            @endforeach
+            {{ $prSwOut }}
+            {{--*/ $prSwOutSum += $prSwOut /*--}}
+            {{--*/ $prSwOut = 0 /*--}}
+        </td>
+        <td style="background: #cec9cb" class="text-center blackCol">
+            @foreach($employee->production as $pr)
+                {{--*/$prIron += $pr->prIron/*--}}
+            @endforeach
+            {{ $prIron }}
+            {{--*/ $prIronSum += $prIron /*--}}
+            {{--*/ $prIron = 0 /*--}}
+        </td>
+        <td style="background: #cec9cb" class="text-center blackCol">
+            @foreach($employee->production as $pr)
+                {{--*/$prCarton += $pr->prCarton/*--}}
+            @endforeach
+            {{ $prCarton }}
+            {{--*/ $prCartonSum += $prCarton /*--}}
+            {{--*/ $prCarton = 0 /*--}}
+        </td>
+
+
+
+
+
+
+
+
         <td class="text-center blackCol">
         @foreach($employee->prCutFunc as $pr)
                 {{--*/$prCut += $pr->cut/*--}}
@@ -91,40 +153,30 @@
         @endif
         <td @if($cutPerc > 5) style="background: red; color: white" @endif class="text-center blackCol">
             {{ $cutPerc }}
-            {{--*/ $prCutSum += $prCut /*--}}
-            {{--*/ $prCut = 0 /*--}}
         </td>
         <td class="text-center blackCol">
             @foreach($employee->prSwingFunc as $pr)
                 {{--*/$prSwIn += $pr->swingIn/*--}}
             @endforeach
                 {{ $prSwIn }}
-                {{--*/ $prSwInSum += $prSwIn /*--}}
-                {{--*/ $prSwIn = 0 /*--}}
         </td>
         <td class="text-center blackCol">
             @foreach($employee->prSwingOutFunc as $pr)
                 {{--*/$prSwOut += $pr->swingOut/*--}}
             @endforeach
                 {{ $prSwOut }}
-                {{--*/ $prSwOutSum += $prSwOut /*--}}
-                {{--*/ $prSwOut = 0 /*--}}
         </td>
         <td class="text-center blackCol">
             @foreach($employee->prIronFunc as $pr)
                 {{--*/$prIron += $pr->iron/*--}}
             @endforeach
                 {{ $prIron }}
-                {{--*/ $prIronSum += $prIron /*--}}
-                {{--*/ $prIron = 0 /*--}}
         </td>
         <td class="text-center blackCol">
             @foreach($employee->prCartonFunc as $pr)
                 {{--*/$prCarton += $pr->carton/*--}}
             @endforeach
                 {{ $prCarton }}
-                {{--*/ $prCartonSum += $prCarton /*--}}
-                {{--*/ $prCarton = 0 /*--}}
         </td>
         <td class="text-center shipmntSts clkAbl">
             {{ $employee->order_status }}
