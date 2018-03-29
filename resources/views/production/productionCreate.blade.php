@@ -56,7 +56,11 @@ function arraySumFromKey($arr, $key) //
 }
 //end function
 
-$kdPrgrmData = App\KnitDyeingProgram::where('order_id', $order->Id)->first(); //orderIDfromDB $order->Id
+if (isset($order)) {
+    $kdPrgrmData = App\KnitDyeingProgram::where('order_id', $order->Id)->first(); //orderIDfromDB $order->Id
+} else {
+    $kdPrgrmData = null;
+}
 
 if ($kdPrgrmData) {
     $kkk = [];
@@ -181,7 +185,6 @@ if ($kdPrgrmData) {
                                                             <label class="col-md-3 control-label">Cutting <span class="required">* </span></label>
                                                             <div class="col-md-6">
                                                                 <input type="text" class="form-control" name="cutting[cut]" placeholder="Cutting" >
-
                                                             </div>
                                                         </div>
 
@@ -227,11 +230,11 @@ if ($kdPrgrmData) {
                                                         <label class="col-md-3 control-label">Color Select <span class="required">* </span></label>
                                                         <div class="col-md-6">
                                                                 @foreach(arraySumFromKey($kkk, 'colorID') as $kdQty)
-                                                                <span class="btn btn-default">
+                                                                    <span class="btn btn-default">
                                                                         {{ App\Color::where('id', $kdQty['colorID'])->first()->color_name }} |
-                                                                    {{ $kdQty['fabQty'] }}
+                                                                        {{ $kdQty['fabQty'] }}
                                                                     </span>
-                                                                <span class="btn btn-default">
+                                                                    <span class="btn btn-default">
                                                                         <input type="radio" name="SwingIn[colorId]" value="{{ $kdQty['colorID'] }}">
                                                                     </span>
                                                                 <br>

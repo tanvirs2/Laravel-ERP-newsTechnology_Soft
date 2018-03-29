@@ -685,16 +685,7 @@
                                 <li>
                                     <a id="" href="{{ route('production.index') }}">
                                         <i class="fa fa-pie-chart"></i>
-                                        <span>Old Order Wise</span>
-                                        <span class="pull-right-container">
-                                        <i class=""></i>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a id="" href="{{ route('production.index') }}">
-                                        <i class="fa fa-pie-chart"></i>
-                                        <span>New Order Wise</span>
+                                        <span>Order Wise</span>
                                         <span class="pull-right-container">
                                         <i class=""></i>
                                         </span>

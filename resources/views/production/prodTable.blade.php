@@ -1,7 +1,55 @@
 <tbody id="childTable">
-<?php $var = 1; $orderQtySum = 0; $orderTotalValue = 0; $totShipQty = 0; $totShipVal = 0; $totShrtShipVal = 0;?>
+<?php $var = 1; $orderQtySum = 0; $orderTotalValue = 0; $totShipQty = 0; $totShipVal = 0; $totShrtShipVal = 0;
+
+function arraySumFromKey($arr, $key, $qtyFld) //
+{
+    $tmp = array();
+    $result = array();
+    foreach ($arr->prCutFunc as $childArr) {
+        if (!in_array($childArr[$key], $tmp)) {
+            array_push($tmp, $childArr[$key]);
+            array_push($result, $childArr);
+        }
+    }
+
+    /*echo '<pre>';
+    print_r($result);
+    echo '</pre>';*/
+
+    $arrUnqByKyData = $result;
+    foreach ($arrUnqByKyData as $sngl) {
+        $cnt = 0;
+        foreach ($arr->prCutFunc as $item) {
+            if ($sngl[$key] == $item[$key]) {
+                $cnt++;
+                if ($cnt > 1) {
+                    $dupl[] = $item; //return only duplicate without main array
+                }
+            }
+        }
+    }
+
+
+    if (isset($dupl)) {
+        foreach ($dupl as $protiDupli) {
+            foreach ($arrUnqByKyData as $k => $protiArrUnqByKyData) {
+                if ($protiDupli[$key] == $protiArrUnqByKyData[$key]) {
+                    $arrUnqByKyData[$k][$qtyFld] += $protiDupli[$qtyFld];
+                }
+            }
+        }
+    }
+
+
+    return $arrUnqByKyData;
+}
+
+?>
 {{--*/ $prCut=0; $prSwIn=0; $prSwOut=0; $prIron=0; $prCarton=0; /*--}}
 {{--*/ $prCutSum=0; $prSwInSum=0; $prSwOutSum=0; $prIronSum=0; $prCartonSum=0; /*--}}
+
+
+
 @foreach ($employees as $employee)
     <tr class="orderRow" id="row{{ $employee->order_number }}" orderId="{{ $employee->order_number }}">
         <td class="text-center">
@@ -73,111 +121,163 @@
             }
             ?>
         </td>
-        <td class="text-center blackCol">
-            <span class="btn btn-default">
-            {{ $employee->prDate }}
-            </span>
+
+
+
+
+
+        <td>
+            <table class="table table-bordered kdTable">
+                <tr  style="background: #e9e0d5">
+                    <td class="kd">
+                        Color
+                    </td>
+
+                    <td class="kd">
+                        cutting
+                    </td>
+                    <td class="kd">
+                        Cutting%
+                    </td>
+                    <td class="kd">
+                        SwingIn
+                    </td>
+                    <td class="kd kdr">
+                        SwingOut
+                    </td>
+                    <td class="kd kdr">
+                        Iron
+                    </td>
+                    <td class="">
+                        Poly
+                    </td>
+                    <td class="">
+                        Carton
+                    </td>
+                </tr>
+
+                {{--@foreach($employee->prCutFunc as $key => $pr)--}}
+
+                @foreach(arraySumFromKey($employee, 'colorId', 'cut') as $pr)
+
+                    <?php
+                    $prSwingIn = 0;
+                    $prSwingOut = 0;
+                    $prIron = 0;
+                    $prPoly = 0;
+                    $prCarton = 0;
+
+                    foreach ($employee->prSwingFunc as $prSwI) {
+                        if ($pr->colorId == $prSwI->colorId) {
+                            $prSwingIn += $prSwI->swingIn;
+                        }
+                    }
+
+                    foreach ($employee->prSwingOutFunc as $prSwO) {
+                        if ($pr->colorId == $prSwO->colorId) {
+                            $prSwingOut += $prSwO->swingOut;
+                        }
+                    }
+                    foreach ($employee->prIronFunc as $prIr) {
+                        if ($pr->colorId == $prIr->colorId) {
+                            $prIron += $prIr->iron;
+                        }
+                    }
+                    foreach ($employee->prPolyFunc as $prPl) {
+                        if ($pr->colorId == $prPl->colorId) {
+                            $prPoly += $prPl->poly;
+                        }
+                    }
+                    foreach ($employee->prCartonFunc as $prCrtn) {
+                        if ($pr->colorId == $prCrtn->colorId) {
+                            $prCarton += $prCrtn->swingIn;
+                        }
+                    }
+                    ?>
+                <tr>
+                    <td class="kd">
+                        {{  $pr->color->color_name }}
+                    </td>
+
+                    <td class="kd">
+                        {{  $pr->cut }}
+                        {{--*/$prCut += $pr->cut/*--}}
+                    </td>
+                    @if($employee->order_quantity != 0)
+                        {{--*/ $cutPerc = round(($prCut - $employee->order_quantity)/$employee->order_quantity*100, 2).'%' /*--}}
+                    @else
+                        {{--*/$cutPerc = 'Order Qty is 0'/*--}}
+                    @endif
+                    <td style="background: #cec9cb" @if($cutPerc > 5) style="background: red; color: white" @endif class="text-center blackCol">
+                        {{ $cutPerc }}
+                    </td>
+                    <td class="kd">
+                        {{ $prSwingIn }}
+                        {{--*/$prSwIn += $prSwingIn/*--}}
+                    </td>
+                    <td class="kd kdr">
+                        {{ $prSwingOut }}
+                        {{--*/$prSwOut += $prSwingOut/*--}}
+                    </td>
+                    <td class="kd kdr">
+                        {{ $prIron }}
+                        {{--*/$prIron += $prIron/*--}}
+                    </td>
+                    <td class="">
+                        {{ $prPoly }}
+                    </td>
+                    <td class="">
+                        {{ $prCarton }}
+                        {{--*/$prCarton += $prCarton/*--}}
+
+                    </td>
+                </tr>
+
+                @endforeach
+                <tr style="background: #d2d1b0">
+                    <td class="kd">
+
+                    </td>
+
+                    <td class="kd">
+                        {{ $prCut }}
+                        {{--*/ $prCutSum += $prCut /*--}}
+                        {{--*/ $prCut = 0 /*--}}
+                    </td>
+                    <td class="kd">
+
+                    </td>
+                    <td class="kd">
+                        {{ $prSwIn }}
+                        {{--*/ $prSwInSum += $prSwIn /*--}}
+                        {{--*/ $prSwIn = 0 /*--}}
+                    </td>
+                    <td class="kd kdr">
+                        {{ $prSwOut }}
+                        {{--*/ $prSwOutSum += $prSwOut /*--}}
+                        {{--*/ $prSwOut = 0 /*--}}
+                    </td>
+                    <td class="kd kdr">
+                        {{ $prIron }}
+                        {{--*/ $prIronSum += $prIron /*--}}
+                        {{--*/ $prIron = 0 /*--}}
+                    </td>
+                    <td class="">
+                        Poly
+                    </td>
+                    <td class="">
+                        {{ $prCarton }}
+                        {{--*/ $prCartonSum += $prCarton /*--}}
+                        {{--*/ $prCarton = 0 /*--}}
+                    </td>
+                </tr>
+            </table>
         </td>
 
 
 
 
 
-
-        <td style="background: #cec9cb" class="text-center blackCol">
-            @foreach($employee->production as $pr)
-                {{--*/$prCut += $pr->prCut/*--}}
-            @endforeach
-            {{ $prCut }}
-        </td>
-        @if($employee->order_quantity != 0)
-            {{--*/ $cutPerc = round(($prCut - $employee->order_quantity)/$employee->order_quantity*100, 2).'%' /*--}}
-        @else
-            {{--*/$cutPerc = 'Order Qty is 0'/*--}}
-        @endif
-        <td style="background: #cec9cb" @if($cutPerc > 5) style="background: red; color: white" @endif class="text-center blackCol">
-            {{ $cutPerc }}
-            {{--*/ $prCutSum += $prCut /*--}}
-            {{--*/ $prCut = 0 /*--}}
-        </td>
-        <td style="background: #cec9cb" class="text-center blackCol">
-            @foreach($employee->production as $pr)
-                {{--*/$prSwIn += $pr->prSwIn/*--}}
-            @endforeach
-            {{ $prSwIn }}
-            {{--*/ $prSwInSum += $prSwIn /*--}}
-            {{--*/ $prSwIn = 0 /*--}}
-        </td>
-        <td style="background: #cec9cb" class="text-center blackCol">
-            @foreach($employee->production as $pr)
-                {{--*/$prSwOut += $pr->prSwOut/*--}}
-            @endforeach
-            {{ $prSwOut }}
-            {{--*/ $prSwOutSum += $prSwOut /*--}}
-            {{--*/ $prSwOut = 0 /*--}}
-        </td>
-        <td style="background: #cec9cb" class="text-center blackCol">
-            @foreach($employee->production as $pr)
-                {{--*/$prIron += $pr->prIron/*--}}
-            @endforeach
-            {{ $prIron }}
-            {{--*/ $prIronSum += $prIron /*--}}
-            {{--*/ $prIron = 0 /*--}}
-        </td>
-        <td style="background: #cec9cb" class="text-center blackCol">
-            @foreach($employee->production as $pr)
-                {{--*/$prCarton += $pr->prCarton/*--}}
-            @endforeach
-            {{ $prCarton }}
-            {{--*/ $prCartonSum += $prCarton /*--}}
-            {{--*/ $prCarton = 0 /*--}}
-        </td>
-
-
-
-
-
-
-
-
-        <td class="text-center blackCol">
-        @foreach($employee->prCutFunc as $pr)
-                {{--*/$prCut += $pr->cut/*--}}
-        @endforeach
-            <a href="#">{{ $prCut }}</a>
-        </td>
-        @if($employee->order_quantity != 0)
-        {{--*/ $cutPerc = round(($prCut - $employee->order_quantity)/$employee->order_quantity*100, 2).'%' /*--}}
-        @else
-            {{--*/$cutPerc = 'Order Qty is 0'/*--}}
-        @endif
-        <td @if($cutPerc > 5) style="background: red; color: white" @endif class="text-center blackCol">
-            {{ $cutPerc }}
-        </td>
-        <td class="text-center blackCol">
-            @foreach($employee->prSwingFunc as $pr)
-                {{--*/$prSwIn += $pr->swingIn/*--}}
-            @endforeach
-                {{ $prSwIn }}
-        </td>
-        <td class="text-center blackCol">
-            @foreach($employee->prSwingOutFunc as $pr)
-                {{--*/$prSwOut += $pr->swingOut/*--}}
-            @endforeach
-                {{ $prSwOut }}
-        </td>
-        <td class="text-center blackCol">
-            @foreach($employee->prIronFunc as $pr)
-                {{--*/$prIron += $pr->iron/*--}}
-            @endforeach
-                {{ $prIron }}
-        </td>
-        <td class="text-center blackCol">
-            @foreach($employee->prCartonFunc as $pr)
-                {{--*/$prCarton += $pr->carton/*--}}
-            @endforeach
-                {{ $prCarton }}
-        </td>
         <td class="text-center shipmntSts clkAbl">
             {{ $employee->order_status }}
         </td>
@@ -209,13 +309,29 @@
     <td></td>
     <td><b>TotOrdQty</b></td>
     <td><b>TotShpQty</b></td>
+    <td>
+        <table class="table table-bordered">
+            <tr>
+                <td><b>TotCut</b></td>
+                <td><b>TotCut%</b></td>
+                <td><b>TotSwIn</b></td>
+                <td><b>TotSwOut</b></td>
+                <td><b>TotIron</b></td>
+                <td><b>TotPoly</b></td>
+                <td><b>TotCart</b></td>
+            </tr>
+            <tr>
+                <td><b>{{ $prCutSum }}</b></td>
+                <td><b>0%</b></td>
+                <td><b>{{ $prSwInSum }}</b></td>
+                <td><b>{{ $prSwOutSum }}</b></td>
+                <td><b>{{ $prIronSum }}</b></td>
+                <td><b>TotPol</b></td>
+                <td><b>{{ $prCartonSum }}</b></td>
+            </tr>
+        </table>
+    </td>
     <td></td>
-    <td><b>TotCut</b></td>
-    <td><b></b></td>
-    <td><b>TotSwIn</b></td>
-    <td><b>TotSwOut</b></td>
-    <td><b>TotIron</b></td>
-    <td><b>TotPoly</b></td>
     <td></td>
     <td></td>
 </tr>
@@ -231,12 +347,6 @@
     <td><b>{{ $orderQtySum }}</b></td>
     <td><b>{{ round($totShipQty, 2) }}</b></td>
     <td></td>
-    <td><b>{{ $prCutSum }}</b></td>
-    <td><b></b></td>
-    <td><b>{{ $prSwInSum }}</b></td>
-    <td><b>{{ $prSwOutSum }}</b></td>
-    <td><b>{{ $prIronSum }}</b></td>
-    <td><b>{{ $prCartonSum }}</b></td>
     <td></td>
     <td></td>
 </tr>

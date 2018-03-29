@@ -13,4 +13,9 @@ class PrCutModel extends Model
         'colorId',
         'cut',
     ];
+
+    function color()
+    {
+        return $this->hasOne(Color::class, 'id', 'colorId');
+    }
 }

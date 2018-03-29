@@ -57,6 +57,9 @@ class Order extends Model
         return $this->hasMany('App\KnitDyeing', 'order_id', 'Id');
     }
 
+
+    /*Start Production*/
+
     public function prCutFunc()
     {
         return $this->hasMany(PrCutModel::class, 'order_id', 'Id');

@@ -225,7 +225,7 @@
                                                             : activate to sort column ascending">
                                                         ShipQty
                                                     </th>
-                                                    <th class="text-center sorting" tabindex="0"
+                                                    {{--<th class="text-center sorting" tabindex="0"
                                                         aria-controls="sample_employees" rowspan="1" colspan="1"
                                                         style="">
                                                         LstUpdt
@@ -266,7 +266,13 @@
                                                         aria-controls="sample_employees" rowspan="1" colspan="1"
                                                         style="background: #863d45">
                                                         Old Poly
-                                                    </th>
+                                                    </th>--}}
+
+
+
+
+
+                                                    <th style="width: 500px; text-align: center">Production</th>
 
 
 
@@ -277,38 +283,6 @@
 
 
 
-
-
-                                                    <th class="text-center sorting" tabindex="0"
-                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                        style="">
-                                                        Cutting
-                                                    </th>
-                                                    <th class="text-center sorting" tabindex="0"
-                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                        style="">
-                                                        Cutting%
-                                                    </th>
-                                                    <th class="text-center sorting" tabindex="0"
-                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                        style="">
-                                                        SwingIn
-                                                    </th>
-                                                    <th class="text-center sorting" tabindex="0"
-                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                        style="">
-                                                        SwingOut
-                                                    </th>
-                                                    <th class="text-center sorting" tabindex="0"
-                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                        style="">
-                                                        Iron
-                                                    </th>
-                                                    <th class="text-center sorting" tabindex="0"
-                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                        style="">
-                                                        Poly
-                                                    </th>
                                                     <th class="text-center sorting_disabled" rowspan="1" colspan="1" style="" aria-label="Action">
                                                         OrderStatus
 
