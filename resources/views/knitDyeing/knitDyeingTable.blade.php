@@ -215,9 +215,9 @@ if ($factNamePrefix != true) {
                             }
                         }
                         foreach (arraySumFromKey($kkk, 'colorID') as $kw => $qty2){
-                            $bodyOrSlvFini  = $qty2['fabQty']/12* $kdPrgrmData->kdConsumption[$kw]->bodyOrSlvFini;
-                            $ribFinish      = $qty2['fabQty']/12* $kdPrgrmData->kdConsumption[$kw]->ribFinish;
-                            $neckTapeFini   = $qty2['fabQty']/12* $kdPrgrmData->kdConsumption[$kw]->neckTapeFini;
+                            $bodyOrSlvFini = $qty2['fabQty']/12* $kdPrgrmData->kdConsumption[$kw]->bodyOrSlvFini;
+                            $ribFinish     = $qty2['fabQty']/12* $kdPrgrmData->kdConsumption[$kw]->ribFinish;
+                            $neckTapeFini  = $qty2['fabQty']/12* $kdPrgrmData->kdConsumption[$kw]->neckTapeFini;
 
                             $bodyOrSlvFini_ProcessLs    = $bodyOrSlvFini + $bodyOrSlvFini * ($kdPrgrmData->kdConsumption[$kw]->bodyOrSlvFini_ProcessLs/100);
                             $ribFinish_ProcessLs        = $ribFinish + $ribFinish * ($kdPrgrmData->kdConsumption[$kw]->ribFinish_ProcessLs/100);
@@ -229,12 +229,12 @@ if ($factNamePrefix != true) {
                             $totalFiniArr[] = [
                                 'colorID'   => $qty2['colorID'],
                                 'KDprgrmId' => $qty2['KDprgrmIds'],
-                                'totalFini' => round($totalFini, 2)
+                                'totalFini' => round($totalFini, 3)
                             ];
                             $totalGrayArr[] = [
                                 'colorID'   => $qty2['colorID'],
                                 'KDprgrmId' => $qty2['KDprgrmIds'],
-                                'totalGray' => round($totalGray, 2)
+                                'totalGray' => round($totalGray, 3)
                             ];
                         }
                 @endphp
@@ -336,7 +336,7 @@ if ($factNamePrefix != true) {
                             </td>
                                 <td rowspan="">
                                     <a href="{{ route('yrnRcvKdProgrm.create', [$employee->Id, $employee->id, $qty2['colorID']]) }}" modalTitle=""
-                                       data-toggle="modal" data-target=".myAjaxModal" data-remote="false" class="">
+                                       data-toggle="modal" rowSpanTd="first-fld" data-target=".myAjaxModal" data-remote="false" class="">
                                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                     </a>
                                     <a href="{{ route('yrnRcvKdProgrm.show', [$employee->id, $qty2['colorID']]) }}" modalTitle="" data-toggle="modal"
@@ -356,7 +356,7 @@ if ($factNamePrefix != true) {
                                     </a>
                                 </td>
 
-                                <td>{{ $grayQty - $yrnQtySum, $yrnQtySum = 0}}</td>
+                                <td>{{ round($grayQty - $yrnQtySum, 3), $yrnQtySum = 0}}</td>
 
                                 <td rowspan="">
                                     <a href="{{ route('kdForKnitting.create', [$employee->Id, $employee->id, $qty2['colorID']]) }}" modalTitle=""
@@ -369,7 +369,7 @@ if ($factNamePrefix != true) {
                                     </a>
                                 </td>
 
-                                <td>{{ $grayQty - $knittingQtySum, $knittingQtySum=0}}</td>
+                                <td>{{ round( $grayQty - $knittingQtySum, 3), $knittingQtySum=0}}</td>
 
                             <td>
                                 <a href="{{ route('dyingQtyFrKd.create', [$employee->Id, $employee->id, $qty2['colorID']]) }}" modalTitle=""
@@ -381,14 +381,13 @@ if ($factNamePrefix != true) {
                                     {{ $dyingQtySum, $KDdyeingQty +=$dyingQtySum }}
                                 </a>
                             </td>
-                            <td>{{ $grayQty - $dyingQtySum, $dyingQtySum = 0 }}</td>
+                            <td>{{ round( $grayQty - $dyingQtySum, 3), $dyingQtySum = 0 }}</td>
                             <td rowspan="">
                                 @foreach ($totalFiniArr as  $fini)
                                     @if($fini['colorID'] == $qty2['colorID'] && $fini['KDprgrmId'] == $employee->id)
-                                        {{ $fini['totalFini'], $KDfnshFabRqrd += $fini['totalFini'] }}
+                                        {{ round( $fini['totalFini'], 3), $KDfnshFabRqrd += $fini['totalFini'] }}
                                     @endif
                                 @endforeach
-
                             </td>
                             <td>
                                 <a href="{{ route('finisFabRqrd.create', [$employee->Id, $employee->id, $qty2['colorID']]) }}" modalTitle=""
@@ -403,7 +402,7 @@ if ($factNamePrefix != true) {
                             <td>
                                 @foreach ($totalFiniArr as  $fini)
                                     @if($fini['colorID'] == $qty2['colorID'] && $fini['KDprgrmId'] == $employee->id)
-                                        {{ $fnshFabBlnc = $fini['totalFini']- $finishFabRqrdSumForMinus, $kdFnshFabBlnc += $fnshFabBlnc }}
+                                        {{ round( $fnshFabBlnc = $fini['totalFini']- $finishFabRqrdSumForMinus, 3), $kdFnshFabBlnc += $fnshFabBlnc }}
                                     @endif
                                 @endforeach
                             </td>
@@ -419,7 +418,7 @@ if ($factNamePrefix != true) {
                             <td>
                                 @foreach ($totalFiniArr as  $fini)
                                     @if($fini['colorID'] == $qty2['colorID'] && $fini['KDprgrmId'] == $employee->id)
-                                        {{ $fnshFabBlnc = $fini['totalFini']- $finishFabRqrdSumForMinus, $kdFnshFabBlnc += $fnshFabBlnc }}
+
                                     @endif
                                 @endforeach
                             </td>
@@ -436,17 +435,17 @@ if ($factNamePrefix != true) {
                         </td>
                         <td class="totGrey">
 
-                            {{ $KDcolorYarnRqrd }}
+                            {{ round($KDcolorYarnRqrd, 3) }}
                             {{--*/$totalKDcolorYarnRqrd += $KDcolorYarnRqrd/*--}}
                             {{--*/$KDcolorYarnRqrd = 0/*--}}
                         </td>
                         <td>
-                            {{ $totYrnRcvSum }}
+                            {{ round($totYrnRcvSum, 3) }}
                             {{--*/$sumYrnRcvSum += $totYrnRcvSum/*--}}
                             {{--*/$totYrnRcvSum = 0/*--}}
                         </td>
                         <td>
-                            {{ $KDyarnIss }}
+                            {{ round($KDyarnIss, 3) }}
                             {{--*/$totalKDyarnIss += $KDyarnIss/*--}}
                             {{--*/$KDyarnIss = 0/*--}}
                         </td>
@@ -454,7 +453,7 @@ if ($factNamePrefix != true) {
                         <td></td>
 
                         <td>
-                            {{ $KDkntQty }}
+                            {{ round($KDkntQty, 3) }}
                             {{--*/$totalKDkntQty += $KDkntQty/*--}}
                             {{--*/$KDkntQty=0/*--}}
                         </td>
@@ -462,7 +461,7 @@ if ($factNamePrefix != true) {
                         <td></td>
 
                         <td>
-                            {{ $KDdyeingQty }}
+                            {{ round($KDdyeingQty, 3) }}
                             {{--*/$totalKDdyeingQty += $KDdyeingQty/*--}}
                             {{--*/$KDdyeingQty=0/*--}}
                         </td>
@@ -470,23 +469,23 @@ if ($factNamePrefix != true) {
                         <td></td>
 
                         <td>
-                            {{ $KDfnshFabRqrd }}
+                            {{ round($KDfnshFabRqrd, 3) }}
 
                             {{--*/$totalKDfnshFabRqrd += $KDfnshFabRqrd/*--}}
                             {{--*/$KDfnshFabRqrd=0/*--}}
                         </td>
                         <td>
-                            {{ $KDfnshFabRcv }}
+                            {{ round($KDfnshFabRcv, 3) }}
                             {{--*/$totalKDfnshFabRcv += $KDfnshFabRcv/*--}}
                             {{--*/$KDfnshFabRcv=0/*--}}
                         </td>
                         <td>
-                            {{ $kdFnshFabBlnc }}
+                            {{ round($kdFnshFabBlnc, 3) }}
                             {{--*/$totalkdFnshFabBlnc += $kdFnshFabBlnc/*--}}
                             {{--*/$kdFnshFabBlnc = 0/*--}}
                         </td>
                         <td>
-                            {{ $KDfnshFabIss }}
+                            {{ round($KDfnshFabIss, 3) }}
                             {{--*/$totalKDfnshFabIss += $KDfnshFabIss/*--}}
                             {{--*/$KDfnshFabIss=0/*--}}
                         </td>
@@ -612,6 +611,65 @@ if ($factNamePrefix != true) {
     </div>
 </div>
 <script>
+
+    Highcharts.chart('kd-chart', {
+        chart: {
+            type: 'column',
+            options3d: {
+                enabled: true,
+                alpha: 10,
+                beta: 5,
+                depth: 50
+            }
+        },
+        title: {
+            text: '3D Knitting Dyeing chart'
+        },
+        subtitle: {
+            text: null
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}'
+                }
+            },
+            column: {
+                depth: 40
+            }
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                skew3d: true
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        series: [{
+            name: 'chart',
+            //colorByPoint: true,
+            data: [
+                ['Marketing yarn', {{ round($totMrktingQty, 2) }}],
+                ['Booking yarn', {{ round($totalKDcolorYarnRqrd, 2) }}],
+                ['received yarn', {{ round($sumYrnRcvSum, 2) }}],
+                ['Knitting', {{ round($totalKDkntQty, 2) }}],
+                ['Dyeing', {{ round($totalKDdyeingQty, 2) }}],
+                {
+                    name: 'Finish fabric require',
+                    y: {{ round($totalKDfnshFabRqrd, 2) }},
+                    color: '#B22222'
+                },
+                ['Finish fabric receive', {{ round($totalKDfnshFabRcv, 2) }}],
+                ['Finish fabric issue', {{ round($totalKDfnshFabIss, 2) }}]
+            ]
+        }]
+    });
+
+
     $(document).ready(function () {
         var orderQty = $("#orderQty").html();
         $("#orderQtySum").html(orderQty);
@@ -700,13 +758,23 @@ if ($factNamePrefix != true) {
     $(".kdPrgCalDiv").remove();
     var kdEntryQty;
     var prevKdEntryQty;
+    var fldObj;
 
     function kdEntryValid(obj, number) {
-        var index = $(obj).parent().index();
-        kdEntryQty = $(obj).closest('tr').find('td:nth-child('+ (index + number) +')').text().trim();
-        prevKdEntryQty = $(obj).closest('td').text().trim();
+        if ('firstFld' == number) {
+            fldObj = $(obj).closest('td');
+            prevKdEntryQty = $(obj).closest('td').text().trim();
+        } else {
+            var index = $(obj).parent().index();
+            kdEntryQty = $(obj).closest('tr').find('td:nth-child(' + (index + number) + ')').text().trim();
+            fldObj = $(obj).closest('td');
+            prevKdEntryQty = $(obj).closest('td').text().trim();
+        }
     }
 
+    $('[rowSpanTd="first-fld"]').click(function () {
+        kdEntryValid(this, 'firstFld');
+    });
     $('[rowSpanTd="space"]').click(function () {
         kdEntryValid(this, -1);
     });
@@ -717,9 +785,16 @@ if ($factNamePrefix != true) {
         kdEntryValid(this, 0);
     });
 
+
+
     $(".myAjaxModal").on("show.bs.modal", function (e) {
         var link = $(e.relatedTarget);
         var modalTitle = link.attr("modalTitle");
+        var kdDigit = link.next().text();
+        /*kdDigit = kdDigit.trim(); //get field digit number
+        var kdTargetLink = link.next(); //field object*/
+
+
         //myModalFooter
         var objModal = $(this);
         $.ajax({

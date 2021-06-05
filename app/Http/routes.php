@@ -10,7 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::get('/clear-cache', function() {
+Route::get('/clear', function() {
     Artisan::call('cache:clear');
     Artisan::call('view:clear');
     // return what you want
@@ -23,6 +23,7 @@ Route::get('kdEnAjxColor', 'AjaxController@kdEnAjxColor');
 Route::get('kdEnAjxSize', 'AjaxController@kdEnAjxSize');
 
 Route::get('ajxSize', 'AjaxController@ajxSize');
+Route::get('test', 'TestController@index');
 
 /*Ajax Modal End*/
 
@@ -74,24 +75,35 @@ Route::resource('salary','SalaryController',['only'=>['destroy','update','store'
 #########################################################################
 
 //Route::get('searchDateRange', 'OrderController@searchDateRange');
+
+/* Partial */
+Route::get('partial/shipment-qty/{order_id?}', 'PartialShipmentController@show')->name('partial-shipment-tbl');
+
+
+
 //Settings
 Route::get('factSettings/factory', 'FactSettings@index');
 Route::Post('factSettings/saveFactNameNPrefix', 'FactSettings@saveFactNameNPrefix');
 
 Route::get('Order/searchDateRange/{from}/{to}/{customer_name}/{shipSts}', 'OrderController@searchDateRange');
+Route::get('Order/actDateRange/{from}/{to}/{customer_name}/{shipSts}', 'OrderController@actDateRange');
+Route::get('Order/entryDateRange/{from}/{to}/{customer_name}/{shipSts}', 'OrderController@entryDateRange');
 
 Route::get('Order/autoCompltSrch/{field}/{searchKey}', 'OrderController@autoCompltSrch');
 Route::get('Order/autoCompltRslt/{field}/{actionName}/{from}/{to}', 'OrderController@autoCompltRslt');
 Route::get('Order/orderStsSrc/{name}/{actionName}', 'OrderController@orderStsSrc');
 Route::get('Order/listTable', 'OrderController@listTable');
 Route::get('Order/chngShpmntSts/{shipmntSts}/{orderId}', 'OrderController@chngShpmntSts');
-Route::get('Order/shipQty/{shipQty}/{orderId}', 'OrderController@shipQty');
+Route::get('Order/shipQty/{shipQty?}/{orderId?}', 'OrderController@shipQty')->name('partial-ship-qty');
 Route::get('Order/actualShipDate/{acShipDate}/{orderId}', 'OrderController@actualShipDate');
 Route::get('Order/cancelShipDate/{orderId}', 'OrderController@cancelShipDate');
 Route::get('Order/exportExcel', 'OrderController@exportExcel');
 
 Route::get('production/listTable', 'ProductionController@listTable');
-Route::get('production/searchDateRange/{from}/{to}', 'ProductionController@searchDateRange');
+Route::get('production/searchDateRange/{from}/{to}/{actionName}', 'ProductionController@searchDateRange');
+Route::get('production/actDateRange/{from}/{to}/{customer_name}/{shipSts}', 'ProductionController@actDateRange');
+Route::get('production/entryDateRange/{from}/{to}/{customer_name}/{shipSts}', 'ProductionController@entryDateRange');
+//Route::get('production/searchDateRange/{from}/{to}', 'ProductionController@searchDateRange');
 Route::get('production/orderStsSrc/{name}/{actionName}', 'ProductionController@orderStsSrc');
 Route::post('production/storePrData', 'ProductionController@storePrData');
 Route::get('production/dateWisePrData', 'ProductionController@dateWisePrData');

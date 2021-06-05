@@ -53,7 +53,24 @@
                         <div class="col-md-12">
                             <!-- BEGIN EXAMPLE TABLE PORTLET-->
                             <div id="load">
+                                <div class="box box-success">
+                                    <div class="box-header with-border">
 
+                                        <div class="box-tools pull-right">
+                                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
+
+                                    <div class="box-body">
+                                        <div class="" style="width: 900px"><iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+                                            <div id="date-wise-production"></div>
+
+                                        </div>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
                             </div>
                             {{--<a id="OrderC" class="btn green">
                                 Add New Order <i class="fa fa-user-plus"></i>
@@ -85,14 +102,7 @@
                                                     <tbody>
                                                     <tr>
                                                         <td class="form-group">
-                                                            <select style="width: 7em;" name="sYear" class="form-control">
-                                                                <option value="2015">2015</option>
-                                                                <option value="2016">2016</option>
-                                                                <option value="2017">2017</option>
-                                                                <option value="2018" selected>2018</option>
-                                                                <option value="2019">2019</option>
-                                                                <option value="2020">2020</option>
-                                                            </select>
+                                                            @include('tools.years')
                                                         </td>
                                                         <td valign="top"><input value="Jan" onclick="transfer('01-01-','31-01-');" class="urg1 btn btn-default" type="button"></td>
                                                         <td></td>
@@ -258,6 +268,11 @@
                                                     <th class="text-center sorting" tabindex="0"
                                                         aria-controls="sample_employees" rowspan="1" colspan="1"
                                                         style="">
+                                                        Com.Earn
+                                                    </th>
+                                                    <th class="text-center sorting" tabindex="0"
+                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
+                                                        style="">
                                                         SMV
                                                     </th>
                                                     <th class="text-center sorting" tabindex="0"
@@ -305,6 +320,8 @@
                                                     <th>SwingOut</th>
                                                     <th>Value</th>
                                                     <th>CM</th>
+                                                    <th>Com.Earn</th>
+                                                    <th>SMV</th>
                                                     <th>iron</th>
                                                     <th>Poly</th>
                                                     <th>Action</th>
@@ -570,9 +587,16 @@
             });
             return false;
         }
+        var byrNmeSrch = $("input#byrNmeSrch").val();
 
-        var url = "{{ url('production/searchDateRange/:from/:to')}}";
-        url = url.replace(':from/:to', from+'/'+to);
+        if (byrNmeSrch == '') {
+            byrNmeSrch = '-';
+        } else {
+            $("#buyerNmShow").html('Buyer: '+byrNmeSrch);
+        }
+
+        var url = "{{ url('production/searchDateRange/:from/:to/:byrNmeSrch')}}";
+        url = url.replace(':from/:to/:byrNmeSrch', from+'/'+to+'/'+byrNmeSrch);
         $.ajax({
             url: url,
             cache: false,

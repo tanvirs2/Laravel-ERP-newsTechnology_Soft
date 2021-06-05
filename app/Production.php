@@ -22,4 +22,8 @@ class Production extends Model
     {
         return $this->belongsTo('App\Order');
     }
+    public function budget()
+    {
+        return $this->belongsTo(BudgetFrOrder::class, 'order_id', 'order_id');
+    }
 }

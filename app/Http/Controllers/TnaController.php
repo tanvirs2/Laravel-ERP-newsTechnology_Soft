@@ -101,12 +101,15 @@ class TnaController extends Controller
 
     public function autoCompltRslt($field, $actionName, $from, $to)
     {
-        if (strpos($actionName, '-') !== false){
-            $actionName = str_replace('-', '/', $actionName);
+        if ('date_of_entry' != $field) {
+            if (strpos($actionName, '-') !== false){
+                $actionName = str_replace('-','/', $actionName);
+            }
+            if (strpos($actionName, '******') !== false){
+                $actionName = str_replace('******', '-', $actionName);
+            }
         }
-        if (strpos($actionName, '******') !== false){
-            $actionName = str_replace('******', '-', $actionName);
-        }
+
         if ($from != '-') {
             $from = DateTime::createFromFormat('d-m-Y', $from);
             $to = DateTime::createFromFormat('d-m-Y', $to);

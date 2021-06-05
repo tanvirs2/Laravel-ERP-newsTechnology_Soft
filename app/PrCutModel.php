@@ -18,4 +18,9 @@ class PrCutModel extends Model
     {
         return $this->hasOne(Color::class, 'id', 'colorId');
     }
+
+    public function order()
+    {
+        return $this->belongsTo('App\Order');
+    }
 }

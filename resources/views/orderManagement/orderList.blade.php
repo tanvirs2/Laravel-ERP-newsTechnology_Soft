@@ -49,7 +49,6 @@
                                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
                                 <div id="load">
 
-
                                 </div>
                                 <!-- BAR CHART -->
                                 <div class="box box-success">
@@ -63,6 +62,11 @@
                                             <option value="2018">2018</option>
                                             <option value="2019">2019</option>
                                             <option value="2020">2020</option>
+                                            <option value="2021">2021</option>
+                                            <option value="2022">2022</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2024">2024</option>
+                                            <option value="2025">2025</option>
                                         </select>
                                         <div class="box-tools pull-right">
                                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -115,23 +119,16 @@
                                     </div>
 
                                     <div class="portlet-body">
-                                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                                        <table width="100%">
                                             <!--DWLayoutTable-->
                                             <tbody>
                                             <tr>
                                                 <td width="537" height="31">
-                                                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                    <table width="100%" id="date-area">
                                                         <tbody>
                                                         <tr>
                                                             <td class="form-group">
-                                                                <select style="width: 7em;" name="sYear" class="form-control">
-                                                                    <option value="2015">2015</option>
-                                                                    <option value="2016">2016</option>
-                                                                    <option value="2017">2017</option>
-                                                                    <option value="2018" selected>2018</option>
-                                                                    <option value="2019">2019</option>
-                                                                    <option value="2020">2020</option>
-                                                                </select>
+                                                                @include('tools.years')
                                                             </td>
                                                             <td valign="top"><input value="Jan" onclick="transfer('01-01-','31-01-');" class="urg1 btn btn-default" type="button"></td>
                                                             <td></td>
@@ -158,7 +155,20 @@
                                                             <td valign="top"><input value="Dec" onclick="transfer('01-12-','31-12-');" class="urg2 btn btn-default" type="button"></td>
                                                             <td></td>
                                                         </tr>
+
                                                         </tbody>
+                                                    </table>
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control" name="" id="extra-func">
+                                                                    <option value="..." selected>...</option>
+                                                                    <option value="...">...</option>
+                                                                    <option style="background: #9e84a8; color: white" value="ActShipDate">ActShipDate</option>
+                                                                    <option style="background: #a8296a; color: white" value="entryDate">Entry Date</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
                                                     </table>
                                                     <br>
                                                 </td>
@@ -166,7 +176,11 @@
                                             </tbody>
                                         </table>
                                         <div class="">
-                                            <span class="text-center"><button class="print btn btn-success">PrintSheet</button> <button class="btn btn-success" id="tblToexcel">ExportExcel</button></span>
+                                            <span class="text-center">
+                                                <button class="print btn btn-success">PrintSheet</button>
+                                                <button class="btn btn-success" id="tblToexcel">ExportExcel</button>
+                                                <button class="btn btn-success" onclick="sortTable();" >Sort Value</button>
+                                            </span>
                                             <span id="buyerNmShow" style="font-size: 1.1em; font-weight: bold; color: #457ac2;"></span>
                                             <span class="pull-right form-inline">
                                                 <label>
@@ -187,12 +201,14 @@
 
                                                     <thead class="bg-primary" id="ShpmntHead">
                                                     <tr role="row">
-                                                        <th style="text-align: center; width: 30px;" class="sorting"
+                                                        <th style="text-align: center; width: 60px;" class="sorting"
                                                             tabindex="0" aria-controls="sample_employees" rowspan="1"
                                                             colspan="1" aria-label="
                                                             Name
                                                             : activate to sort column ascending">
-                                                            #
+                                                            Job ID
+                                                            <br>
+                                                            <input style="width: 50px; color: black; font-size: 0.9em" id="byJobSrch" type="text">
                                                         </th>
 
                                                         <th style="text-align: center; width: 84px;" class="sorting"
@@ -214,7 +230,7 @@
                                                         </th>
                                                         <th class="text-center sorting" tabindex="0"
                                                             aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                            style="width: 70px;" aria-label="
+                                                            style="width: 100px;" aria-label="
                                                             Dept/Designation
                                                             : activate to sort column ascending">
                                                             StyleNo
@@ -238,7 +254,8 @@
                                                             style="" aria-label="
                                                             Status
                                                             : activate to sort column ascending">
-                                                            RcvDate
+                                                            EntryDate
+                                                            <input style="width: 50px; color: black; font-size: 0.9em" id="entry-date-search" type="text">
                                                         </th>
                                                         <th class="text-center sorting" tabindex="0"
                                                             aria-controls="sample_employees" rowspan="1" colspan="1"
@@ -301,6 +318,8 @@
                                                             Action
                                                             ">
                                                             ActShipDate
+                                                            <input style="width: 60px; color: black; font-size: 0.9em" id="actShip-Date" class="dPickTbl" type="text">
+
                                                         </th>
                                                         <th class="text-center sorting_disabled" rowspan="1" colspan="1" style="" aria-label="Action">
                                                             OrderStatus
@@ -328,7 +347,31 @@
                                                             style="" aria-label="
                                                             Action
                                                             ">
+                                                            YrnConsum
+                                                        </th>
+                                                        <th class="text-center sorting_disabled">
+                                                            TotYrn
+                                                        </th>
+                                                        <th class="text-center sorting_disabled" rowspan="1" colspan="1"
+                                                            style="" aria-label="
+                                                            Action
+                                                            ">
                                                             SMV
+                                                        </th>
+                                                        <th class="text-center sorting_disabled" rowspan="1" colspan="1"
+                                                            style="" aria-label="
+                                                            Action
+                                                            ">
+                                                            Tot.SMV
+                                                        </th>
+                                                        <th class="text-center sorting" tabindex="0"
+                                                            aria-controls="sample_employees" rowspan="1" colspan="1"
+                                                            style="width: 90px;" aria-label="
+                                                            Dept/Designation
+                                                            : activate to sort column ascending">
+                                                            LC / SalesCtrct
+                                                            <br>
+                                                            <input style="width: 60px; color: black; font-size: 0.9em" id="SalesPrsn" type="text">
                                                         </th>
                                                         <th class="text-center sorting_disabled" rowspan="1" colspan="1"
                                                             style="width: 50px;" aria-label="Action">
@@ -367,7 +410,11 @@
                                                         <th>Status</th>
                                                         <th>CM Per dz</th>
                                                         <th>CM</th>
+                                                        <th>YrnConsum</th>
+                                                        <th>TotYrn</th>
                                                         <th>SMV</th>
+                                                        <th>Tot.SMV</th>
+                                                        <th>SalesCtrct</th>
                                                         <th>Action</th>
                                                     </tr>
                                                     </thead>
@@ -409,9 +456,9 @@
                     </div>
                 </div>
                 <!-- /.box-body -->
-                <div class="box-footer">
+                <div class="box-footer" >
                     Footer
-                    <div id="printout">  </div>
+                    <div id="printout">d  </div>
                 </div>
                 <!-- /.box-footer-->
             </div>
@@ -421,12 +468,28 @@
     </div>
 
     <script>
+        window.cou = 0;
+
         var ordInof;
+        var searchType = 'typicalDate';
         $(document).ready(function(){
+            $("#extra-func").change(function () {
+                if ($(this).val() == '...') {
+                    $("#date-area").css('background', '#ffffff');
+                    searchType = 'typicalDate';
+
+                } else if ($(this).val() == 'ActShipDate') {
+                    $("#date-area").css('background', '#9E84A8');
+                    searchType = 'actDate';
+                } else if ($(this).val() == 'entryDate') {
+                    $("#date-area").css('background', '#a8296a');
+                    searchType = 'entryDate';
+                }
+            });
             //$("#byrNmeSrch").bind("keyup click mouseenter mouseleave", function () {
 
             //});
-            
+
             $("#tblToexcel").click(function () {
                 var today = new Date();
                 var dd = today.getDate();
@@ -468,6 +531,47 @@
 
 
             function libSearch(selector, field) {
+                var from = $("#from").val();
+                var to = $("#to").val();
+                var Date1 = from.split('-');
+                var Date2 = to.split('-');
+                var minDate = new Date(Date1[2] +'/'+ Date1[1] +'/'+ Date1[0]);
+                var maxDate = new Date(Date2[2] +'/'+ Date2[1] +'/'+ Date2[0]);
+                if (minDate > maxDate) {
+                    swal({
+                        title: "",
+                        text: "<span style='color: red'><b>Date rang Incorrect !</b></span>",
+                        showConfirmButton: true,
+                        html: true
+                    });
+                    return false;
+                }
+
+                if (from.length < 1) {
+                    from = '-';
+                }
+                if (to.length < 1) {
+                    to = '-';
+                }
+
+                if ('actualShipDate' == field) {
+                    $(selector).change(function () {
+                        var getActionURL = "{{ url('Order/autoCompltRslt')}}/actualShipDate/" + $(this).val().trim() + "/" + from + "/" + to;
+                        $.ajax({
+                            cache: false,
+                            global: false,
+                            url: getActionURL,
+                            success: function (data) {
+                                $("#shpmntTable > tbody, #shpmntTable > tfoot").remove();
+                                $("#shpmntTable").append(data);
+                            },
+                            error: function () {
+                                alert('table Error !');
+                            }
+                        });
+                    });
+                }
+
                     $(selector).autocomplete({
                         source: function (request, response) {
                             var DTO = {"terms" : request.term};
@@ -505,31 +609,14 @@
                             });
                         },
                         select: function( event, ui ) {
+							if(selector!='#byJobSrch') {
+								console.log(selector);
+								$('#byJobSrch').val('');
+							}
                             $("#shipSts").val('Select...');
                             var name = ui.item.value;
 
-                            var from = $("#from").val();
-                            var to = $("#to").val();
-                            var Date1 = from.split('-');
-                            var Date2 = to.split('-');
-                            var minDate = new Date(Date1[2] +'/'+ Date1[1] +'/'+ Date1[0]);
-                            var maxDate = new Date(Date2[2] +'/'+ Date2[1] +'/'+ Date2[0]);
-                            if (minDate > maxDate) {
-                                swal({
-                                    title: "",
-                                    text: "<span style='color: red'><b>Date rang Incorrect !</b></span>",
-                                    showConfirmButton: true,
-                                    html: true
-                                });
-                                return false;
-                            }
-
-                            if (from.length < 1) {
-                                from = '-';
-                            }
-                            if (to.length < 1) {
-                                to = '-';
-                            }
+                            //console.log(name);
 
                             if(name!=window.location){
                                 var selectorFrUrl = selector.substring(1);
@@ -544,13 +631,22 @@
                                 //alert(window.location.href);
                             }
 
-                            if (name.indexOf('-') > -1)
-                            {
-                                name = name.replace("-", "******");
+                            if ('actualShipDate' != field) {
+                                if (name.indexOf('-') > -1)
+                                {
+                                    name = name.replace("-", "******");
+                                }
+                                if (name.indexOf('/') > -1)
+                                {
+                                    name = name.replace("/", "-");
+                                }
                             }
-                            if (name.indexOf('/') > -1)
-                            {
-                                name = name.replace("/", "-");
+
+                            if ('date_of_entry' == field) {
+                                if (name.indexOf('-') > -1)
+                                {
+                                    name = name.replace("******", "-");
+                                }
                             }
 
                             var getActionURL = "{{ url('Order/autoCompltRslt')}}/" + field + "/" + name + "/" + from + "/" + to;
@@ -559,6 +655,7 @@
                                 global: false,
                                 url: getActionURL,
                                 success: function (data) {
+                                    cou++; //for Pie Charts
                                     $("#shpmntTable > tbody, #shpmntTable > tfoot").remove();
                                     $("#shpmntTable").append(data);
                                 },
@@ -578,7 +675,11 @@
             libSearch("#stlDesSrch", "style_description");
             libSearch("#ordrQtySrch", "order_quantity");
             libSearch("#untPrceSrch", "unit_price");
+            libSearch("#actShip-Date", "actualShipDate");
+            libSearch("#SalesPrsn", "lcOrSalsePrsn");
             //libSearch("#shipSts", "order_status");
+            libSearch("#entry-date-search", "date_of_entry");
+            libSearch("#byJobSrch", "Id");
 
 
             function backPageSearch(selector, field, searchVal) {
@@ -624,6 +725,8 @@
 
 //Start-18-11-16
         $("#fromToSearch").click(function () {
+            cou++; //for Pie Charts
+            //searchType
             var from = $("#from").val();
             var to = $("#to").val();
             var Date1 = from.split('-');
@@ -650,8 +753,38 @@
             } else {
                 $("#buyerNmShow").html('Buyer: '+byrNmeSrch);
             }
+
             var url = "{{ url('Order/searchDateRange/:from/:to/:byrNmeSrch/:shipSts')}}";
-            url = url.replace(':from/:to/:byrNmeSrch/:shipSts', from+'/'+to+'/'+byrNmeSrch+'/'+shipSts);
+
+
+            if (searchType == 'typicalDate') {
+
+                url = url.replace(':from/:to/:byrNmeSrch/:shipSts', from+'/'+to+'/'+byrNmeSrch+'/'+shipSts);
+
+            } else if (searchType == 'actDate') {
+
+                url = "{{ url('Order/actDateRange/:from/:to/:byrNmeSrch/:shipSts')}}";
+                url = url.replace(':from/:to/:byrNmeSrch/:shipSts', from+'/'+to+'/'+byrNmeSrch+'/'+shipSts);
+
+            } else if (searchType == 'entryDate') {
+
+                url = "{{ url('Order/entryDateRange/:from/:to/:byrNmeSrch/:shipSts')}}";
+                url = url.replace(':from/:to/:byrNmeSrch/:shipSts', from+'/'+to+'/'+byrNmeSrch+'/'+shipSts);
+
+            }
+
+
+            var param = {
+                customer_name: $("#byrNmeSrch").val(),
+                orderID: $("#ordNumSrch").val(),
+                order_status: ($("#shipSts").val() == 'Select...') ? '' : $("#shipSts").val(),
+            };
+
+            //console.log($.param(param));
+
+            url = url + '?' + $.param(param);
+
+
             $.ajax({
                 url: url,
                 cache: false,
@@ -676,6 +809,11 @@
                 changeMonth: true,
                 changeYear: true,
                 dateFormat: 'dd-mm-yy'
+            });
+            $( ".dPickTbl" ).datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'yy-mm-dd',
             });
         });
         function showOrderInfo(order_number) {
@@ -756,8 +894,77 @@
             })
 
         }
-        var shptBarChartVar = document.getElementById("shpmntBarChart").getContext("2d");
+        var shptBarChartVar = document.getElementById("shpmntBarChart").getContext("2d"); //the element where show the chart
+
+        //start bar chart start from July
         var shpmntBarChart = new Chart(shptBarChartVar, {
+            type: 'bar',
+            data: {
+                labels: ["July", "August",  "September",  "October",  "November",  "December", "January", "February", "March", "April", "May", "June"],
+                datasets: [
+                    {
+                        label: "Qty",
+                        yAxesGroup: "1",
+                        backgroundColor: '#1abc9c',
+                        borderColor: '#ff0b21',
+                        borderWidth: 1,
+                        data: [{{ $julyQty }}, {{ $augustQty }}, {{ $septemberQty }}, {{ $octoberQty }}, {{ $novemberQty }}, {{ $decemberQty }}, {{ $januaryQty }}, {{ $februaryQty }}, {{ $marchQty }}, {{ $aprilQty }}, {{ $mayQty }}, {{ $juneQty }}],
+                    },
+                    {
+                        label: "Value",
+                        yAxesGroup: "2",
+                        backgroundColor: '#c0392b',
+                        borderColor: '#f39c12',
+                        borderWidth: 1,
+                        data: [{{ $julyValue }}, {{ $augustValue }}, {{ $septemberValue }}, {{ $octoberValue }}, {{ $novemberValue }}, {{ $decemberValue }}, {{ $januaryValue }}, {{ $februaryValue }}, {{ $marchValue }}, {{ $aprilValue }}, {{ $mayValue }}, {{ $juneValue }}],
+                    },
+                    {
+                        label: "SAH",
+                        yAxesGroup: "3",
+                        backgroundColor: '#c0bb5a',
+                        borderColor: '#4158f3',
+                        borderWidth: 1,
+                        data: [{{ $julySah }}, {{ $augustSah }}, {{ $septemberSah }}, {{ $octoberSah }}, {{ $novemberSah }}, {{ $decemberSah }}, {{ $januarySah }}, {{ $februarySah }}, {{ $marchSah }}, {{ $aprilSah }}, {{ $maySah }}, {{ $juneSah }}],
+                    }
+                ],
+                yAxes: [{
+                    name: "1",
+                    scalePositionLeft: false,
+                    scaleFontColor: "rgba(151,137,200,0.8)"
+                }, {
+                    name: "2",
+                    scalePositionLeft: true,
+                    scaleFontColor: "red"
+                }]
+            },
+            options: {
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItems, data) {
+
+                            var i, label = [], l = data.datasets.length;
+                            for (i = 0; i < l; i += 1) {
+                                label[i] = data.datasets[i].label + ' : ' + Number(data.datasets[i].data[tooltipItems.index]).toFixed(2);
+                            }
+                            return label;
+                        }
+                    },
+
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+        //end bar chart start from July
+
+
+        //start bar chart start from january
+        /*var shpmntBarChart = new Chart(shptBarChartVar, {
             type: 'bar',
             data: {
                 labels: ["January", "February", "March", "April", "May", "June", "July", "August",  "September",  "October",  "November",  "December"],
@@ -777,6 +984,14 @@
                         borderColor: '#f39c12',
                         borderWidth: 1,
                         data: [{{ $januaryValue }}, {{ $februaryValue }}, {{ $marchValue }}, {{ $aprilValue }}, {{ $mayValue }}, {{ $juneValue }}, {{ $julyValue }}, {{ $augustValue }}, {{ $septemberValue }}, {{ $octoberValue }}, {{ $novemberValue }}, {{ $decemberValue }}],
+                    },
+                    {
+                        label: "SAH",
+                        yAxesGroup: "3",
+                        backgroundColor: '#c0bb5a',
+                        borderColor: '#4158f3',
+                        borderWidth: 1,
+                        data: [{{ $januarySah }}, {{ $februarySah }}, {{ $marchSah }}, {{ $aprilSah }}, {{ $maySah }}, {{ $juneSah }}, {{ $julySah }}, {{ $augustSah }}, {{ $septemberSah }}, {{ $octoberSah }}, {{ $novemberSah }}, {{ $decemberSah }}],
                     }
                 ],
                 yAxes: [{
@@ -810,7 +1025,8 @@
                     }]
                 }
             }
-        });
+        });*/
+        //end bar chart start from january
 
     </script>
 

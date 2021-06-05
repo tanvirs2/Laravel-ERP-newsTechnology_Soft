@@ -54,6 +54,27 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                                <div id="">
+                                    <div class="box box-success">
+                                        <div class="box-header with-border">
+
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+
+                                        <div class="box-body">
+                                            <div class="" style="width: 900px"><iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+                                                <div id="kd-chart"></div>
+
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+
+                                </div>
 
 
                                 {{--<a id="OrderC" class="btn green">
@@ -86,15 +107,7 @@
                                                         <tbody>
                                                         <tr>
                                                             <td class="form-group">
-                                                                <select style="width: 7em;" name="sYear"
-                                                                        class="form-control">
-                                                                    <option value="2015">2015</option>
-                                                                    <option value="2016">2016</option>
-                                                                    <option value="2017">2017</option>
-                                                                    <option value="2018" selected>2018</option>
-                                                                    <option value="2019">2019</option>
-                                                                    <option value="2020">2020</option>
-                                                                </select>
+                                                                @include('tools.years')
                                                             </td>
                                                             <td valign="top"><input value="Jan"
                                                                                     onclick="transfer('01-01-','31-01-');"
@@ -395,7 +408,7 @@
                                                         </th>
                                                         {{--BudgetBlank--}}
                                                         <th>
-                                                            
+
                                                         </th>
                                                         <th class="text-center sorting_disabled" rowspan="1" colspan="1"
                                                             style="width: 50px;" aria-label="Action">

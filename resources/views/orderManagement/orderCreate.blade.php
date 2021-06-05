@@ -31,6 +31,7 @@
                         <hr>
 
                         <div id="drop">Drop an Excel file here to Register sheet data</div>
+                        <input type="file" name="xlfile" id="xlf" />
 
                         <hr>
 
@@ -49,7 +50,7 @@
                                                 <i class="fa fa-calendar"></i>Order Details
                                             </div>
                                             <span id="findOrUp" style="border-radius: 0px 0px 5px 5px; border: 1px solid white; border-top: 0px" class="pull-right btn btn-primary" data-toggle="tooltip" title="Single click and Double click">
-                                                .
+                                                Copy
                                             </span>
                                         </div>
                                         <div class="portlet-body">
@@ -57,16 +58,21 @@
                                                 <div id="orderTxtHide" class="form-group">
                                                     <label class="col-md-3 control-label"> <span class="required">* </span></label>
                                                     <div class="col-md-8 input-group">
-                                                        <input id="orderNumberForJs" type="text" class="form-control" placeholder="Order Number" autocomplete="off" @if(isset($order_number)){ value="{{ $order_number }}" } @endif >
+                                                        <input type="radio" name="cat" value="customer_name">BuyerName
+                                                        <input type="radio" name="cat" value="orderID">OrderNum
+                                                        <input type="radio" name="cat" value="article_no">StyleNum
+                                                        <input type="radio" name="cat" value="style_description">StyleDesc
+                                                        <input  id="orderNumberForJs" type="text" class="form-control" placeholder="Search Here" autocomplete="off" @if(isset($order_number)) value="{{ $order_number }}"  @endif >
                                                         <p id="foundTxt" class="text-center text-danger"><b>Not Registered Order No !</b></p>
-                                                        <span id="orderEdit" style="cursor: pointer" class="input-group-addon">Edit</span>
+                                                        <hr>
+                                                        <button type="button" id="orderEdit" style="cursor: pointer" class="btn btn-primary">Copy Order</button>
                                                     </div>
                                                     <hr>
                                                 </div>
 
 
                                                 <span id="orderDetails">
-                                                    <div class="form-group ">
+                                                    <div class="form-group">
                                                     <label class="control-label col-md-3">Photo</label>
                                                     <div class="col-md-9">
                                                         <div class="fileinput fileinput-new" data-provides="fileinput">
@@ -333,6 +339,12 @@
                                                         <input type="text" class="form-control" name="budget[others]" placeholder="" >
                                                     </div>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label">LC / Sales contract <span class="required"> </span></label>
+                                                    <div class="col-md-9">
+                                                        <input type="text" class="form-control" name="lcOrSalsePrsn" placeholder="" >
+                                                    </div>
+                                                </div>
 
                                             </div>
                                         </div>
@@ -505,6 +517,65 @@
             $('[name="cmPerDz"]').val($(this).val());
         });
 
+        function readFrmXl(e) {
+                var data = e.target.result;
+
+                var workbook = XLSX.read(data, {type: 'binary'});
+                var first_sheet_name = workbook.SheetNames[0];
+
+                var worksheet = workbook.Sheets[first_sheet_name];
+
+                fldUndefined = true;
+
+                function valAppend(cell, scope) {
+                    var v = typeof worksheet[cell];
+                    if (v !== 'undefined') {
+                        $(scope).val(worksheet[cell].w);
+                        $(scope).attr('readOnly', true);
+                        $('input[name="date_of_entry"]').val(todayDate);
+                        $("#formModify").css('display', 'inline');
+                    } else {
+                        $(scope).val('');
+                        $(scope).attr('readOnly', false);
+                        fldUndefined = false;
+                    }
+                }
+                valAppend('B3', 'input[name="customer_name"]');
+                valAppend('C4', 'input[name="orderID"]');
+                valAppend('E5', 'input[name="article_no"]');
+
+                valAppend('C7', 'input[name="date_of_ship"]');
+                valAppend('B7', 'input[name="order_quantity"]');
+                valAppend('B13', 'input[name="unit_price"]');
+                valAppend('C12', 'select[name="order_type"]');
+                valAppend('C13', 'select[name="season"]');
+                valAppend('C14', 'select[name="order_status"]');
+                valAppend('C15', 'select[name="apparel_type"]');
+                valAppend('E7', 'textarea[name="style_description"]');
+                valAppend('C17', 'textarea[name="fabric_description"]');
+                valAppend('C18', 'input[name="smv"]');
+                valAppend('C19', 'input[name="sales_person"]');
+
+                valAppend('E26', 'input[name="budget[yrnPrice]"]');
+                valAppend('E22', 'input[name="budget[kntngPrice]"]');
+                //valAppend('C19', 'input[name="budget[dyngPrice]"]');
+                //valAppend('C19', 'input[name="budget[aopPrint]"]');
+                valAppend('H21', 'input[name="budget[accessories]"]');
+                //valAppend('C19', 'input[name="budget[testCost]"]');
+                valAppend('H22', 'input[name="budget[print]"]');
+                valAppend('H26', 'input[name="budget[bankCharge]"]');
+                valAppend('H32', 'input[name="budget[commission]"]');
+                valAppend('G18', 'input[name="budget[fnshFabrcConsump]"]');
+                valAppend('E18', 'input[name="budget[yrnConsumption]"]');
+                valAppend('H25', '#cmPerDz');
+                //valAppend('C19', 'input[name="budget[freightChrge]"]');
+                //valAppend('C19', 'input[name="budget[others]"]');
+
+                if (fldUndefined) {
+                    swal("Done !", 'Data add from Cost sheet', "success");
+                }
+        }
+
         var D           = new Date();
         var date        = String("0" + D.getDate()).slice(-2);
         var month       = String("0" + (1 + D.getMonth())).slice(-2);
@@ -513,6 +584,26 @@
 
         var fldUndefined;
         var drop = document.getElementById('drop');
+
+
+        var rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
+        function handleFile(e) {
+            var files = e.target.files, f = files[0];
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                readFrmXl(e)
+            };
+            if(rABS) reader.readAsBinaryString(f); else reader.readAsArrayBuffer(f);
+        }
+
+        (function() {
+            var xlf = document.getElementById('xlf');
+            if(!xlf.addEventListener) return;
+            xlf.addEventListener('change', handleFile, false);
+        })();
+
+
         function handleDrop(e) {
             e.stopPropagation();
             e.preventDefault();
@@ -522,62 +613,7 @@
                 var reader = new FileReader();
                 var name = f.name;
                 reader.onload = function(e) {
-                    var data = e.target.result;
-
-                    var workbook = XLSX.read(data, {type: 'binary'});
-                    var first_sheet_name = workbook.SheetNames[0];
-
-                    var worksheet = workbook.Sheets[first_sheet_name];
-
-                    fldUndefined = true;
-
-                    function valAppend(cell, scope) {
-                        var v = typeof worksheet[cell];
-                        if (v !== 'undefined') {
-                            $(scope).val(worksheet[cell].w);
-                            $(scope).attr('readOnly', true);
-                            $('input[name="date_of_entry"]').val(todayDate);
-                            $("#formModify").css('display', 'inline');
-                        } else {
-                            $(scope).val('');
-                            $(scope).attr('readOnly', false);
-                            fldUndefined = false;
-                        }
-                    }
-                    valAppend('B3', 'input[name="customer_name"]');
-                    valAppend('C4', 'input[name="orderID"]');
-                    valAppend('E5', 'input[name="article_no"]');
-
-                    valAppend('C7', 'input[name="date_of_ship"]');
-                    valAppend('B7', 'input[name="order_quantity"]');
-                    valAppend('B13', 'input[name="unit_price"]');
-                    valAppend('C12', 'select[name="order_type"]');
-                    valAppend('C13', 'select[name="season"]');
-                    valAppend('C14', 'select[name="order_status"]');
-                    valAppend('C15', 'select[name="apparel_type"]');
-                    valAppend('E7', 'textarea[name="style_description"]');
-                    valAppend('C17', 'textarea[name="fabric_description"]');
-                    valAppend('C18', 'input[name="smv"]');
-                    valAppend('C19', 'input[name="sales_person"]');
-
-                    valAppend('E26', 'input[name="budget[yrnPrice]"]');
-                    valAppend('E22', 'input[name="budget[kntngPrice]"]');
-                    //valAppend('C19', 'input[name="budget[dyngPrice]"]');
-                    //valAppend('C19', 'input[name="budget[aopPrint]"]');
-                    valAppend('H21', 'input[name="budget[accessories]"]');
-                    //valAppend('C19', 'input[name="budget[testCost]"]');
-                    valAppend('H22', 'input[name="budget[print]"]');
-                    valAppend('H26', 'input[name="budget[bankCharge]"]');
-                    valAppend('H32', 'input[name="budget[commission]"]');
-                    valAppend('G18', 'input[name="budget[fnshFabrcConsump]"]');
-                    valAppend('E18', 'input[name="budget[yrnConsumption]"]');
-                    valAppend('H25', '#cmPerDz');
-                    //valAppend('C19', 'input[name="budget[freightChrge]"]');
-                    //valAppend('C19', 'input[name="budget[others]"]');
-
-                    if (fldUndefined) {
-                        swal("Done !", 'Data add from Cost sheet', "success");
-                    }
+                    readFrmXl(e)
                 };
                 reader.readAsBinaryString(f);
             }
@@ -650,6 +686,7 @@
                     $('#cmPerDz').val(data.isData.cmPerDz);
                     $('[name="smv"]').val(data.isData.smv);
                     $('[name="sales_person"]').val(data.isData.sales_person);
+                    $('[name="lcOrSalsePrsn"]').val(data.isData.lcOrSalsePrsn);
                     if (data.budget) {
                         $('[name="budget[yrnPrice]"]').val(data.budget.yrnPrice);
                         $('[name="budget[yrnConsumption]"]').val(data.budget.yrnConsumption);
@@ -687,22 +724,28 @@
 
         {{--Click Buton to edit Order Info--}}
         $("#findOrUp").click(function () {
-            $(this).text('|');
+            $(this).text('Back');
             $("#orderDetails").hide('linear', function () {
                 $('#orderTxtHide').show();
                 $('#orderNumberForJs').keyup(function () {
                     var orderVal = $('#orderNumberForJs').val();
+                    var catg = $("input[name=cat]:checked").val();
                     var url = '{{ route('Order.show', ':order_number||EditReq') }}';
-                    url = url.replace(':order_number', orderVal);
+                    url = url.replace(':order_number', orderVal+ '||' + catg);
+
+                    //alert(url);
+
                     $.ajax({
                         url: url,
                         cache: false,
                         global: false,     // this makes sure ajaxStart is not triggered
                         success: function(data){
+                                //alert(data);
                                 $("#orderEdit").show();
                                 $("#foundTxt").hide();
                         },
                         error: function(){
+                            //alert('sda');
                             $("#infoArea, #infoArea a").css('display', 'none');
                             $('#orderDetails input').val('');
                             $("#orderEdit").hide();
@@ -716,7 +759,7 @@
                 $("#findOrUp").attr('custom', 'orderCre');
                 $("[custom='orderCre']").dblclick(function () {
                     $('[name="order_number"]').attr('disabled', false);
-                    $(this).text(',');
+                    $(this).text('Copy');
                     $("input").val('');
                     $("textarea").val('');
                     $('#orderTxtHide').hide();
@@ -728,15 +771,39 @@
 
         $("#orderEdit").click(function () {
             $("#orderDetails").show(300);
-            $("#findOrUp").text('Find or Update');
+            $("#findOrUp").text('Copy');
             var orderVal = $('#orderNumberForJs').val();
-            var url = '{{ route('Order.show', ':order_number||getData') }}';
-            url = url.replace(':order_number', orderVal);
+            var catg = $("input[name=cat]:checked").val();
+            var url = '{{ route('Order.show', ':order_number||getDataForCopy') }}';
+            url = url.replace(':order_number', orderVal+ '||' + catg);
+            //url = url.replace(':order_number', orderVal);
             $.ajax({
                 url: url,
                 cache: false,
                 global: false,     // this makes sure ajaxStart is not triggered
                 success: function(data){
+                    //alert(data);
+
+                    //console.log(data.isData);
+                    if (data.budget) {
+                        $('[name="budget[yrnPrice]"]').val(data.budget.yrnPrice);
+                        $('[name="budget[yrnConsumption]"]').val(data.budget.yrnConsumption);
+                        $('[name="budget[kntngPrice]"]').val(data.budget.kntngPrice);
+                        $('[name="budget[dyngPrice]"]').val(data.budget.dyngPrice);
+                        $('[name="budget[aopPrint]"]').val(data.budget.aopPrint);
+                        $('[name="budget[print]"]').val(data.budget.print);
+                        $('[name="budget[accessories]"]').val(data.budget.accessories);
+                        $('[name="budget[testCost]"]').val(data.budget.testCost);
+                        $('[name="budget[bankCharge]"]').val(data.budget.bankCharge);
+                        $('[name="budget[commission]"]').val(data.budget.commission);
+                        $('[name="budget[buyingComssn]"]').val(data.budget.buyingComssn);
+                        $('[name="budget[fnshFabrcConsump]"]').val(data.budget.fnshFabrcConsump);
+                        $('[name="budget[freightChrge]"]').val(data.budget.freightChrge);
+                        $('[name="budget[others]"]').val(data.budget.others);
+                    }
+
+                    data = data.isData;
+
                     $('[name="order_number"]').val(data.order_number).attr('disabled', 'disabled');
                     $('[name="customer_name"]').val(data.customer_name);
                     $('[name="date_of_entry"]').val(data.date_of_entry);
@@ -754,6 +821,7 @@
                     $('[name="sales_person"]').val(data.sales_person);
 
                     $("#infoArea, #infoArea a").css('display', 'none');
+
                 },
                 error: function(){
                     alert('editError');
@@ -1035,9 +1103,15 @@
         });
 
         $("#saveOrder").click(function () {
+            //alert('dsa');
             var order_number = $('[name="order_number"]').val();
             if (order_number == '') {
-                alert('order number missing !');
+                alert('Something Wrong !');
+                return false;
+            }
+            var order_quantity = $('[name="order_quantity"]').val();
+            if (order_quantity < 0) {
+                alert('Something Wrong !');
                 return false;
             }
 

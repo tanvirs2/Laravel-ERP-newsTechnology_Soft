@@ -9,6 +9,7 @@ $cmPrDzSum=0; $bgtCmCstSum=0; $bnkChrgeSum=0; $totBnkChrgSum=0; $budgetCostSum=0
     <tr class="orderRow @if($employee->prStatus) prSts @endif" id="" orderId="{{ $employee->order_number }}">
         <td class="text-center">
             {{ $var++ }}
+            <small class="text-aqua">{{ $employee->Id }}</small>
         </td>
         <td class="text-center">
             {{ $employee->customer_name }}

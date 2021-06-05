@@ -95,16 +95,9 @@
                                             <td width="537" height="31">
                                                 <table width="100%" cellspacing="0" cellpadding="0" border="0">
                                                     <tbody>
-                                                    <tr>
+                                                    ActShipDate                         <tr>
                                                         <td class="form-group">
-                                                            <select style="width: 7em;" name="sYear" class="form-control">
-                                                                <option value="2015">2015</option>
-                                                                <option value="2016">2016</option>
-                                                                <option value="2017">2017</option>
-                                                                <option value="2018" selected>2018</option>
-                                                                <option value="2019">2019</option>
-                                                                <option value="2020">2020</option>
-                                                            </select>
+                                                            @include('tools.years')
                                                         </td>
                                                         <td valign="top"><input value="Jan" onclick="transfer('01-01-','31-01-');" class="urg1 btn btn-default" type="button"></td>
                                                         <td></td>
@@ -219,6 +212,8 @@
                                                             Status
                                                             : activate to sort column ascending">
                                                         EntryDate
+                                                        <br>
+                                                        <input style="width: 75px; color: black; font-size: 0.9em" id="entry-date-search" type="text">
                                                     </th>
                                                     <th class="text-center sorting" tabindex="0"
                                                         aria-controls="sample_employees" rowspan="1" colspan="1"
@@ -342,6 +337,37 @@
                                                         [Embroidary Responsible]
                                                         <br>
                                                     </th>
+
+                                                    <th class="text-center sorting" tabindex="0"
+                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
+                                                        style="" aria-label="
+                                                            At Work
+                                                            : activate to sort column ascending">
+                                                        Yarn in house
+                                                        [commercial / procurement resposible]
+                                                        <br>
+                                                    </th>
+                                                    <th class="text-center sorting" tabindex="0"
+                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
+                                                        style="" aria-label="
+                                                            At Work
+                                                            : activate to sort column ascending">
+                                                        knitting
+                                                        [Fabric Responsible]
+                                                        <br>
+                                                    </th>
+                                                    <th class="text-center sorting" tabindex="0"
+                                                        aria-controls="sample_employees" rowspan="1" colspan="1"
+                                                        style="" aria-label="
+                                                            At Work
+                                                            : activate to sort column ascending">
+                                                        Dyeing
+                                                        [Fabric Responsible]
+                                                        <br>
+                                                    </th>
+
+
+
                                                     <th class="text-center sorting" tabindex="0"
                                                         aria-controls="sample_employees" rowspan="1" colspan="1"
                                                         style="" aria-label="
@@ -476,6 +502,13 @@
                                                     <th>Receiving Fabric Shade Approval [Fabric Responsible] </th>
                                                     <th>Receiving of Print Approval [Printing Responsible]</th>
                                                     <th>Receiving of Embro. Approval [Embroidary Responsible] </th>
+
+                                                    <th>Yarn in house [commercial / procurement resposible]</th>
+                                                    <th>knitting
+                                                        [Fabric Responsible]</th>
+                                                    <th>Dyeing
+                                                        [Fabric Responsible]</th>
+
                                                     <th>Bulk Fabrics In house [Fabric Responsible] </th>
                                                     <th>Bulk Trims In house [Merchandiser]</th>
                                                     <th>PP meeting [Merchandiser]</th>
@@ -558,6 +591,13 @@
     })();
     $(document).ready(function(){
         $("#tblToexcel").click(function () {
+
+            $('.actDateClass').each(function () {
+                $(this).closest('.popWindow').attr('class', 'newClass');
+            });
+            $(".actDateClass").remove();
+            $('.en-tna').remove();
+
             var today = new Date();
             var dd = today.getDate();
             var mm = today.getMonth()+1; //January is 0!
@@ -709,14 +749,17 @@
                         to = '-';
                     }
 
-                    if (name.indexOf('-') > -1)
-                    {
-                        name = name.replace("-", "******");
+                    if ('date_of_entry' != field) {
+                        if (name.indexOf('-') > -1)
+                        {
+                            name = name.replace("-", "******");
+                        }
+                        if (name.indexOf('/') > -1)
+                        {
+                            name = name.replace("/", "-");
+                        }
                     }
-                    if (name.indexOf('/') > -1)
-                    {
-                        name = name.replace("/", "-");
-                    }
+
                     var getActionURL = "{{ url('tna/autoCompltRslt')}}/" + field + "/" + name + "/" + from + "/" + to;
                     $.ajax({
                         cache: false,
@@ -735,6 +778,8 @@
                 minLength: 0
             });
         }
+
+        libSearch("#entry-date-search", "date_of_entry");
 
         libSearch("#byrNmeSrch", "customer_name");
         libSearch("#ordNumSrch", "orderID");

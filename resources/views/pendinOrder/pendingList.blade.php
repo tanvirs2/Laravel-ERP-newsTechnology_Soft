@@ -8,12 +8,15 @@
     #shpmntTable th, #shpmntTable td{
         width:100px
     }
+    #sample_employees_wrapper td {
+        //overflow: auto;
+    }
 </style>
 <div class="">
 @include('tools.scrollBtn.scrollBtn')
         <!-- Content Header (Page header) -->
         <!-- Main content -->
-    
+
         <section class="content">
             <!-- Default box -->
             <div class="box">
@@ -127,7 +130,72 @@
                                                     <!-- /.box-footer -->
                                                 </div>
                                             </div>
-                                            @if($januaryQty != 0)
+                                            {{--monthPendingDetails--}}
+                                            @foreach($monthPendingDetails as $key => $pendDetails)
+                                            <div class="col-md-4">
+                                                <div class="box box-info">
+                                                    <div class="box-header with-border">
+                                                        <h3 class="box-title">{{ $key }}</h3>
+                                                        {{--<h3 class="box-title">{{ date("Y", strtotime($key)) }} {{ date("F", strtotime($key)) }}</h3>--}}
+
+                                                        <div class="box-tools pull-right">
+                                                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                            </button>
+                                                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.box-header -->
+
+                                                    <div class="box-body">
+                                                        <table style="font-size: 15px; font-weight: bold" class="table table-striped table-bordered table-hover no-footer" id="budgetTbl" role="grid" aria-describedby="">
+
+                                                            <thead class="bg-primary" id="">
+                                                            <tr role="row">
+                                                                <th style="text-align: center; width: 30px;" class="sorting" tabindex="0" aria-controls="sample_employees" rowspan="1" colspan="1" aria-label="
+                                                            Name
+                                                            : activate to sort column ascending">
+                                                                    #
+                                                                </th>
+
+                                                                <th class="text-center sorting" tabindex="0" aria-controls="sample_employees" rowspan="1" colspan="1" style="" aria-label="
+                                                            At Work
+                                                            : activate to sort column ascending">
+                                                                    ORDER QTY <span id=""></span>
+                                                                </th>
+                                                                <th class="text-center sorting" tabindex="0" aria-controls="sample_employees" rowspan="1" colspan="1" style="" aria-label="
+                                                            At Work
+                                                            : activate to sort column ascending">
+                                                                    ORDER VALUE <span id=""></span>
+                                                                </th>
+
+
+
+                                                            </tr>
+                                                            </thead>
+                                                            <thead class="bg-primary" id="" style="display: none">
+
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>{{ array_sum($pendDetails['qty']) }} <span class="text-success">Pcs</span></td>
+                                                                <td id="">${{ array_sum($pendDetails['value']) }}</td>
+                                                            </tr>
+
+                                                            </tbody>
+
+                                                        </table>
+                                                    </div>
+                                                    <!-- /.box-body -->
+                                                    <div class="box-footer text-center">
+                                                        <a href="javascript:void(0)" class="uppercase"></a>
+                                                    </div>
+                                                    <!-- /.box-footer -->
+                                                </div>
+                                            </div>
+                                            @endforeach
+
+                                            {{--@if($januaryQty != 0)
                                             <div class="col-md-4">
                                                 <div class="box box-info">
                                                     <div class="box-header with-border">
@@ -865,12 +933,16 @@
                                                     <!-- /.box-footer -->
                                                 </div>
                                             </div>
-                                            @endif
+                                            @endif--}}
 
                                         </div>
                                     </div>
                                     <div class="box-body">
-
+                                        <div style="height: 400px; overflow-y: scroll">
+                                            <div style="border: 1px solid #ebebeb" class="col-md-6" id="buyer-order-qty"></div>
+                                            <div style="border: 1px solid #ebebeb" class="col-md-6" id="buyer-order-value"></div>
+                                            <div id="append-tbl"></div>
+                                        </div>
                                     </div>
                                     <!-- /.box-body -->
                                 </div>
@@ -905,14 +977,7 @@
                                                         <tbody>
                                                         <tr>
                                                             <td class="form-group">
-                                                                <select style="width: 7em;" name="sYear" class="form-control">
-                                                                    <option value="2015">2015</option>
-                                                                    <option value="2016">2016</option>
-                                                                    <option value="2017">2017</option>
-                                                                    <option value="2018" selected>2018</option>
-                                                                    <option value="2019">2019</option>
-                                                                    <option value="2020">2020</option>
-                                                                </select>
+                                                                @include('tools.years')
                                                             </td>
                                                             <td valign="top"><input value="Jan" onclick="transfer('01-01-','31-01-');" class="urg1 btn btn-default" type="button"></td>
                                                             <td></td>
@@ -1001,12 +1066,12 @@
                                                         </th>
                                                         <th class="text-center sorting" tabindex="0"
                                                             aria-controls="sample_employees" rowspan="1" colspan="1"
-                                                            style="width: 70px;" aria-label="
+                                                            style="" aria-label="
                                                             Dept/Designation
                                                             : activate to sort column ascending">
                                                             StyleNo
                                                             <br>
-                                                            <input style="width: 60px; color: black; font-size: 0.9em" id="artclNumSrch" type="text">
+                                                            <input style="width: 50px; color: black; font-size: 0.9em" id="artclNumSrch" type="text">
                                                         </th>
                                                         <th class="text-center sorting" tabindex="0"
                                                             aria-controls="sample_employees" rowspan="1" colspan="1"
@@ -1097,6 +1162,12 @@
                                                             Action
                                                             ">
                                                             Cutting
+                                                        </th>
+                                                        <th class="text-center sorting_disabled" rowspan="1" colspan="1"
+                                                            style="" aria-label="
+                                                            Action
+                                                            ">
+                                                            Cutting%
                                                         </th>
                                                         <th class="text-center sorting_disabled" rowspan="1" colspan="1"
                                                             style="" aria-label="
@@ -1214,6 +1285,8 @@
     </div>
 
     <script>
+        window.cou = 1;
+
         $(document).ready(function(){
             $("#tblToexcel").click(function () {
                 var today = new Date();
@@ -1378,6 +1451,8 @@
                                 global: false,
                                 url: getActionURL,
                                 success: function (data) {
+                                    window.cou++; //for Pie Charts
+
                                     $("#shpmntTable > tbody, #shpmntTable > tfoot").remove();
                                     $("#shpmntTable").append(data);
                                 },
@@ -1402,6 +1477,8 @@
 
 //Start-18-11-16
         $("#fromToSearch").click(function () {
+            window.cou++; //for Pie Charts
+
             var from = $("#from").val();
             var to = $("#to").val();
             var Date1 = from.split('-');

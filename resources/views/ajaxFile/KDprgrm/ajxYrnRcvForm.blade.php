@@ -65,12 +65,18 @@
 
 <script>
     $(document).ready(function () {
-        $(".myAjaxModalChild ").on('hidden.bs.modal', function () {
+        /*$(".myAjaxModalChild ").on('hidden.bs.modal', function () {
             $('[href="{{ url('ajxColor') }}"]').val(clrLib.clrName);
             $('[name="yarn[colorId]"]').val(clrLib.clrId);
+        });*/
+        var kdQty = parseInt(prevKdEntryQty);
+        $('[name="yarn[yarnRcvQTY]"]').change(function () {
+            kdQty += parseInt($(this).val());
         });
+
         $('[action="{{ route('yrnRcvKdProgrm.store') }}"]').ajaxForm({
             success:function () {
+                fldObj.find('a:last').text(kdQty); //update instantly
                 swal({
                     title:" Good job !",
                     text:"Updated !",

@@ -5,6 +5,7 @@ use Auth;
 use App\Http\Requests;
 use App\models\Employee;
 use Illuminate\Http\Request;
+use App\Order;
 use Image;
 
 class HomeController extends Controller
@@ -26,7 +27,32 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $grandPendingSum = Order::where(
+            [
+                ['shipStatus', '=', 'running'],
+                ['date_of_ship', '<=', date('Y-m-d')],
+                [function ($query) {
+                    $query
+                        ->leftJoin('production', 'order_details.Id', '=', 'production.order_id')
+                        ->where('order_status', '=', 'Partial Shipment')
+                        ->orWhere('order_status', '=', 'Running');
+                }
+                ]
+            ])->get();
+
+        $grandPendingQty = [];
+        $grandPendingValue = [];
+
+        foreach ($grandPendingSum as $grandPending) {
+            $grmntQty = $grandPending->order_quantity - $grandPending->partialShipmentQty->sum('qty');
+            $grandPendingQty[] = $grmntQty;
+            $grandPendingValue[] = $grandPending->unit_price*$grmntQty;
+        }
+
+
+        $this->data['grandPendingQty'] = array_sum($grandPendingQty);
+        $this->data['grandPendingValue'] = array_sum($grandPendingValue);
+        return view('dashboard', $this->data);
     }
 
     public function profile()

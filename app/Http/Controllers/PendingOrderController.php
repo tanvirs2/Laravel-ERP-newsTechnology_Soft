@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Po, App\BudgetFrOrder, App\KnitDyeing;
@@ -66,11 +67,51 @@ class PendingOrderController extends Controller
                 ]
             ])->get();
 
+        $allPendingOrder = Order::where(
+            [
+                ['shipStatus', '=', 'running'],
+                ['date_of_ship', '<=', date('Y-m-d')],
+                [function ($query) {
+                    $query
+                        ->where('order_status', '=', 'Partial Shipment')
+                        ->orWhere('order_status', '=', 'Running');
+                }
+                ]
+            ])
+            //->select('id', 'date_of_ship')
+            ->get()
+            ->sortBy("date_of_ship")
+            ->groupBy(function($date) {
+                return Carbon::parse($date->date_of_ship)->format('Y'); // grouping by years
+            });
+
+        $monthWise = [];
+        $mm = [];
+        foreach ($allPendingOrder as $year => $pendOrd) {
+            $monthWise[$year] = $pendOrd->groupBy(function($date) {
+                return Carbon::parse($date->date_of_ship)->format('m'); // grouping by months
+            });
+
+            foreach ($monthWise[$year] as $mnth => $pendMonthOrd) {
+                foreach ($pendMonthOrd as $singlePending) {
+                    $pndingGrmntQty = $singlePending->order_quantity - $singlePending->partialShipmentQty->sum('qty');
+                    $mm[$year . '-' . $mnth]['qty'][] = $pndingGrmntQty;
+                    $mm[$year.'-'.$mnth]['value'][] = $singlePending->unit_price*$pndingGrmntQty;
+
+                    $this->data['monthPendingDetails'] = $mm;
+                }
+            }
+        }
+
+
+        //dd($this->data['monthPendingDetails']);
+        //dd($allPendingOrder);
+
         $grandPendingQty = [];
         $grandPendingValue = [];
 
         foreach ($grandPendingSum as $grandPending) {
-            $grmntQty = $grandPending->order_quantity - $grandPending->shipmentQty;
+            $grmntQty = $grandPending->order_quantity - $grandPending->partialShipmentQty->sum('qty');
             $grandPendingQty[] = $grmntQty;
             $grandPendingValue[] = $grandPending->unit_price*$grmntQty;
         }
@@ -81,8 +122,11 @@ class PendingOrderController extends Controller
 
         /*************************************************************/
 
-        $firstDay = date('Y-01-01');
-        $lastDay = date('Y-12-31');
+        //$barChartYear = 'Y';
+        $barChartYear = '2021';
+
+        $firstDay = date($barChartYear.'-01-01');
+        $lastDay = date($barChartYear.'-12-31');
         $forCharts = Order::whereBetween('date_of_ship', [$firstDay, $lastDay])->where(
             [
                 ['shipStatus', '=', 'running'],
@@ -121,52 +165,52 @@ class PendingOrderController extends Controller
         $novemberValue  = [];
         $decemberValue  = [];
         foreach ($forCharts as $chart) {
-            $grmntQty = $chart->order_quantity - $chart->shipmentQty;
-            if ($chart->date_of_ship <= date('Y-01-31')) {
+            $grmntQty = $chart->order_quantity - $chart->partialShipmentQty->sum('qty');
+            if ($chart->date_of_ship <= date($barChartYear.'-01-31')) {
                 $januaryQty[] = $grmntQty;
                 $januaryValue[] = $chart->unit_price*$grmntQty;
             }
-            if ($chart->date_of_ship <= date('Y-02-28') && $chart->date_of_ship > date('Y-01-31')) {
+            if ($chart->date_of_ship <= date($barChartYear.'-02-28') && $chart->date_of_ship > date($barChartYear.'-01-31')) {
                 $februaryQty[] = $grmntQty;
                 $februaryValue[] = $chart->unit_price*$grmntQty;
             }
-            if ($chart->date_of_ship <= date('Y-03-31') && $chart->date_of_ship > date('Y-02-28')) {
+            if ($chart->date_of_ship <= date($barChartYear.'-03-31') && $chart->date_of_ship > date($barChartYear.'-02-28')) {
                 $marchQty[] = $grmntQty;
                 $marchValue[] = $chart->unit_price*$grmntQty;
             }
-            if ($chart->date_of_ship <= date('Y-04-30') && $chart->date_of_ship > date('Y-03-31')) {
+            if ($chart->date_of_ship <= date($barChartYear.'-04-30') && $chart->date_of_ship > date($barChartYear.'-03-31')) {
                 $aprilQty[] = $grmntQty;
                 $aprilValue[] = $chart->unit_price*$grmntQty;
             }
-            if ($chart->date_of_ship <= date('Y-05-31') && $chart->date_of_ship > date('Y-04-30')) {
+            if ($chart->date_of_ship <= date($barChartYear.'-05-31') && $chart->date_of_ship > date($barChartYear.'-04-30')) {
                 $mayQty[] = $grmntQty;
                 $mayValue[] = $chart->unit_price*$grmntQty;
             }
-            if ($chart->date_of_ship <= date('Y-06-30') && $chart->date_of_ship > date('Y-05-31')) {
+            if ($chart->date_of_ship <= date($barChartYear.'-06-30') && $chart->date_of_ship > date($barChartYear.'-05-31')) {
                 $juneQty[] = $grmntQty;
                 $juneValue[] = $chart->unit_price*$grmntQty;
             }
-            if ($chart->date_of_ship <= date('Y-07-31') && $chart->date_of_ship > date('Y-06-30')) {
+            if ($chart->date_of_ship <= date($barChartYear.'-07-31') && $chart->date_of_ship > date($barChartYear.'-06-30')) {
                 $julyQty[] = $grmntQty;
                 $julyValue[] = $chart->unit_price*$grmntQty;
             }
-            if ($chart->date_of_ship <= date('Y-08-31') && $chart->date_of_ship > date('Y-07-31')) {
+            if ($chart->date_of_ship <= date($barChartYear.'-08-31') && $chart->date_of_ship > date($barChartYear.'-07-31')) {
                 $augustQty[] = $grmntQty;
                 $augustValue[] = $chart->unit_price*$grmntQty;
             }
-            if ($chart->date_of_ship <= date('Y-09-30') && $chart->date_of_ship > date('Y-08-31')) {
+            if ($chart->date_of_ship <= date($barChartYear.'-09-30') && $chart->date_of_ship > date($barChartYear.'-08-31')) {
                 $septemberQty[] = $grmntQty;
                 $septemberValue[] = $chart->unit_price*$grmntQty;
             }
-            if ($chart->date_of_ship <= date('Y-10-31') && $chart->date_of_ship > date('Y-09-30')) {
+            if ($chart->date_of_ship <= date($barChartYear.'-10-31') && $chart->date_of_ship > date($barChartYear.'-09-30')) {
                 $octoberQty[] = $grmntQty;
                 $octoberValue[] = $chart->unit_price*$grmntQty;
             }
-            if ($chart->date_of_ship <= date('Y-11-30') && $chart->date_of_ship > date('Y-10-31')) {
+            if ($chart->date_of_ship <= date($barChartYear.'-11-30') && $chart->date_of_ship > date($barChartYear.'-10-31')) {
                 $novemberQty[] = $grmntQty;
                 $novemberValue[] = $chart->unit_price*$grmntQty;
             }
-            if ($chart->date_of_ship <= date('Y-12-31') && $chart->date_of_ship > date('Y-11-30')) {
+            if ($chart->date_of_ship <= date($barChartYear.'-12-31') && $chart->date_of_ship > date($barChartYear.'-11-30')) {
                 $decemberQty[] = $grmntQty;
                 $decemberValue[] = $chart->unit_price*$grmntQty;
             }
@@ -296,12 +340,17 @@ class PendingOrderController extends Controller
         $from = $from->format('Y-m-d');
         $to = $to->format('Y-m-d');
         if ($customer_name == '-' && $shipSts == '-') {
-            $this->data['employees'] = Order::whereBetween('date_of_ship', [$from, $to])->where([['shipStatus', '=', 'running'], ['date_of_ship', '<=', date('Y-m-d')],
-                [function ($query) {
-                    $query
-                        ->where('order_status', '=', 'Partial Shipment')
-                        ->orWhere('order_status', '=', 'Running');
-                }]])->get()->sortBy("date_of_ship");
+            $this->data['employees'] = Order::whereBetween('date_of_ship', [$from, $to])->where(
+                [
+                    ['shipStatus', '=', 'running'],
+                    ['date_of_ship', '<=', date('Y-m-d')],
+                    [function ($query) {
+                        $query
+                            ->where('order_status', '=', 'Partial Shipment')
+                            ->orWhere('order_status', '=', 'Running');
+                        }
+                    ]
+                ])->get()->sortBy("date_of_ship");
         }
         if ($customer_name != '-' && $shipSts != '-') {
             $this->data['employees'] = Order::whereBetween('date_of_ship', [$from, $to])->where([['customer_name', '=', $customer_name], ['order_status', '=', $shipSts], ['shipStatus', '=', 'running'], ['date_of_ship', '<=', date('Y-m-d')],

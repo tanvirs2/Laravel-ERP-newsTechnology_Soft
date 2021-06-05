@@ -381,6 +381,86 @@ function tnaDelayMark($formulaDigit, $obj)
                 </tbody>
             </table>
         </td>
+
+        <td class="">
+            <table class="tnaClass table table-bordered">
+                <thead>
+                <tr>
+                    <th>Start</th>
+                    <th>Fnsh</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="{{ tnaDelayMark(50, $employee) }}" class="tnaStart">
+                        <p href="#" class="popWindow" onclick="lapDipReport('{{ $employee->Id }}', 'DyeingProd_Start', 'Receiving of Embro. Approval [Embroidary Responsible] _Start')">
+                            {!! labDipFormula(10, $employee)->tnaHtmlView !!}</p>
+                        <button ord-id="{{ $employee->Id }}" db-field="DyeingProd_Start" class="en-tna">{{ enDsView('DyeingProd_Start', $employee) }}</button>
+                        <span>{!! cmt_view('DyeingProd_Start', $employee) !!}</span>
+                    </td>
+                    <td style="{{ tnaDelayMark(50, $employee) }}" class="tnaFinish">
+                        <p href="#" class="popWindow" onclick="lapDipReport('{{ $employee->Id }}', 'DyeingProd_Finish', 'Receiving of Embro. Approval [Embroidary Responsible] _Finish')">
+                            {!! labDipFormula(20, $employee)->tnaHtmlView !!}</p>
+                        <button DS ord-id="{{ $employee->Id }}" db-field="DyeingProd_Finish" class="en-tna">{{ enDsView('DyeingProd_Finish', $employee) }}</button>
+                        <span>{!! cmt_view('DyeingProd_Finish', $employee) !!}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="">
+            <table class="tnaClass table table-bordered">
+                <thead>
+                <tr>
+                    <th>Start</th>
+                    <th>Fnsh</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="{{ tnaDelayMark(50, $employee) }}" class="tnaStart">
+                        <p href="#" class="popWindow" onclick="lapDipReport('{{ $employee->Id }}', 'DyeingProd_Start', 'Receiving of Embro. Approval [Embroidary Responsible] _Start')">
+                            {!! labDipFormula(15, $employee)->tnaHtmlView !!}</p>
+                        <button ord-id="{{ $employee->Id }}" db-field="DyeingProd_Start" class="en-tna">{{ enDsView('DyeingProd_Start', $employee) }}</button>
+                        <span>{!! cmt_view('DyeingProd_Start', $employee) !!}</span>
+                    </td>
+                    <td style="{{ tnaDelayMark(50, $employee) }}" class="tnaFinish">
+                        <p href="#" class="popWindow" onclick="lapDipReport('{{ $employee->Id }}', 'DyeingProd_Finish', 'Receiving of Embro. Approval [Embroidary Responsible] _Finish')">
+                            {!! labDipFormula(25, $employee)->tnaHtmlView !!}</p>
+                        <button DS ord-id="{{ $employee->Id }}" db-field="DyeingProd_Finish" class="en-tna">{{ enDsView('DyeingProd_Finish', $employee) }}</button>
+                        <span>{!! cmt_view('DyeingProd_Finish', $employee) !!}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="">
+            <table class="tnaClass table table-bordered">
+                <thead>
+                <tr>
+                    <th>Start</th>
+                    <th>Fnsh</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="{{ tnaDelayMark(50, $employee) }}" class="tnaStart">
+                        <p href="#" class="popWindow" onclick="lapDipReport('{{ $employee->Id }}', 'DyeingProd_Start', 'Receiving of Embro. Approval [Embroidary Responsible] _Start')">
+                            {!! labDipFormula(25, $employee)->tnaHtmlView !!}</p>
+                        <button ord-id="{{ $employee->Id }}" db-field="DyeingProd_Start" class="en-tna">{{ enDsView('DyeingProd_Start', $employee) }}</button>
+                        <span>{!! cmt_view('DyeingProd_Start', $employee) !!}</span>
+                    </td>
+                    <td style="{{ tnaDelayMark(50, $employee) }}" class="tnaFinish">
+                        <p href="#" class="popWindow" onclick="lapDipReport('{{ $employee->Id }}', 'DyeingProd_Finish', 'Receiving of Embro. Approval [Embroidary Responsible] _Finish')">
+                            {!! labDipFormula(45, $employee)->tnaHtmlView !!}</p>
+                        <button DS ord-id="{{ $employee->Id }}" db-field="DyeingProd_Finish" class="en-tna">{{ enDsView('DyeingProd_Finish', $employee) }}</button>
+                        <span>{!! cmt_view('DyeingProd_Finish', $employee) !!}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+
         <td class="">
             <table class="tnaClass table table-bordered">
                 <thead>
@@ -701,6 +781,9 @@ function tnaDelayMark($formulaDigit, $obj)
     <td></td>
     <td></td>
     <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
 </tr>
 <tr style="background-color: #34495e; color: whitesmoke; font-weight: bolder; font-size: 1.3em">
     <td></td>
@@ -716,6 +799,9 @@ function tnaDelayMark($formulaDigit, $obj)
 
     <td></td>
 
+    <td></td>
+    <td></td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>

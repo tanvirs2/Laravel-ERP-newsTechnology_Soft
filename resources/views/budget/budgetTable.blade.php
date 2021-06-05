@@ -10,6 +10,7 @@ $ttlOtherCstSum=0; $budgetCostSum=0; $prftOrLossSum=0;
     <tr class="orderRow @if($employee->prStatus) prSts @endif" id="row{{ $employee->order_number }}" orderId="{{ $employee->order_number }}">
         <td class="text-center">
             {{ $var++ }}
+            <small class="text-aqua">{{ $employee->Id }}</small>
         </td>
         <td class="text-center">
             {{ $employee->customer_name }}
@@ -196,8 +197,18 @@ $ttlOtherCstSum=0; $budgetCostSum=0; $prftOrLossSum=0;
             {{--*/$ttlOtherCstSum += $ttlOtherCst/*--}}
         </td>
         <td class="text-center">
-            {{ round($budgetCost = $bgtYrnCst+$bgtKntCst+$bgtDyngCst+$bgtAop+$bgtPrint+$bgtAccCst+$bgtTstCst
-            +$bgtCmCst+$totBnkChrg+$totCmmssn+$ttlOtherCst, 2) }}
+            {{ round($budgetCost = $bgtYrnCst
+                                    +$bgtKntCst
+                                    +$bgtDyngCst
+                                    +$bgtAop
+                                    +$bgtPrint
+                                    +$bgtAccCst
+                                    +$bgtTstCst
+                                    +$bgtCmCst
+                                    +$totBnkChrg
+                                    +$totCmmssn
+                                    +$ttlOtherCst
+                                    , 2) }}
             {{--*/$budgetCostSum += $budgetCost/*--}}
         </td>
         <td class="text-center">
@@ -207,6 +218,8 @@ $ttlOtherCstSum=0; $budgetCostSum=0; $prftOrLossSum=0;
 
         <td class="">
             <p class="clkAbl">
+                <a style="" class="" id="editOrderInfo" onclick="editOrderInfo('{{ $employee->order_number }}');" data-toggle="tooltip" title="Edit Order Information. " href="#"><i class="fa fa-pencil-square-o"></i> </a>
+
                 {{--ID: {{ $employee->Id }}--}}
                 {{--<a href="{{ url('appointmentLetter') }}" id="printMe" data-toggle="tooltip" data-placement="left" title="Print Appointment Letter!" class="btn purple fa fa-pencil"><i class="fa fa-print"></i></a>--}}
                 {{--<a style="" class="" id="showOrderInfo" onclick="showOrderInfo('{{ $employee->order_number }}');" data-toggle="tooltip" title="View Order Information. " href="#"><i class="fa fa-eye"></i> </a>
@@ -269,6 +282,53 @@ $ttlOtherCstSum=0; $budgetCostSum=0; $prftOrLossSum=0;
 </tfoot>
 
 <script>
+
+    Highcharts.chart('budget-chart', {
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 60,
+                beta: 0
+            }
+        },
+        title: {
+            text: 'Budget Chart'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 45,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name} : {point.y}'
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'Budget',
+            data: [
+                ['Yarn Cost', {{ round($bgtYrnCstSum, 2) }}],
+                ['Knitting Cost', {{ round($bgtKntCstSum, 2) }}],
+                ['Dying Cost', {{ round($bgtDyngCstSum, 2) }}],
+                ['AOP/YD', {{ round($bgtAopSum, 2) }}],
+                ['Printing+embroidery', {{ round($bgtPrintSum, 2) }}],
+                ['accessories cost', {{ round($bgtAccCstSum, 2) }}],
+                ['Test cost', {{ $tstCstSum }}],
+                ['CM cost', {{ round($bgtCmCstSum, 2) }}],
+                ['Commercial Cost', {{ round($totBnkChrgSum, 2) }}],
+                ['Buying Commission', {{ round($totCmmssnSum, 2) }}],
+                ['Other Cost', {{ round($ttlOtherCstSum, 2) }}],
+                ['Profit Or Loss', {{ round($prftOrLossSum) }}]
+            ]
+        }]
+    });
+
 
     $( ".shpDays" ).each(function(){
         var value = parseInt( $( this ).html() );

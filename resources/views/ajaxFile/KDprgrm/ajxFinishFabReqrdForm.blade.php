@@ -64,10 +64,10 @@
 
 <script>
     $(document).ready(function () {
-        $(".myAjaxModalChild ").on('hidden.bs.modal', function () {
+        /*$(".myAjaxModalChild ").on('hidden.bs.modal', function () {
             $('[href="{{ url('ajxColor') }}"]').val(clrLib.clrName);
             $('[name="finiFabR[colorId]"]').val(clrLib.clrId);
-        });
+        });*/
 
 
         var kdQty = parseInt(prevKdEntryQty);
@@ -76,9 +76,10 @@
         });
 
         $('[type="submit"]').click(function (e) {
-            if (parseInt(kdEntryQty) >= parseInt(kdQty)) {
+            if (parseInt(kdEntryQty) >= kdQty) {
                 $('[action="{{ route('finisFabRqrd.store') }}"]').ajaxForm({
                     success:function () {
+                        fldObj.find('a:last').text(kdQty);
                         swal({
                             title:"Good job!",
                             text:"Updated",
@@ -88,6 +89,7 @@
                     }
                 });
             } else {
+                alert('asd');
                 e.preventDefault();
                 swal({
                     title:"Error",

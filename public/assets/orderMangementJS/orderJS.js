@@ -29,28 +29,7 @@ $(document).ready(function () {
         });
     });
 
-    /*var ctrl = false;
-    var alt = false;
-    $(document).on('keyup keydown', function (e) {
-        alt = e.altKey;
-        if (alt) {
-            $(".orderRow").css({"background": "white", "color": "black"});
-        }
-        ctrl = e.ctrlKey;
-    });
-
-    $(function () {
-        $("#shpmntTable").on('click', ".orderRow", function () {
-            if (ctrl) {
-                $(this).css({"background": "#95a5a6", "color": "black"});
-            } else {
-                $(this).css({"background": "green", "color": "white"});
-                $(".shipmntSts").css("color", "black");
-            }
-        });
-    });*/
-
-    $("#shpmntTable").on('click', ".orderRow", function () {
+    $("#shpmntTable, .box-success").on('click', ".orderRow, .summery-row", function () {
         $(this).css({"background": "#27ae60", "color": "white"});
         $(this).find("table").css({"background": "#27ae60", "color": "white"});
         $(this).find("a").css({"background": "#27ae60", "color": "white", "text-decoration": "none"});
@@ -97,6 +76,18 @@ $(document).ready(function () {
         $("#acShipDateId").keyup(function (event) {
             if (event.keyCode == 13) {
                 var acShipDate = $(this).val();
+                var shpDate = $(this).closest('tr').find('.shpDate').text().trim();
+
+                function convertDigitIn(str){
+                    return str.split('-').reverse().join('');
+                }
+
+                if (convertDigitIn(shpDate) > convertDigitIn(acShipDate)) {
+                    swal('Error', 'Something Mistake !', 'error');
+                    return;
+                }
+
+
                 var url = laravelBaseUrl + "/Order/actualShipDate/" + acShipDate +"/"+ orderId;
                 $.ajax({
                     url: url,
@@ -140,6 +131,19 @@ $(document).ready(function () {
             shipSts = '-';
         }
         var url = laravelBaseUrl + "/Order/orderStsSrc/"+ byrNmeSrch +"/"+ shipSts;
+
+        /*28-4-2020*/
+
+        var param = {
+            //customer_name: $("#byrNmeSrch").val(),
+            orderID: $("#ordNumSrch").val(),
+            //order_status: ($("#shipSts").val() == 'Select...') ? '' : $("#shipSts").val(),
+        };
+
+        url = url + '?' + $.param(param);
+
+        /*28-4-2020*/
+
         $.ajax({
             url: url,
             cache: false,

@@ -8,6 +8,10 @@
     <script src="{{ asset('') }}assets/jQuery/jquery311.min.js"></script>
     <script src="{{ asset('') }}assets/jQuery.printElement/jquery.printelement.min.js"></script>
     <script src="{{ asset('') }}assets/jQuery/jquery.table2excel.min.js"></script>
+    {{--INCLUDE HIGHCHARTS--}}
+    <script src="{{ asset('') }}assets/highChart/highcharts.js"></script>
+    <script src="{{ asset('') }}assets/highChart/highcharts-3d.js"></script>
+    {{--INCLUDE HIGHCHARTS--}}
 
     <link rel="stylesheet" href="{{ asset('') }}assets/jQueryCSS/jquery-ui.css">
     <script src="{{ asset('') }}assets/jQuery/jquery-ui.js"></script>
@@ -20,7 +24,15 @@
                     dateFormat: 'yy-mm-dd',
                 });
             });
+
+
+            /*$(document).on("load", '.portlet-body', function(){
+                document.querySelector("select[name='sYear']").style.background = 'red';
+            });*/
+
+            document.querySelector("select[name='sYear']").value = (new Date()).getFullYear();
         });
+
 
     </script>
 
@@ -159,6 +171,10 @@
         });
     </script>
     <style>
+
+        #childTable td:nth-child(2) {
+            text-transform: uppercase;
+        }
 
         /* width */
         ::-webkit-scrollbar {
@@ -300,6 +316,22 @@
             background-color: #c60b0f;
             color: #ffffff;
         }
+    </style>
+
+    {{--New Style--}}
+    <style>
+
+
+        .pending_order_qty{
+            font-weight: bold;
+            font-size: 18px;}
+
+
+
+        .inner p{
+            font-weight: bold;
+            font-size: 13px;
+            color: #3C8DBC;}
     </style>
     {{--<!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -646,15 +678,7 @@
                         </span>
                     </a>
                 </li>
-                <li class="treeview">
-                    <a id="tnaList" href="{{ route('budget.index') }}">
-                        <i class="fa fa-files-o"></i>
-                        <span>Budget</span>
-                        <span class="pull-right-container">
-                        <span class="label label-primary pull-right">4</span>
-                        </span>
-                    </a>
-                </li>
+
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-pie-chart"></i>
@@ -668,6 +692,15 @@
                             <a id="shipmentS" href="#ShipmentSchedule">
                                 <i class="fa fa-pie-chart"></i>
                                 <span>Shipment Schedule</span>
+                                <span class="pull-right-container">
+                                    <i class=""></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('budget.index') }}">
+                                <i class="fa fa-pie-chart"></i>
+                                <span>Budget</span>
                                 <span class="pull-right-container">
                                     <i class=""></i>
                                 </span>
@@ -755,7 +788,8 @@
                 </li>
                 <script>
                     $('#shipmentS').click(function () {
-                        $('.content-wrapper:eq(0)').load('{{ route('Order.index', 'chart='.date('Y')) }}');
+                        //$('.content-wrapper:eq(0)').load('{{ route('Order.index', 'chart='.(date('Y')-1)) }}'); // chart year
+                        $('.content-wrapper:eq(0)').load('{{ route('Order.index', 'chart='.(date('Y'))) }}'); // chart year
                         $('.content-wrapper:eq(1)').remove();
                         //alert('{{ route('Order.index', 'chart='.date('Y')) }}');
                     });
@@ -884,7 +918,7 @@
                     <a href="pages/widgets.html">
                         <i class="fa fa-credit-card"></i> <span>Expense</span>
                         <span class="pull-right-container">
-                            
+
                         </span>
                     </a>
                 </li>
@@ -1293,7 +1327,52 @@
 <script src="{{ asset('') }}assets/dist/js/demo.js"></script>
 
 <script>
+    function sortTable() {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("shpmntTable");
+        switching = true;
+
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 2); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[11];
+                y = rows[i + 1].getElementsByTagName("TD")[11];
+
+
+                if (x) {
+                    console.log(parseInt(x.innerHTML));
+                    //check if the two rows should switch place:
+                    if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    }
+
+
+
     $(document).ajaxStart( function() {
+
         swal({
             imageUrl: "{{ asset('') }}assets/img/ring-alt.svg",
             title: 'Processing...',

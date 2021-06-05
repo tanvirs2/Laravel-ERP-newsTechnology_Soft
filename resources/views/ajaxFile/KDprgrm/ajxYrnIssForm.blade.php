@@ -79,20 +79,21 @@
 
 <script>
     $(document).ready(function () {
-        var kdQty;
-        $('[name="yarn[yrnQty]"]').change(function () {
+        //var kdQty;
+        /*$('[name="yarn[yrnQty]"]').change(function () {
             kdQty = $(this).val();
-        });
-
-        /*var kdQty = parseInt(prevKdEntryQty);
-        $('[name="yarn[yrnQty]"]').change(function () {
-            kdQty += parseInt($(this).val());
         });*/
 
+        var kdQty = parseInt(prevKdEntryQty);
+        $('[name="yarn[yrnQty]"]').change(function () {
+            kdQty += parseInt($(this).val());
+        });
+
         $('[type="submit"]').click(function (e) {
-            if (parseInt(kdEntryQty) >= parseInt(kdQty)) {
+            if (parseInt(kdEntryQty) >= kdQty) {
                 $('[action="{{ route('yarnIssue.store') }}"]').ajaxForm({
                     success:function () {
+                        fldObj.find('a:last').text(kdQty);
                         swal({
                             title:"Good job!",
                             text:"Updated",

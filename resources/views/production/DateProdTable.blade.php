@@ -1,6 +1,6 @@
 <tbody id="childTable">
 <?php $var = 1; $orderQtySum = 0; $orderTotalValue = 0; $totShipQty = 0; $totShipVal = 0; $totShrtShipVal = 0; $totSMV=0; ?>
-{{--*/ $prCut=0; $prSwIn=0; $prSwOut=0; $prIron=0; $prCarton=0; $prCmSum=0; $prSwInVal=0; /*--}}
+{{--*/ $prCut=0; $prSwIn=0; $prSwOut=0; $prIron=0; $prCarton=0; $prCmSum=0; $prBankSum=0; $prSwInVal=0; /*--}}
 @foreach ($employees as $employee)
     <tr class="orderRow" id="row" orderId="" style="">
         <td class="text-center">
@@ -8,8 +8,8 @@
         </td>
 
         <td class="text-center blackCol">
-            {{ $employee->order->customer_name}}
-        </td>
+                {{ $employee->order->customer_name}}
+        </td> 
         <td style="overflow: auto;" class="text-center">
             {{ $employee->order->orderID }}
         </td>
@@ -96,8 +96,13 @@
             {{--*/ $prCmSum += $prCm /*--}}
         </td>
         <td class="text-center blackCol">
+            {{ round(($employee->budget->bankCharge*$employee->prSwOut)/12) }}
+            {{--*/ $prBank = ($employee->budget->bankCharge*$employee->prSwOut)/12 /*--}}
+            {{--*/ $prBankSum += $prBank /*--}}
+        </td>
+        <td class="text-center blackCol">
             {{ $employee->order->smv * $employee->prSwOut }}
-            {{--*/ $totSMV += $employee->order->smv /*--}}
+            {{--*/ $totSMV += $employee->order->smv * $employee->prSwOut /*--}}
         </td>
         <td class="text-center blackCol">
             {{ $employee->prIron}}
@@ -142,6 +147,7 @@
     <td><b>TotSwOut</b></td>
     <td><b>Value</b></td>
     <td><b>CM</b></td>
+    <td><b>Com.Earn</b></td>
     <td><b>SMV</b></td>
     <td><b>TotIron</b></td>
     <td><b>TotPoly</b></td>
@@ -165,7 +171,8 @@
     <td><b>{{ $prSwIn }}</b></td>
     <td><b>{{ $prSwOut }}</b></td>
     <td><b>{{ $prSwInVal }}</b></td>
-    <td><b>{{ round($prCmSum) }}</b></td>
+    <td><b>{{ round($prCmSum, 2) }}</b></td>
+    <td><b>{{ round($prBankSum, 2) }}</b></td>
     <td><b>{{ $totSMV }}</b></td>
     <td><b>{{ $prIron }}</b></td>
     <td><b>{{ $prCarton }}</b></td>
@@ -174,6 +181,67 @@
 </tfoot>
 
 <script>
+    Highcharts.chart('date-wise-production', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Date Wise Production Chart',
+        },
+        subtitle: {
+            text: '<b> Value: {{ round($prSwInVal, 2) }} | CM: {{ round($prCmSum, 2) }} </b>'
+        },
+        xAxis: {
+            type: 'category'
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> of total<br/>'
+        },
+
+        "series": [
+            {
+                "name": "Production",
+                "colorByPoint": false,
+                "data": [
+                    {
+                        "name": "Cut qty",
+                        "y": {{ $prCut }}
+                    },
+                    {
+                        "name": "SwIng input",
+                        "y": {{ $prSwIn }}
+                    },
+                    {
+                        "name": "Sewing output",
+                        "y": {{ $prSwOut }}
+                    },
+                    {
+                        "name": "Iron qty",
+                        "y": {{ $prIron }}
+                    },
+                    {
+                        "name": "Poly qty",
+                        "y": {{ $prCarton }}
+                    }
+                ]
+            }
+        ]
+    });
+
     $( ".shpDays" ).each(function(){
         var value = parseInt( $( this ).html() );
         if ( value <= 10 )

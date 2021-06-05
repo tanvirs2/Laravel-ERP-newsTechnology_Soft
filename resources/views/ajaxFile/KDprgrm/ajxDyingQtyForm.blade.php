@@ -61,7 +61,7 @@
 
 <script>
     $(document).ready(function () {
-        $(".myAjaxModalChild ").on('hidden.bs.modal', function () {
+        $(".myAjaxModalChild").on('hidden.bs.modal', function () {
             $('[href="{{ url('ajxColor') }}"]').val(clrLib.clrName);
             $('[name="dying[colorId]"]').val(clrLib.clrId);
         });
@@ -72,9 +72,10 @@
         });
 
         $('[type="submit"]').click(function (e) {
-            if (parseInt(kdEntryQty) >= parseInt(kdQty)) {
+            if (parseInt(kdEntryQty) >= kdQty) {
                 $('[action="{{ route('dyingQtyFrKd.store') }}"]').ajaxForm({
                     success:function () {
+                        fldObj.find('a:last').text(kdQty);
                         swal({
                             title:"Good job!",
                             text:"Updated",

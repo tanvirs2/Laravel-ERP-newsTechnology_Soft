@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use App\Http\Requests, App\Order, App\PartialShipment;
 
 class TestController extends Controller
 {
@@ -15,7 +15,18 @@ class TestController extends Controller
      */
     public function index()
     {
-        //
+        //920
+        //Order::where('shipmentQty', '>', 0)->update(['shipmentQty' => 1]);
+        //dd(Order::find(930)->partialShipmentQty);
+        $ad = Order::where('shipmentQty', '>', 0)->get();
+        foreach ($ad as $a) {
+            $ps = new PartialShipment;
+            $ps->order_id = $a->Id;
+            $ps->qty = $a->shipmentQty;
+            $ps->created_at = $a->updated_at;
+            $ps->save();
+        }
+        //dd($ad);
     }
 
     /**

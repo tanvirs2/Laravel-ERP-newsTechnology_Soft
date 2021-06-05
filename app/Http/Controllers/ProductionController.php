@@ -39,9 +39,14 @@ class ProductionController extends Controller
      */
     public function create()
     {
+        // $today = date('Y-m-d');
+        // $hasDays = date('Y-m-d', strtotime('200 days', strtotime($today)));
+        // $this->data['employees'] = Order::where('shipStatus', '=', 'running')->where('prStatus', '=', '')->get()->sortBy("date_of_ship");
+        // $this->data['employeesActive'] = 'active';
+
         $today = date('Y-m-d');
-        $hasDays = date('Y-m-d', strtotime('200 days', strtotime($today)));
-        $this->data['employees'] = Order::where('shipStatus', '=', 'running')->where('prStatus', '=', '')->get()->sortBy("date_of_ship");
+        $hasDays = date('Y-m-d', strtotime('10 days', strtotime($today)));
+        $this->data['employees'] = Order::whereBetween('date_of_ship', [$today, $hasDays])->where('shipStatus', '=', 'running')->get()->sortBy("date_of_ship");
         $this->data['employeesActive'] = 'active';
         return view('production.preProductionList', $this->data);
     }
@@ -105,6 +110,7 @@ class ProductionController extends Controller
 
     public function orderPrSearchDateRange($from, $to, $customer_name, $shipSts)
     {
+        //dd($from, $to, $customer_name, $shipSts);
         $from = DateTime::createFromFormat('d-m-Y', $from)->format('Y-m-d');
         $to = DateTime::createFromFormat('d-m-Y', $to)->format('Y-m-d');
         if ($customer_name == '-' && $shipSts == '-') {
@@ -121,10 +127,58 @@ class ProductionController extends Controller
             }
         }
 
-        $this->data['prData'] = Production::get();
+
+        //$this->data['prData'] = Production::get();
 
         return view('production.prodTable', $this->data);
     }
+
+    public function actDateRange($from, $to, $customer_name, $shipSts)
+    {
+        $from = DateTime::createFromFormat('d-m-Y', $from);
+        $to = DateTime::createFromFormat('d-m-Y', $to);
+        $from = $from->format('Y-m-d');
+        $to = $to->format('Y-m-d');
+        if ($customer_name == '-' && $shipSts == '-') {
+            $this->data['employees'] = Order::whereBetween('actualShipDate', [$from, $to])->where('shipStatus', '=', 'running')->get()->sortBy("date_of_ship");
+        }
+        if ($customer_name != '-' && $shipSts != '-') {
+            $this->data['employees'] = Order::whereBetween('actualShipDate', [$from, $to])->where([['customer_name', '=', $customer_name], ['order_status', '=', $shipSts], ['shipStatus', '=', 'running']])->get()->sortBy("date_of_ship");
+        } else {
+            if ($customer_name != '-') {
+                $this->data['employees'] = Order::whereBetween('actualShipDate', [$from, $to])->where('customer_name', '=', $customer_name)->where('shipStatus', '=', 'running')->get()->sortBy("date_of_ship");
+            }
+            if ($shipSts != '-') {
+                $this->data['employees'] = Order::whereBetween('actualShipDate', [$from, $to])->where('order_status', '=', $shipSts)->where('shipStatus', '=', 'running')->get()->sortBy("date_of_ship");
+            }
+        }
+
+        return view('production.prodTable', $this->data);
+    }
+
+    public function entryDateRange($from, $to, $customer_name, $shipSts)
+    {
+        $from = DateTime::createFromFormat('d-m-Y', $from);
+        $to = DateTime::createFromFormat('d-m-Y', $to);
+        $from = $from->format('Y-m-d');
+        $to = $to->format('Y-m-d');
+        if ($customer_name == '-' && $shipSts == '-') {
+            $this->data['employees'] = Order::whereBetween('date_of_entry', [$from, $to])->where('shipStatus', '=', 'running')->get()->sortBy("date_of_ship");
+        }
+        if ($customer_name != '-' && $shipSts != '-') {
+            $this->data['employees'] = Order::whereBetween('date_of_entry', [$from, $to])->where([['customer_name', '=', $customer_name], ['order_status', '=', $shipSts], ['shipStatus', '=', 'running']])->get()->sortBy("date_of_ship");
+        } else {
+            if ($customer_name != '-') {
+                $this->data['employees'] = Order::whereBetween('date_of_entry', [$from, $to])->where('customer_name', '=', $customer_name)->where('shipStatus', '=', 'running')->get()->sortBy("date_of_ship");
+            }
+            if ($shipSts != '-') {
+                $this->data['employees'] = Order::whereBetween('date_of_entry', [$from, $to])->where('order_status', '=', $shipSts)->where('shipStatus', '=', 'running')->get()->sortBy("date_of_ship");
+            }
+        }
+
+        return view('production.prodTable', $this->data);
+    }
+
     public function orderStsSrc($byrNmeSrch, $shipSts)
     {
         if ($byrNmeSrch == '-' && $shipSts == '-') {
@@ -140,7 +194,7 @@ class ProductionController extends Controller
                 $this->data['employees'] = Order::where([['order_status', '=', $shipSts], ['shipStatus', '=', 'running']])->get()->sortBy("date_of_ship");
             }
         }
-        $this->data['prData'] = Production::get();
+        //$this->data['prData'] = Production::get();
         //$this->data['employees'] = Order::where($field, '=', $actionName)->where('shipStatus', '=', 'running')->get()->sortBy("date_of_ship");
         $this->data['employeesActive'] = 'active';
         return view('production.prodTable', $this->data);
@@ -154,9 +208,31 @@ class ProductionController extends Controller
 //    filtering for DateWise Production Report
     public function srchFrDtPrPage($field, $searchKey)
     {
+        // $results = array();
+        // $data = Production::where($field, 'like', '%'.$searchKey.'%')->get()->sortBy("prDate");
+        // //Production::where($field, '=', $actionName)->get()->sortBy("prDate");
+        // foreach ($data as $query)
+        // {
+        //     $results[] =  $query->$field;
+        //     $results = array_unique($results);
+        // }
+        // return response()->json($results);
+
+        // New Edition
+
         $results = array();
-        $data = Production::where($field, 'like', '%'.$searchKey.'%')->get()->sortBy("prDate");
+        //$data = Production::where($field, 'like', '%'.$searchKey.'%')->get()->sortBy("prDate");
+        if ($field == 'line') {
+            $data = Production::where($field, 'like', '%'.$searchKey.'%')->get();
+        } else {
+            $data = Order::where($field, 'like', '%'.$searchKey.'%')->where('shipStatus', '=', 'running')->get()->sortBy("prDate");
+        }
+
+        // $data = Order::join('production', 'order_details.Id', '=', 'production.order_id')->where($field, 'like', '%'.$searchKey.'%')->where('shipStatus', '=', 'running')->get()->sortBy("prDate");
+
+        // $data = Production::join('order_details', 'production.order_id', '=', 'order_details.Id')->where($field, '=', $searchKey)->get()->sortBy("prDate");
         //Production::where($field, '=', $actionName)->get()->sortBy("prDate");
+
         foreach ($data as $query)
         {
             $results[] =  $query->$field;
@@ -167,6 +243,40 @@ class ProductionController extends Controller
 
     public function rsltFrDtPrPage($field, $actionName, $from, $to)
     {
+        // if (strpos($actionName, '-') !== false){
+        //     $actionName = str_replace('-', '/', $actionName);
+        // }
+        // if (strpos($actionName, '******') !== false){
+        //     $actionName = str_replace('******', '-', $actionName);
+        // }
+
+        // if ($from != '-') {
+        //     $from = DateTime::createFromFormat('d-m-Y', $from);
+        //     $to = DateTime::createFromFormat('d-m-Y', $to);
+        //     $from = $from->format('Y-m-d');
+        //     $to = $to->format('Y-m-d');
+        //     $this->data['employees'] = Production::whereBetween('prDate', [$from, $to])->where($field, '=', $actionName)->get()->sortBy("prDate");
+        // } else {
+        //     $this->data['employees'] = Production::where($field, '=', $actionName)->get()->sortBy("prDate");
+        // }
+
+        /*$this->data['prData'] = Production::get();
+        $this->data['employeesActive'] = 'active';*/
+        //return 'dss';
+
+
+        //$ordDataArr = Order::where([[$field, '=', $actionName], ['shipStatus', '=', 'running']])->get()->sortBy("date_of_ship");
+
+        //$this->data['employees'] = Production::where($field, '=', $actionName)->get()->sortBy("prDate");
+
+        //return view('production.DateProdTable', $this->data);
+        /*foreach ($ordDataArr as $ordData) {
+           //echo $ordData->Id;
+            //Production::where('order_id', $ordData->Id)->get()->sortBy("prDate");
+        }*/
+
+        // New Edition
+
         if (strpos($actionName, '-') !== false){
             $actionName = str_replace('-', '/', $actionName);
         }
@@ -179,9 +289,11 @@ class ProductionController extends Controller
             $to = DateTime::createFromFormat('d-m-Y', $to);
             $from = $from->format('Y-m-d');
             $to = $to->format('Y-m-d');
-            $this->data['employees'] = Production::whereBetween('prDate', [$from, $to])->where($field, '=', $actionName)->get()->sortBy("prDate");
+            //$this->data['employees'] = Production::whereBetween('prDate', [$from, $to])->where($field, '=', $actionName)->get()->sortBy("prDate");
+            $this->data['employees'] = Order::join('production', 'order_details.Id', '=', 'production.order_id')->whereBetween('order_details.prDate', [$from, $to])->where($field, '=', $actionName)->get()->sortBy("order_details.prDate");
         } else {
-            $this->data['employees'] = Production::where($field, '=', $actionName)->get()->sortBy("prDate");
+            //$this->data['employees'] = Production::where($field, '=', $actionName)->get()->sortBy("prDate");
+            $this->data['employees'] = Order::join('production', 'order_details.Id', '=', 'production.order_id')->where($field, '=', $actionName)->get()->sortBy("order_details.prDate");
         }
 
         /*$this->data['prData'] = Production::get();
@@ -193,7 +305,7 @@ class ProductionController extends Controller
 
         //$this->data['employees'] = Production::where($field, '=', $actionName)->get()->sortBy("prDate");
 
-        return view('production.DateProdTable', $this->data);
+        return view('production.rsltDateProdTable', $this->data);
         /*foreach ($ordDataArr as $ordData) {
            //echo $ordData->Id;
             //Production::where('order_id', $ordData->Id)->get()->sortBy("prDate");
@@ -207,7 +319,7 @@ class ProductionController extends Controller
         $data = Order::where($field, 'like', '%'.$searchKey.'%')->where('shipStatus', '=', 'running')->get()->sortBy("date_of_ship");
         foreach ($data as $query)
         {
-            $results[] =  $query->$field;
+            $results[] =  (string)$query->$field;
             $results = array_unique($results);
         }
         return response()->json($results);
@@ -232,7 +344,7 @@ class ProductionController extends Controller
             $this->data['employees'] = Order::where([[$field, '=', $actionName], ['shipStatus', '=', 'running']])->get()->sortBy("date_of_ship");
         }
 
-        $this->data['prData'] = Production::get();
+        //$this->data['prData'] = Production::get();
         $this->data['employeesActive'] = 'active';
         return view('production.prodTable', $this->data);
     }

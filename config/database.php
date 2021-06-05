@@ -55,8 +55,8 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => 'news_technology_db',
+            'port' => env('DB_PORT', '3307'),
+            'database' => 'news_technology_db_2',
             'username' => 'root',
             'password' => '',
             'charset' => 'utf8',

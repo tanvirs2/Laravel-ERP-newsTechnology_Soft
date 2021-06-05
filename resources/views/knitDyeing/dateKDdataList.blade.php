@@ -82,14 +82,7 @@
                                                         <tbody>
                                                         <tr>
                                                             <td class="form-group">
-                                                                <select style="width: 7em;" name="sYear" class="form-control">
-                                                                    <option value="2015">2015</option>
-                                                                    <option value="2016">2016</option>
-                                                                    <option value="2017">2017</option>
-                                                                    <option value="2018" selected>2018</option>
-                                                                    <option value="2019">2019</option>
-                                                                    <option value="2020">2020</option>
-                                                                </select>
+                                                                @include('tools.years')
                                                             </td>
                                                             <td valign="top"><input value="Jan" onclick="transfer('01-01-','31-01-');" class="urg1 btn btn-default" type="button"></td>
                                                             <td></td>

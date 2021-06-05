@@ -76,9 +76,10 @@
         });
 
         $('[type="submit"]').click(function (e) {
-            if (parseInt(kdEntryQty) >= parseInt(kdQty)) {
+            if (parseInt(kdEntryQty) >= kdQty) {
                 $('[action="{{ route('finisFabIss.store') }}"]').ajaxForm({
                     success:function () {
+                        fldObj.find('a:last').text(kdQty);
                         swal({
                             title:"Good job!",
                             text:"Updated",

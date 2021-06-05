@@ -25,6 +25,7 @@ class Order extends Model
         'fabric_description',
         'smv',
         'sales_person',
+        'lcOrSalsePrsn',
 
         'yrnPrice',
         'kntngPrice',
@@ -46,6 +47,16 @@ class Order extends Model
         'prCarton',
         'cmPerDz',
     ];
+
+    public function budget()
+    {
+        return $this->hasOne(BudgetFrOrder::class, 'order_id', 'Id');
+    }
+
+    public function partialShipmentQty()
+    {
+        return $this->hasMany(PartialShipment::class, 'order_id', 'Id');
+    }
 
     public function production()
     {

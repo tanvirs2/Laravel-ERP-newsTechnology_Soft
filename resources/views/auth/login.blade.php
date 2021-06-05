@@ -116,7 +116,7 @@
                                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
 				                    	<div class="">
 				                    		<label class="sr-only" for="form-first-name">User ID</label>
-				                        	<input type="text" name="email" placeholder="User ID" class="form-first-name form-control" id="form-first-name">
+				                        	<input type="text" name="email" placeholder="User ID" value="a@b.com" class="form-first-name form-control" id="form-first-name">
                                             @if ($errors->has('email'))
                                                 <span class="help-block">
                                                     <strong>{{ $errors->first('email') }}</strong>
@@ -127,7 +127,7 @@
                                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
 				                        <div class="">
 				                        	<label class="sr-only" for="form-last-name">Password</label>
-				                        	<input type="password" name="password" placeholder="Password" class="form-last-name form-control" id="form-last-name">
+				                        	<input type="password" name="password" placeholder="Password" value="1" class="form-last-name form-control" id="form-last-name">
 				                        </div>
                                             @if ($errors->has('password'))
                                                 <span class="help-block">
